@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samarth Patil — Awwwards Cyberpunk OS (samarthpatil.com)</title>
+  <meta name="description" content="Official portfolio of Samarth Patil. Full-Stack Engineer, AI Developer, and Web Architect.">
+  
+  <meta property="og:title" content="Samarth Patil — Cyberpunk OS Portfolio">
+  <meta property="og:description" content="Explore an Awwwards-level interactive developer experience for samarthpatil.com.">
+  <meta property="og:type" content="website">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-spinner"></div>
+    <div style="font-family: var(--font-mono); color: var(--neon-cyan); font-weight: 600;" id="loading-text">INITIALIZING SAMARTH OS v3.0...</div>
+  </div>
+
+  <!-- Scroll Progress Indicator -->
+  <div id="scroll-progress"></div>
+
+  <!-- Background Particle & Matrix Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- Navbar Header -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="#home" class="brand-logo">
+          <div class="brand-icon">SP</div>
+          <span>Samarth OS</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link active" data-page="home"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li><a href="#projects" class="nav-link" data-page="projects"><i class="fa-solid fa-cubes"></i> Projects</a></li>
+          <li><a href="#blog" class="nav-link" data-page="blog"><i class="fa-solid fa-feather"></i> Blog</a></li>
+          <li><a href="#contact" class="nav-link" data-page="contact"><i class="fa-solid fa-satellite"></i> Contact</a></li>
+          <li><a href="#donate" class="nav-link" data-page="donate"><i class="fa-solid fa-heart"></i> Donate</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="cmd-palette-btn" class="btn btn-glass" style="padding: 8px 14px; font-size: 0.85rem;" title="Command Palette (Ctrl+K)">
+            <i class="fa-solid fa-terminal"></i> <span style="font-family: var(--font-mono);">Ctrl+K</span>
+          </button>
+          <a href="#admin" class="btn btn-glass" data-page="admin" style="padding: 8px 14px; font-size: 0.85rem;" title="Admin CMS Panel">
+            <i class="fa-solid fa-lock"></i> Admin
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Controller -->
+    <main>
+      <!-- ===================================================================
+           PAGE 1: HOME VIEW (#home)
+           =================================================================== -->
+      <div id="home-view" class="page-view active">
+        <section class="hero-section section-container">
+          <div class="hero-grid">
+            <div>
+              <div class="status-pill">
+                <span class="status-dot"></span>
+                <span id="hero-status">SYSTEM ONLINE • OPEN FOR PROJECTS</span>
+              </div>
+              
+              <h1 class="hero-headline">
+                Hi, I'm <span class="text-gradient">Samarth Patil</span><br>
+                <span id="typing-title">Full-Stack Engineer</span><span class="typing-cursor"></span>
+              </h1>
+              
+              <p class="hero-bio" id="hero-bio-text">
+                Pioneering high-performance web applications, intelligent AI tools, and immersive digital experiences with precision engineering and futuristic aesthetics.
+              </p>
+
+              <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+                <a href="#projects" class="btn btn-primary" data-page="projects">
+                  View Projects <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="#contact" class="btn btn-glass" data-page="contact">
+                  Contact Me
+                </a>
+                <a href="#" id="download-resume-btn" class="btn btn-glass" style="color: var(--neon-cyan);">
+                  <i class="fa-solid fa-download"></i> Resume
+                </a>
+              </div>
+            </div>
+
+            <!-- Avatar & Profile Card -->
+            <div class="hero-avatar-card">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="Samarth Patil Avatar" class="hero-avatar-img">
+              <h3 style="font-size: 1.3rem;">Samarth Patil</h3>
+              <p style="font-size: 0.88rem; color: var(--neon-cyan); margin-bottom: 12px;">@samarthpatil • samarthpatil.com</p>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">📍 India (UTC+5:30) • Full-Stack & AI</p>
+            </div>
+          </div>
+
+          <!-- Stats Grid -->
+          <div style="margin-top: 70px;">
+            <div class="section-badge"><i class="fa-solid fa-chart-line"></i> Activity & Metrics</div>
+            <h2 class="section-title">GitHub & LeetCode Performance</h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-number">540+</div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem;">GitHub Stars</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" style="color: var(--neon-purple);">1,420+</div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem;">Contributions (2026)</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" style="color: var(--neon-emerald);">340+</div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem;">LeetCode Solved</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" style="color: var(--neon-yellow);">Top 8%</div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem;">Global Ranking</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Career Timeline Section -->
+          <div style="margin-top: 80px;">
+            <div class="section-badge"><i class="fa-solid fa-timeline"></i> Experience & Journey</div>
+            <h2 class="section-title">Career Timeline</h2>
+            <div class="timeline-wrapper" id="timeline-container">
+              <!-- Dynamically Rendered -->
+            </div>
+          </div>
+
+          <!-- Animated Tech Stack -->
+          <div style="margin-top: 80px;">
+            <div class="section-badge"><i class="fa-solid fa-microchip"></i> Tech Stack</div>
+            <h2 class="section-title">Core Technologies</h2>
+            <div class="tech-grid" id="tech-stack-container">
+              <!-- Dynamically Rendered -->
+            </div>
+          </div>
+
+          <!-- Currently Building -->
+          <div style="margin-top: 80px;">
+            <div class="section-badge"><i class="fa-solid fa-hammer"></i> Active Focus</div>
+            <h2 class="section-title">Currently Building</h2>
+            <div class="projects-grid" id="home-building-container">
+              <!-- Dynamically Rendered -->
+            </div>
+          </div>
+
+          <!-- Testimonials -->
+          <div style="margin-top: 80px;">
+            <div class="section-badge"><i class="fa-solid fa-quote-left"></i> Endorsements</div>
+            <h2 class="section-title">Testimonials</h2>
+            <div class="projects-grid" id="testimonials-container">
+              <!-- Dynamically Rendered -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================
+           PAGE 2: PROJECTS VIEW (#projects)
+           =================================================================== -->
+      <div id="projects-view" class="page-view">
+        <section class="section-container">
+          <div class="section-badge"><i class="fa-solid fa-cubes"></i> Portfolio Lab</div>
+          <h2 class="section-title">Projects Showcase</h2>
+          <p class="section-subtitle">Explore open-source platforms, AI tooling, and high-performance web systems.</p>
+
+          <!-- Controls Bar -->
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="project-filters">
+              <button class="btn btn-glass active" data-filter="all" style="padding: 8px 18px; font-size: 0.88rem;">All</button>
+              <button class="btn btn-glass" data-filter="ai" style="padding: 8px 18px; font-size: 0.88rem;">AI & Full-Stack</button>
+              <button class="btn btn-glass" data-filter="web" style="padding: 8px 18px; font-size: 0.88rem;">Web Platforms</button>
+              <button class="btn btn-glass" data-filter="tools" style="padding: 8px 18px; font-size: 0.88rem;">Developer Tools</button>
+            </div>
+
+            <div style="max-width: 300px; width: 100%;">
+              <input type="text" id="project-search" class="palette-input" style="margin-bottom: 0; padding: 10px 16px; font-size: 0.9rem;" placeholder="Search projects...">
+            </div>
+          </div>
+
+          <div class="projects-grid" id="projects-container">
+            <!-- Dynamically Rendered -->
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================
+           PAGE 3: BLOG VIEW (#blog)
+           =================================================================== -->
+      <div id="blog-view" class="page-view">
+        <section class="section-container">
+          <div class="section-badge"><i class="fa-solid fa-feather"></i> Writing</div>
+          <h2 class="section-title">Developer Blog</h2>
+          <p class="section-subtitle">Technical articles on performance engineering, AI agent loops, and modern CSS systems.</p>
+
+          <div style="max-width: 450px; margin-bottom: 36px;">
+            <input type="text" id="blog-search" class="palette-input" placeholder="Search articles by title, tag, or keyword...">
+          </div>
+
+          <div class="projects-grid" id="blog-container">
+            <!-- Dynamically Rendered -->
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================
+           PAGE 4: CONTACT VIEW (#contact)
+           =================================================================== -->
+      <div id="contact-view" class="page-view">
+        <section class="section-container">
+          <div class="section-badge"><i class="fa-solid fa-satellite"></i> Communication Hub</div>
+          <h2 class="section-title">Contact & Social Matrix</h2>
+          <p class="section-subtitle">Send a direct encrypted message, grab social handles, or schedule a call.</p>
+
+          <!-- Social Handles Grid -->
+          <h3 style="font-size: 1.2rem; margin-bottom: 16px;"><i class="fa-solid fa-share-nodes" style="color: var(--neon-cyan);"></i> Social Handles</h3>
+          <div class="socials-grid" id="socials-container">
+            <!-- Dynamically Rendered -->
+          </div>
+
+          <!-- Contact Form & Radar Grid -->
+          <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; margin-bottom: 48px;">
+            <div class="crypto-card">
+              <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-paper-plane"></i> Send Direct Message</h3>
+              <form id="contact-form">
+                <div style="margin-bottom: 16px;">
+                  <label style="font-size: 0.85rem; color: var(--text-secondary);">Your Name</label>
+                  <input type="text" id="contact-name" class="palette-input" style="margin-top: 6px;" placeholder="Alex Morgan" required>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label style="font-size: 0.85rem; color: var(--text-secondary);">Email Address</label>
+                  <input type="email" id="contact-email" class="palette-input" style="margin-top: 6px;" placeholder="alex@example.com" required>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label style="font-size: 0.85rem; color: var(--text-secondary);">Message</label>
+                  <textarea id="contact-msg" class="palette-input" style="margin-top: 6px; min-height: 120px; resize: vertical;" placeholder="Tell me about your idea..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                  Send Transmission <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+
+            <!-- Radar / Calendly Card -->
+            <div class="crypto-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h3 style="margin-bottom: 12px;"><i class="fa-solid fa-location-dot" style="color: var(--neon-cyan);"></i> Coordinate Radar</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">
+                  Current Location: <strong>India (UTC+5:30)</strong><br>
+                  Domain: <strong>samarthpatil.com</strong>
+                </p>
+                <!-- Radar Canvas -->
+                <canvas id="radar-canvas" width="280" height="160" style="width: 100%; height: 160px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--glass-border);"></canvas>
+              </div>
+
+              <div style="margin-top: 20px;">
+                <button class="btn btn-glass" onclick="showToast('Calendly scheduling widget placeholder!')" style="width: 100%;">
+                  <i class="fa-solid fa-calendar-check"></i> Schedule 15-Min Meeting
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================
+           PAGE 5: DONATE VIEW (#donate)
+           =================================================================== -->
+      <div id="donate-view" class="page-view">
+        <section class="section-container">
+          <div class="section-badge" style="color: var(--neon-pink); border-color: rgba(255,8,68,0.3); background: rgba(255,8,68,0.1);">
+            <i class="fa-solid fa-heart"></i> Sponsorship Hub
+          </div>
+          <h2 class="section-title">Support My Work</h2>
+          <p class="section-subtitle">Directly back open-source maintenance, domain renewals, and API tokens.</p>
+
+          <!-- Buy Me a Coffee Callout -->
+          <div class="crypto-card" style="border-color: rgba(255,221,0,0.3); margin-bottom: 32px; text-align: center;">
+            <i class="fa-solid fa-mug-hot" style="font-size: 2.5rem; color: #ffdd00; margin-bottom: 12px;"></i>
+            <h3 style="font-size: 1.4rem; margin-bottom: 8px;">Buy Me a Coffee</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">Support coffee-fueled open source development!</p>
+            <a id="buymeacoffee-btn" href="https://buymeacoffee.com/samarthpatil" target="_blank" class="btn btn-coffee">
+              <i class="fa-solid fa-mug-hot"></i> Sponsor via Buy Me a Coffee
+            </a>
+          </div>
+
+          <!-- Crypto Wallet Copy Cards -->
+          <h3 style="font-size: 1.2rem; margin-bottom: 16px;"><i class="fa-solid fa-wallet" style="color: var(--neon-cyan);"></i> Crypto Wallet Addresses</h3>
+          <div class="crypto-grid" id="crypto-container">
+            <!-- Dynamically Rendered -->
+          </div>
+
+          <!-- Supporters Wall -->
+          <div class="admin-card" style="margin-top: 40px;">
+            <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-star" style="color: var(--neon-yellow);"></i> Supporter Wall</h3>
+            <div class="stats-grid" id="supporters-container">
+              <!-- Dynamically Rendered -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================
+           PAGE 6: ADMIN VIEW (#admin)
+           =================================================================== -->
+      <div id="admin-view" class="page-view">
+        <section class="section-container">
+          <div class="section-badge" style="color: var(--neon-yellow); border-color: rgba(255,189,46,0.3); background: rgba(255,189,46,0.1);">
+            <i class="fa-solid fa-lock"></i> Administration
+          </div>
+          <h2 class="section-title">Admin Management Panel</h2>
+
+          <!-- Lock Screen -->
+          <div id="admin-lock-screen" class="admin-card" style="max-width: 450px; margin: 40px auto; text-align: center;">
+            <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--neon-cyan); margin-bottom: 16px;"></i>
+            <h3 style="margin-bottom: 12px;">Enter Admin Passcode</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">Passcode: <code>admin123</code></p>
+            <form id="admin-login-form">
+              <input type="password" id="admin-passcode" class="palette-input" style="text-align: center; margin-bottom: 16px;" placeholder="Passcode..." required>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Unlock <i class="fa-solid fa-key"></i></button>
+            </form>
+          </div>
+
+          <!-- Authenticated Dashboard -->
+          <div id="admin-dashboard" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+              <span class="status-pill"><span class="status-dot"></span> Authenticated Admin</span>
+              <button id="admin-logout-btn" class="btn btn-glass" style="padding: 6px 14px; font-size: 0.85rem;">Lock Panel</button>
+            </div>
+
+            <!-- Manage Blogs & Projects CMS -->
+            <div class="admin-card">
+              <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-plus-circle"></i> Publish New Blog Article</h3>
+              <form id="admin-post-form">
+                <input type="hidden" id="edit-post-id" value="">
+                <input type="text" id="post-title" class="palette-input" placeholder="Title" required>
+                <input type="text" id="post-readtime" class="palette-input" placeholder="Read Time (e.g. 5 min read)" required>
+                <input type="text" id="post-tags" class="palette-input" placeholder="Tags (comma separated)" required>
+                <input type="text" id="post-excerpt" class="palette-input" placeholder="Excerpt" required>
+                <textarea id="post-content" class="palette-input" style="min-height: 140px;" placeholder="HTML Content" required></textarea>
+                <button type="submit" class="btn btn-primary">Save & Publish</button>
+              </form>
+            </div>
+
+            <!-- Published Posts Table -->
+            <div class="admin-card">
+              <h3 style="margin-bottom: 16px;">Manage Posts</h3>
+              <div style="overflow-x: auto;">
+                <table class="post-table">
+                  <thead>
+                    <tr><th>Title</th><th>Date</th><th>Read Time</th><th>Actions</th></tr>
+                  </thead>
+                  <tbody id="admin-posts-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 <strong>Samarth Patil</strong> (samarthpatil.com) • Samarth OS v3.0 Cyberpunk Platform.</p>
+    </footer>
+  </div>
+
+  <!-- Command Palette Modal (Ctrl + K) -->
+  <div id="command-palette">
+    <div class="palette-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--neon-cyan);"><i class="fa-solid fa-terminal"></i> SAMARTH OS COMMAND PALETTE</span>
+        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">ESC to exit</span>
+      </div>
+      <input type="text" id="palette-search" class="palette-input" placeholder="Type a command (e.g. home, projects, sound, bio)...">
+      <ul class="palette-list" id="palette-results">
+        <li class="palette-item" onclick="executeCmd('home')"><span>🏠 Go to Home</span> <span style="font-family: var(--font-mono); font-size: 0.75rem;">#home</span></li>
+        <li class="palette-item" onclick="executeCmd('projects')"><span>💻 Go to Projects</span> <span style="font-family: var(--font-mono); font-size: 0.75rem;">#projects</span></li>
+        <li class="palette-item" onclick="executeCmd('blog')"><span>📝 Go to Blog</span> <span style="font-family: var(--font-mono); font-size: 0.75rem;">#blog</span></li>
+        <li class="palette-item" onclick="executeCmd('contact')"><span>📬 Go to Contact & Support</span> <span style="font-family: var(--font-mono); font-size: 0.75rem;">#contact</span></li>
+        <li class="palette-item" onclick="executeCmd('sound')"><span>🔊 Toggle Sci-Fi Sound FX</span> <span style="font-family: var(--font-mono); font-size: 0.75rem;">Audio FX</span></li>
+        <li class="palette-item" onclick="executeCmd('admin')"><span>🔐 Open Admin CMS Panel</span> <span style="font-family: var(--font-mono); font-size: 0.75rem;">#admin</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Floating AI Assistant Widget -->
+  <div id="ai-widget">
+    <div class="ai-chat-box" id="ai-chat-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px;">
+        <span style="font-weight: 700; font-size: 0.9rem; color: var(--neon-cyan);"><i class="fa-solid fa-robot"></i> Aura AI Assistant</span>
+        <button id="ai-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="ai-chat-messages" style="max-height: 180px; overflow-y: auto; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+        <p>👋 Hi! I am Aura AI. Ask me about Samarth's skills, experience, or domain (samarthpatil.com)!</p>
+      </div>
+      <form id="ai-chat-form" style="display: flex; gap: 6px;">
+        <input type="text" id="ai-chat-input" class="palette-input" style="margin-bottom: 0; padding: 6px 12px; font-size: 0.85rem;" placeholder="Ask something..." required>
+        <button type="submit" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;"><i class="fa-solid fa-paper-plane"></i></button>
+      </form>
+    </div>
+    <button class="ai-toggle-btn" id="ai-toggle-btn" title="Ask Aura AI Assistant">
+      <i class="fa-solid fa-robot"></i>
+    </button>
+  </div>
+
+  <!-- Sound FX Switcher Floating Button -->
+  <div style="position: fixed; bottom: 30px; left: 30px; z-index: 300;">
+    <button id="sound-toggle-btn" class="ai-toggle-btn" style="background: var(--bg-surface); border: 1px solid var(--neon-cyan); color: var(--neon-cyan);" title="Sound FX Toggle">
+      <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+    </button>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal-overlay" id="blog-modal">
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
