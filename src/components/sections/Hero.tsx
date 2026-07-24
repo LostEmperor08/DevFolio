@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Typewriter } from "../ui/Typewriter";
 import { MagneticButton } from "../ui/MagneticButton";
 import { motionPresets } from "@/lib/motion";
+import Link from "next/link";
+import { profile } from "@/config/profile";
 import { ArrowRight, BookOpen, Download, ShieldCheck, Zap, Globe } from "lucide-react";
 
 export function Hero() {
@@ -37,15 +39,21 @@ export function Hero() {
           
           {/* Action Buttons */}
           <motion.div variants={motionPresets.fadeUp} className="flex flex-wrap items-center gap-4 mb-12">
-            <MagneticButton className="px-6 py-3 bg-foreground text-background hover:bg-zinc-200">
-              <span className="flex items-center gap-2">View Projects <ArrowRight className="w-4 h-4" /></span>
-            </MagneticButton>
-            <MagneticButton variant="ghost" className="px-6 py-3 border-white/10 hover:bg-white/5">
-              <span className="flex items-center gap-2">Read Blog <BookOpen className="w-4 h-4" /></span>
-            </MagneticButton>
-            <MagneticButton variant="ghost" className="px-6 py-3 border-transparent hover:bg-white/5 text-muted-foreground hover:text-foreground">
-              <span className="flex items-center gap-2">Resume <Download className="w-4 h-4" /></span>
-            </MagneticButton>
+            <Link href="/projects">
+              <MagneticButton className="px-6 py-3 bg-foreground text-background hover:bg-zinc-200">
+                <span className="flex items-center gap-2">View Projects <ArrowRight className="w-4 h-4" /></span>
+              </MagneticButton>
+            </Link>
+            <Link href="/blog">
+              <MagneticButton variant="ghost" className="px-6 py-3 border-white/10 hover:bg-white/5">
+                <span className="flex items-center gap-2">Read Blog <BookOpen className="w-4 h-4" /></span>
+              </MagneticButton>
+            </Link>
+            <a href={profile.personal.resumeUrl} target="_blank" rel="noopener noreferrer">
+              <MagneticButton variant="ghost" className="px-6 py-3 border-transparent hover:bg-white/5 text-muted-foreground hover:text-foreground">
+                <span className="flex items-center gap-2">Resume <Download className="w-4 h-4" /></span>
+              </MagneticButton>
+            </a>
           </motion.div>
 
           {/* Trust Badges */}

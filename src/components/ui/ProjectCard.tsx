@@ -99,12 +99,16 @@ export function ProjectCard({ project, featured = false }: { project: Project, f
 
         <div className="flex items-center justify-between mt-auto" style={{ transform: isHovered ? "translateZ(40px)" : "none", transition: "transform 0.3s ease" }}>
            <div className="flex items-center gap-6">
-             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-white transition-colors z-30 relative" onClick={(e) => e.stopPropagation()}>
-                <ExternalLink className="w-4 h-4" /> Live Demo
-             </a>
-             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-white transition-colors z-30 relative" onClick={(e) => e.stopPropagation()}>
-                <GitBranch className="w-4 h-4" /> Source
-             </a>
+             <object>
+               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-white transition-colors z-30 relative" onClick={(e) => e.stopPropagation()}>
+                  <ExternalLink className="w-4 h-4" /> Live Demo
+               </a>
+             </object>
+             <object>
+               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-white transition-colors z-30 relative" onClick={(e) => e.stopPropagation()}>
+                  <GitBranch className="w-4 h-4" /> Source
+               </a>
+             </object>
            </div>
            <div className="text-sm font-mono text-accent-blue flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0 duration-300">
              Case Study <ArrowRight className="w-4 h-4" />
