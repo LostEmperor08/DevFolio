@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String?
+  email     String    @unique
+  password  String
+  role      String    @default("ADMIN")
+  lastLogin DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ipAddress String
+  success   Boolean
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id           String   @id @default(cuid())
+  name         String
+  tagline      String
+  email        String
+  resumeUrl    String
+  avatar       String
+  location     String
+  timezone     String
+  availability String
+  responseTime String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SocialLink {
+  id       String @id @default(cuid())
+  platform String // github, linkedin, etc
+  label    String
+  url      String
+  icon     String
+}
+
+model SupportLink {
+  id      String  @id @default(cuid())
+  type    String  // crypto, patreon, buymeacoffee
+  label   String?
+  url     String?
+  address String?
+  network String?
+  qrCode  String?
+}
+
+model Project {
+  id           String         @id @default(cuid())
+  slug         String         @unique
+  title        String
+  category     String
+  description  String
+  techStack    String[]
+  status       String
+  role         String
+  timeline     String
+  githubUrl    String?
+  liveUrl      String?
+  previewImage String
+  featured     Boolean        @default(false)
+  orderIndex   Int            @default(0)
+  metrics      ProjectMetric[]
+  caseStudy    CaseStudy?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model ProjectMetric {
+  id        String  @id @default(cuid())
+  label     String
+  value     String
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model CaseStudy {
+  id                  String   @id @default(cuid())
+  projectId           String   @unique
+  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  overview            String
+  problem             String
+  goals               String[]
+  research            String
+  architecture        String
+  developmentProcess  String
+  technicalChallenges String
+  keyDecisions        String
+  results             String
+  lessonsLearned      String
+  futureImprovements  String
+}
+
+model BlogPost {
+  id             String         @id @default(cuid())
+  slug           String         @unique
+  title          String
+  description    String
+  publishedDate  String
+  updatedDate    String?
+  readingTime    String
+  authorName     String
+  authorAvatar   String
+  authorRole     String
+  category       String
+  tags           String[]
+  coverImage     String
+  featured       Boolean        @default(false)
+  draft          Boolean        @default(false)
+  series         String?
+  difficulty     String?
+  lastReviewed   String?
+  content        ContentBlock[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model ContentBlock {
+  id         String   @id @default(cuid())
+  blogId     String
+  blog       BlogPost @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  type       String   // paragraph, heading, list, code, image
+  text       String?
+  level      Int?
+  url        String?
+  caption    String?
+  language   String?
+  code       String?
+  items      String[] // For lists
+  style      String?  // ordered, unordered
+  orderIndex Int      @default(0) // To keep the blocks in order
+}
+
+model Skill {
+  id          String   @id @default(cuid())
+  category    String
+  title       String
+  icon        String
+  skills      String[]
+  description String
+  colSpan     String?
+}
+
+model Experience {
+  id           String   @id @default(cuid())
+  title        String
+  organization String
+  duration     String
+  description  String
+  technologies String[]
+}
+
+model SiteSettings {
+  id              String   @id @default(cuid())
+  url             String
+  title           String
+  description     String
+  seoKeywords     String[]
+  maintenanceMode Boolean  @default(false)
+  enableAnalytics Boolean  @default(false)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  user      String
+  action    String
+  entity    String
+  entityId  String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+
+
+model VisitorLog {
+  id        String   @id @default(cuid())
+  path      String
+  userAgent String?
+  ipAddress String?
+  timestamp DateTime @default(now())
+}

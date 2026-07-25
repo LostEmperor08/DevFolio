@@ -3,55 +3,60 @@
 import { motion } from "framer-motion";
 import { motionPresets } from "@/lib/motion";
 import { SectionHeading } from "../ui/SectionHeading";
-import { blogs } from "@/data/blogs";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { MagneticButton } from "../ui/MagneticButton";
 import Link from "next/link";
+import Image from "next/image";
 
-export function BlogPreview() {
+export function BlogPreview({ posts }: { posts: any[] }) {
+  const recentBlogs = posts.slice(0, 3);
+
   return (
-    <section className="w-full max-w-[1200px] px-6 py-32 md:py-48 relative z-10 mx-auto" id="blog">
-      <SectionHeading 
-        title="Editorial" 
+    <section className="relative z-10 mx-auto w-full max-w-[1200px] px-6 py-32 md:py-48" id="blog">
+      <SectionHeading
+        title="Editorial"
         subtitle="Thoughts on engineering, design, and the future of the web."
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-        {blogs.map((blog, index) => (
+      <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+        {recentBlogs.map((blog, index) => (
           <Link key={blog.slug} href={`/blog/${blog.slug}`} className="block h-full">
-            <motion.article 
+            <motion.article
               variants={motionPresets.fadeUp}
               initial="initial"
               whileInView="animate"
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group cursor-pointer flex flex-col p-4 rounded-3xl glass-panel border border-transparent hover:border-white/10 transition-colors duration-500 h-full"
+              className="group glass-panel flex h-full cursor-pointer flex-col rounded-3xl border border-transparent p-4 transition-colors duration-500 hover:border-white/10"
             >
-              <div className="w-full aspect-[4/3] rounded-2xl bg-white/5 border border-white/5 mb-6 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/10 to-transparent transition-transform duration-700 group-hover:scale-105" />
+              <div className="relative mb-6 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/5 bg-white/5">
+                <div className="from-accent-blue/10 absolute inset-0 bg-gradient-to-tr to-transparent transition-transform duration-700 group-hover:scale-105" />
                 {/* Fallback image style since images don't exist yet */}
-                <div className="absolute inset-0 flex items-center justify-center text-muted-foreground font-mono text-xs opacity-30">
+                <div className="text-muted-foreground absolute inset-0 flex items-center justify-center font-mono text-xs opacity-30">
                   [COVER: {blog.slug}]
                 </div>
               </div>
-              
-              <div className="px-2 flex flex-col flex-1">
-                <div className="flex items-center gap-3 mb-4 text-xs font-mono">
-                  <span className="text-accent-purple bg-accent-purple/10 px-2 py-1 rounded-md">{blog.category}</span>
+
+              <div className="flex flex-1 flex-col px-2">
+                <div className="mb-4 flex items-center gap-3 font-mono text-xs">
+                  <span className="text-accent-purple bg-accent-purple/10 rounded-md px-2 py-1">
+                    {blog.category}
+                  </span>
                   <span className="text-muted-foreground/50">•</span>
                   <span className="text-muted-foreground">{blog.readingTime}</span>
                 </div>
-                
-                <h3 className="text-2xl font-bold tracking-tight mb-3 group-hover:text-accent-blue transition-colors text-foreground">
+
+                <h3 className="group-hover:text-accent-blue text-foreground mb-3 text-2xl font-bold tracking-tight transition-colors">
                   {blog.title}
                 </h3>
-                
-                <p className="text-muted-foreground text-sm leading-relaxed mb-8 flex-1">
+
+                <p className="text-muted-foreground mb-8 flex-1 text-sm leading-relaxed">
                   {blog.description}
                 </p>
-                
-                <div className="flex items-center gap-2 text-sm font-medium text-foreground group-hover:text-accent-blue transition-colors mt-auto">
-                  Read Article <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+
+                <div className="text-foreground group-hover:text-accent-blue mt-auto flex items-center gap-2 text-sm font-medium transition-colors">
+                  Read Article{" "}
+                  <ArrowRight className="h-4 w-4 transform transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
             </motion.article>
@@ -59,14 +64,17 @@ export function BlogPreview() {
         ))}
       </div>
 
-      <motion.div 
+      <motion.div
         variants={motionPresets.fadeUp}
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        className="flex justify-center mt-20"
+        className="mt-20 flex justify-center"
       >
-        <MagneticButton variant="ghost" className="px-8 py-4 rounded-full border-white/20 hover:bg-white/5">
+        <MagneticButton
+          variant="ghost"
+          className="rounded-full border-white/20 px-8 py-4 hover:bg-white/5"
+        >
           View All Editorials
         </MagneticButton>
       </motion.div>

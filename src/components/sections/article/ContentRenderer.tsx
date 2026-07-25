@@ -1,72 +1,107 @@
-import { ContentBlock } from "@/types";
+"use client";
 
-export function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
+import { motion } from "framer-motion";
+import { motionPresets } from "@/lib/motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
+interface Block {
+  type: string;
+  text?: string | null;
+  level?: number | null;
+  url?: string | null;
+  caption?: string | null;
+  language?: string | null;
+  code?: string | null;
+  items?: string[];
+  style?: string | null;
+}
+
+export function ContentRenderer({ blocks }: { blocks: Block[] }) {
   if (!blocks || blocks.length === 0) return null;
 
   return (
-    <article className="prose prose-invert prose-lg md:prose-xl max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-accent-blue prose-p:leading-relaxed prose-p:text-white/80">
-      {blocks.map((block) => {
+    <div className="max-w-[800px] space-y-12">
+      {blocks.map((block, index) => {
+        // Handle the new Markdown blocks from the CMS
+        if (block.type === "markdown" && block.text) {
+          return (
+            <motion.div
+              key={index}
+              variants={motionPresets.fadeUp}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-100px" }}
+              className="prose prose-invert prose-lg prose-headings:font-bold prose-a:text-accent-blue hover:prose-a:text-white prose-a:transition-colors prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10 prose-img:rounded-3xl prose-img:border prose-img:border-white/10 max-w-none"
+            >
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{block.text}</ReactMarkdown>
+            </motion.div>
+          );
+        }
+
+        // Handle legacy hardcoded blocks (paragraph, heading, etc)
         switch (block.type) {
           case "paragraph":
             return (
-              <p key={block.id} className="mb-8">
+              <motion.p
+                key={index}
+                variants={motionPresets.fadeUp}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, margin: "-100px" }}
+                className="text-muted-foreground text-lg leading-relaxed"
+              >
                 {block.text}
-              </p>
+              </motion.p>
             );
-          
+
           case "heading":
-            const HeadingTag = `h${block.level || 2}` as any;
-            // Create an id for the heading so TOC anchor links work
-            const id = block.text?.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            const Tag = `h${block.level || 2}` as any;
+            const id = block.text?.toLowerCase().replace(/\s+/g, "-");
             return (
-              <HeadingTag key={block.id} id={id} className="mt-16 mb-6 scroll-mt-32 text-white">
-                {block.text}
-              </HeadingTag>
+              <motion.div
+                key={index}
+                variants={motionPresets.fadeUp}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, margin: "-100px" }}
+              >
+                <Tag
+                  id={id}
+                  className="mt-16 mb-8 scroll-mt-32 text-3xl font-bold tracking-tight text-white md:text-4xl"
+                >
+                  {block.text}
+                </Tag>
+              </motion.div>
             );
-          
-          case "callout":
-            const bgColors = {
-              info: "bg-blue-950/30 border-blue-500/20",
-              warning: "bg-yellow-950/30 border-yellow-500/20",
-              success: "bg-green-950/30 border-green-500/20",
-              danger: "bg-red-950/30 border-red-500/20",
-            };
-            const colorClass = bgColors[block.variant || "info"];
-            return (
-              <div key={block.id} className={`p-6 rounded-2xl border ${colorClass} my-8`}>
-                {block.title && <h4 className="text-lg font-bold text-white mb-2 !mt-0">{block.title}</h4>}
-                <p className="text-base text-white/80 !mb-0">{block.text}</p>
-              </div>
-            );
-          
+
           case "code":
             return (
-              <div key={block.id} className="my-8 rounded-2xl overflow-hidden border border-white/10 bg-[#0d1117]">
-                <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 bg-white/5">
-                   <span className="text-xs font-mono text-muted-foreground">{block.language}</span>
-                   <button className="text-xs font-mono text-muted-foreground hover:text-white transition-colors">Copy</button>
+              <motion.div
+                key={index}
+                variants={motionPresets.fadeUp}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, margin: "-100px" }}
+                className="glass-panel relative my-8 overflow-hidden rounded-2xl border border-white/10"
+              >
+                <div className="flex items-center border-b border-white/5 bg-white/5 px-4 py-2">
+                  <span className="text-muted-foreground font-mono text-xs uppercase">
+                    {block.language}
+                  </span>
                 </div>
-                <pre className="p-6 overflow-x-auto text-sm font-mono leading-relaxed text-white/90">
+                <pre className="overflow-x-auto p-6 font-mono text-sm text-white/90">
                   <code>{block.code}</code>
                 </pre>
-              </div>
+              </motion.div>
             );
-            
-          case "quote":
-             return (
-               <blockquote key={block.id} className="border-l-4 border-accent-blue pl-6 my-10 italic text-2xl text-white/70">
-                 "{block.text}"
-                 {block.author && <footer className="text-base text-muted-foreground mt-4 not-italic">— {block.author}</footer>}
-               </blockquote>
-             );
 
-          case "divider":
-             return <hr key={block.id} className="my-16 border-white/10" />;
+          // Additional legacy block types could be handled here...
 
           default:
             return null;
         }
       })}
-    </article>
+    </div>
   );
 }

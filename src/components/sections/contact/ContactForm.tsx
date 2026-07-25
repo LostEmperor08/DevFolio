@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { motionPresets } from "@/lib/motion";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { submitContactForm } from "@/app/actions/contact.actions";
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -13,60 +14,75 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("loading");
-    
-    // Spam protection architecture (e.g. check a hidden honeypot field or reCAPTCHA token here)
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      subject: formData.get("subject"),
+      message: formData.get("message"),
+    };
 
     try {
-      // Mock network request
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
-      // Simulate successful submission
-      setStatus("success");
-      
-      // Reset after 3 seconds
-      setTimeout(() => {
-        setStatus("idle");
-        (e.target as HTMLFormElement).reset();
-      }, 3000);
+      const res = await submitContactForm(data);
+
+      if (res.success) {
+        setStatus("success");
+        setTimeout(() => {
+          setStatus("idle");
+          (e.target as HTMLFormElement).reset();
+        }, 3000);
+      } else {
+        setStatus("error");
+        setErrorMessage(res.error || "Failed to send message.");
+      }
     } catch (err) {
       setStatus("error");
-      setErrorMessage("Something went wrong. Please try emailing me directly.");
+      setErrorMessage("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <motion.div 
+    <motion.div
       variants={motionPresets.fadeUp}
       initial="initial"
       whileInView="whileInView"
       viewport={{ once: true }}
-      className="p-8 md:p-12 rounded-3xl glass-panel border border-white/10 relative overflow-hidden h-full flex flex-col justify-center"
+      className="glass-panel relative flex h-full flex-col justify-center overflow-hidden rounded-3xl border border-white/10 p-8 md:p-12"
     >
-      <div className="absolute top-0 right-0 w-64 h-64 bg-accent-blue/5 rounded-full blur-3xl" />
-      
-      <h3 className="text-3xl font-bold text-white mb-2 relative z-10">Send a Message</h3>
-      <p className="text-muted-foreground mb-8 relative z-10">I'll get back to you as soon as possible.</p>
+      <div className="bg-accent-blue/5 absolute top-0 right-0 h-64 w-64 rounded-full blur-3xl" />
 
-      <form onSubmit={handleSubmit} className="space-y-6 relative z-10 flex-1 flex flex-col">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <h3 className="relative z-10 mb-2 text-3xl font-bold text-white">Send a Message</h3>
+      <p className="text-muted-foreground relative z-10 mb-8">
+        I'll get back to you as soon as possible.
+      </p>
+
+      <form onSubmit={handleSubmit} className="relative z-10 flex flex-1 flex-col space-y-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium text-white/80">Name</label>
-            <input 
+            <label htmlFor="name" className="text-sm font-medium text-white/80">
+              Name
+            </label>
+            <input
               id="name"
-              type="text" 
+              name="name"
+              type="text"
               required
-              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-accent-blue/50 focus:bg-white/5 transition-all"
+              className="focus:border-accent-blue/50 w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3 text-white transition-all outline-none focus:bg-white/5"
               placeholder="John Doe"
               disabled={status === "loading" || status === "success"}
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-white/80">Email</label>
-            <input 
+            <label htmlFor="email" className="text-sm font-medium text-white/80">
+              Email
+            </label>
+            <input
               id="email"
-              type="email" 
+              name="email"
+              type="email"
               required
-              className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-accent-blue/50 focus:bg-white/5 transition-all"
+              className="focus:border-accent-blue/50 w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3 text-white transition-all outline-none focus:bg-white/5"
               placeholder="john@example.com"
               disabled={status === "loading" || status === "success"}
             />
@@ -74,71 +90,81 @@ export function ContactForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="subject" className="text-sm font-medium text-white/80">Subject</label>
-          <input 
+          <label htmlFor="subject" className="text-sm font-medium text-white/80">
+            Subject
+          </label>
+          <input
             id="subject"
-            type="text" 
+            name="subject"
+            type="text"
             required
-            className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-accent-blue/50 focus:bg-white/5 transition-all"
+            className="focus:border-accent-blue/50 w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3 text-white transition-all outline-none focus:bg-white/5"
             placeholder="Project Inquiry"
             disabled={status === "loading" || status === "success"}
           />
         </div>
 
-        <div className="space-y-2 flex-1 flex flex-col">
-          <label htmlFor="message" className="text-sm font-medium text-white/80">Message</label>
-          <textarea 
+        <div className="flex flex-1 flex-col space-y-2">
+          <label htmlFor="message" className="text-sm font-medium text-white/80">
+            Message
+          </label>
+          <textarea
             id="message"
+            name="message"
             required
             rows={5}
-            className="w-full flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-accent-blue/50 focus:bg-white/5 transition-all resize-none"
+            className="focus:border-accent-blue/50 w-full flex-1 resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 text-white transition-all outline-none focus:bg-white/5"
             placeholder="Tell me about your project..."
             disabled={status === "loading" || status === "success"}
           />
         </div>
 
-        <div className="pt-4 flex items-center justify-between">
+        <div className="flex items-center justify-between pt-4">
           <AnimatePresence mode="wait">
             {status === "error" && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
-                className="flex items-center gap-2 text-red-400 text-sm"
+                className="flex items-center gap-2 text-sm text-red-400"
               >
-                <AlertCircle className="w-4 h-4" />
+                <AlertCircle className="h-4 w-4" />
                 {errorMessage}
               </motion.div>
             )}
-            
+
             {status === "success" && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
-                className="flex items-center gap-2 text-emerald-400 text-sm"
+                className="flex items-center gap-2 text-sm text-emerald-400"
               >
-                <CheckCircle2 className="w-4 h-4" />
+                <CheckCircle2 className="h-4 w-4" />
                 Message sent successfully!
               </motion.div>
             )}
           </AnimatePresence>
 
-          <MagneticButton 
-            className={`px-8 py-4 rounded-xl flex items-center justify-center gap-2 font-medium ml-auto ${
-              status === "success" 
-                ? "bg-emerald-500 text-white pointer-events-none" 
+          <MagneticButton
+            className={`ml-auto flex items-center justify-center gap-2 rounded-xl px-8 py-4 font-medium ${
+              status === "success"
+                ? "pointer-events-none bg-emerald-500 text-white"
                 : "bg-white text-black hover:bg-white/90"
             }`}
             type="submit"
             disabled={status === "loading" || status === "success"}
           >
             {status === "loading" ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
             ) : status === "success" ? (
-              <>Sent <CheckCircle2 className="w-5 h-5" /></>
+              <>
+                Sent <CheckCircle2 className="h-5 w-5" />
+              </>
             ) : (
-              <>Send Message <Send className="w-4 h-4" /></>
+              <>
+                Send Message <Send className="h-4 w-4" />
+              </>
             )}
           </MagneticButton>
         </div>

@@ -1,23 +1,32 @@
-import { MetadataRoute } from 'next';
-import { profile } from '@/config/profile';
+import { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = profile.site.url;
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const settings = await prisma.siteSettings.findFirst();
+  const baseUrl = settings?.url || "https://samarth.dev";
 
-  // We would typically fetch dynamic routes here (e.g. from a CMS or local MDX files)
-  // For the sake of this V1, we will mock the dynamic routes based on our built project structure.
-  
-  const projects = ['samarth-os', 'project-alpha', 'nexus-api'].map((slug) => ({
-    url: `${baseUrl}/projects/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
+  // Get all dynamic routes
+  const projects = await prisma.project.findMany({
+    where: { status: "published" },
+    select: { slug: true, updatedAt: true },
+  });
+
+  const blogs = await prisma.blogPost.findMany({
+    where: { draft: false },
+    select: { slug: true, updatedAt: true },
+  });
+
+  const projectUrls = projects.map((project) => ({
+    url: `${baseUrl}/work/${project.slug}`,
+    lastModified: project.updatedAt,
+    changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  const blogs = ['rebuilding-the-physics-engine', 'security-first-development'].map((slug) => ({
-    url: `${baseUrl}/blog/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
+  const blogUrls = blogs.map((blog) => ({
+    url: `${baseUrl}/blog/${blog.slug}`,
+    lastModified: blog.updatedAt,
+    changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
 
@@ -25,28 +34,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${baseUrl}/projects`,
+      url: `${baseUrl}/work`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.8,
-    },
-    ...projects,
-    ...blogs,
+    ...projectUrls,
+    ...blogUrls,
   ];
 }

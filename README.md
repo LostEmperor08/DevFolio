@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Samarth OS v1.0 🚀
 
-## Getting Started
+Welcome to the source code for **Samarth OS**, a premium, high-performance portfolio and CMS designed for modern Frontend Architects. It's built with Next.js 15 (App Router), PostgreSQL, and a completely custom-built operational command center.
 
-First, run the development server:
+## 🌟 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Extreme Aesthetics**: Custom glassmorphism, smooth scroll (`lenis`), custom cursors, magnetic buttons, and micro-animations via Framer Motion.
+- **Full Markdown CMS**: A bespoke `/admin` dashboard that lets you manage projects, write blogs, and update your resume without touching a single line of code.
+- **Operational Command Center**: Built-in system health monitoring, audit logging, JSON backups, and native visitor analytics.
+- **Vercel Blob Media**: Drag-and-drop image uploads directly to Vercel Blob.
+- **Security First**: Middleware protection, Bcrypt password hashing, rate limiting, and strict Content Security Policies (CSP).
+- **SEO Optimized**: Dynamic `sitemap.xml`, `robots.txt`, `feed.xml` (RSS), and automatic JSON-LD structured data.
+
+## 🏗 Architecture
+
+```mermaid
+graph TD
+    Client[Web Browser] --> |HTTPS| Vercel[Vercel Edge Network]
+    Vercel --> NextJS[Next.js 15 App Router]
+
+    subgraph Frontend
+    NextJS --> Pages[Public Portfolio Pages]
+    NextJS --> Admin[Admin Dashboard]
+    end
+
+    subgraph Backend
+    Admin --> ServerActions[Server Actions]
+    Pages --> ServerActions
+    end
+
+    subgraph Data Layer
+    ServerActions --> Prisma[Prisma ORM]
+    ServerActions --> VercelBlob[Vercel Blob Storage]
+    Prisma --> PostgreSQL[(PostgreSQL)]
+    end
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + Custom CSS (`index.css`)
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Storage**: Vercel Blob
+- **Animations**: Framer Motion
+- **Form Handling**: React Hook Form + Zod
+- **Authentication**: NextAuth.js (Auth.js v5)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💻 Local Development
 
-## Learn More
+1. **Clone the repository:**
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   git clone https://github.com/samarth/portfolio.git
+   cd portfolio
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Configure Environment Variables:**
+   Copy `.env.example` to `.env` and fill in the details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   DATABASE_URL="postgres://user:password@localhost:5432/portfolio"
+   AUTH_SECRET="generate_a_strong_secret"
+   BLOB_READ_WRITE_TOKEN="vercel_blob_token"
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Initialize Database:**
+
+   ```bash
+   npx prisma db push
+   npx tsx prisma/seed.ts
+   ```
+
+5. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+The portfolio will be available at `http://localhost:3000`. The admin dashboard is at `http://localhost:3000/admin/login`. Default credentials are created during the seed step.
+
+## 🚀 Deployment
+
+See the [DEPLOYMENT.md](./DEPLOYMENT.md) guide for comprehensive instructions on deploying to Vercel and connecting a production PostgreSQL instance.
+
+## 🔮 Future Roadmap
+
+- Additional CMS block types (video embeds, code playgrounds).
+- Native dark/light mode toggle.
+- Advanced visitor analytics charts inside the dashboard.
+- Contact form automatic email forwarding (Resend API).
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

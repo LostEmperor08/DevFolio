@@ -27,8 +27,16 @@ export const metadata: Metadata = {
     template: "%s | Samarth Patil",
     default: "Samarth Patil | Senior Frontend Architect",
   },
-  description: "Award-winning developer portfolio and digital experience. Engineering premium digital ecosystems.",
-  keywords: ["Samarth Patil", "Frontend Architect", "React Developer", "Next.js", "Creative Developer", "Portfolio"],
+  description:
+    "Award-winning developer portfolio and digital experience. Engineering premium digital ecosystems.",
+  keywords: [
+    "Samarth Patil",
+    "Frontend Architect",
+    "React Developer",
+    "Next.js",
+    "Creative Developer",
+    "Portfolio",
+  ],
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -45,16 +53,20 @@ export const metadata: Metadata = {
 };
 
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
+import { VisitorTracker } from "@/components/analytics/VisitorTracker";
+import { prisma } from "@/lib/prisma";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await prisma.siteSettings.findFirst();
+
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -69,15 +81,15 @@ export default function RootLayout({
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "Person",
-                "name": "Samarth Patil",
-                "url": "https://samarth.dev",
-                "jobTitle": "Senior Frontend Architect",
-                "sameAs": [
+                name: "Samarth Patil",
+                url: "https://samarth.dev",
+                jobTitle: "Senior Frontend Architect",
+                sameAs: [
                   "https://github.com/samarth",
                   "https://twitter.com/samarth",
-                  "https://linkedin.com/in/samarth"
-                ]
-              })
+                  "https://linkedin.com/in/samarth",
+                ],
+              }),
             }}
           />
           <SmoothScrollProvider>
@@ -91,6 +103,7 @@ export default function RootLayout({
             {children}
             <Footer />
             <AnalyticsProvider />
+            <VisitorTracker enabled={settings?.enableAnalytics || false} />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

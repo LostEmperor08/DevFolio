@@ -1,13 +1,16 @@
-import { MetadataRoute } from 'next';
-import { profile } from '@/config/profile';
+import { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const settings = await prisma.siteSettings.findFirst();
+  const baseUrl = settings?.url || "https://samarth.dev";
+
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/private/'],
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/admin/", "/api/"],
     },
-    sitemap: `${profile.site.url}/sitemap.xml`,
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
