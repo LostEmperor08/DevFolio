@@ -7,10 +7,15 @@ import type { Metadata } from "next";
 
 // Generate static params for all project slugs
 export async function generateStaticParams() {
-  const projects = await prisma.project.findMany({ select: { slug: true } });
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  try {
+    const projects = await prisma.project.findMany({ select: { slug: true } });
+    return projects.map((project) => ({
+      slug: project.slug,
+    }));
+  } catch (error) {
+    console.warn("Could not generate static params for projects. DB might not be ready.");
+    return [];
+  }
 }
 
 export async function generateMetadata({

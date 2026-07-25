@@ -11,10 +11,15 @@ import type { Metadata } from "next";
 
 // Generate static params for all blog slugs
 export async function generateStaticParams() {
-  const blogs = await prisma.blogPost.findMany({ select: { slug: true } });
-  return blogs.map((blog) => ({
-    slug: blog.slug,
-  }));
+  try {
+    const blogs = await BlogService.getAllBlogs();
+    return blogs.map((blog) => ({
+      slug: blog.slug,
+    }));
+  } catch (error) {
+    console.warn("Could not generate static params for blogs. DB might not be ready.");
+    return [];
+  }
 }
 
 export async function generateMetadata({
