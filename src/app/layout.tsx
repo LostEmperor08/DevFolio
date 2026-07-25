@@ -61,7 +61,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await prisma.siteSettings.findFirst();
+  let settings = null;
+  try {
+    settings = await prisma.siteSettings.findFirst();
+  } catch (error) {
+    console.warn("Could not fetch site settings in layout. DB might not be ready.");
+  }
 
   return (
     <html lang="en" suppressHydrationWarning className="dark">
