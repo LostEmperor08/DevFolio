@@ -7,6 +7,7 @@ import { ProjectCard } from "../ui/ProjectCard";
 import { MagneticButton } from "../ui/MagneticButton";
 
 export function FeaturedProjects({ projects }: { projects: any[] }) {
+  if (!projects || projects.length === 0) return null;
   const featured = projects[0];
   const supporting = projects.slice(1, 3);
 

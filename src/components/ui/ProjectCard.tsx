@@ -6,7 +6,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { Project } from "@/types";
 
-export function ProjectCard({ project, featured = false }: { project: Project, featured?: boolean }) {
+export function ProjectCard({
+  project,
+  featured = false,
+}: {
+  project: Project;
+  featured?: boolean;
+}) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -18,7 +24,7 @@ export function ProjectCard({ project, featured = false }: { project: Project, f
 
   const mouseXPct = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
   const mouseYPct = useTransform(mouseY, [-0.5, 0.5], ["0%", "100%"]);
-  
+
   const background = useMotionTemplate`radial-gradient(circle at ${mouseXPct} ${mouseYPct}, rgba(255,255,255,0.08) 0%, transparent 60%)`;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -41,8 +47,13 @@ export function ProjectCard({ project, featured = false }: { project: Project, f
     y.set(0);
   }
 
+  if (!project) return null;
+
   return (
-    <Link href={`/projects/${project.slug}`} className={`col-span-1 block ${featured ? "md:col-span-2" : ""}`}>
+    <Link
+      href={`/projects/${project.slug}`}
+      className={`col-span-1 block ${featured ? "md:col-span-2" : ""}`}
+    >
       <motion.div
         style={{
           rotateX: isHovered ? rotateX : 0,
@@ -52,69 +63,101 @@ export function ProjectCard({ project, featured = false }: { project: Project, f
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
-        className={`relative group rounded-2xl glass-panel border border-white/5 hover:border-white/20 transition-colors duration-500 overflow-hidden flex flex-col shadow-2xl h-full ${featured ? "md:flex-row min-h-[450px]" : "min-h-[450px]"}`}
+        className={`group glass-panel relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/5 shadow-2xl transition-colors duration-500 hover:border-white/20 ${featured ? "min-h-[450px] md:flex-row" : "min-h-[450px]"}`}
       >
-      {/* Background Spotlight effect */}
-      <motion.div 
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{ background, opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-      />
-      
-      {/* Image Section */}
-      <div className={`relative overflow-hidden w-full ${featured ? "md:w-1/2 min-h-[250px]" : "h-1/2 min-h-[200px]"}`}>
-         <div className="absolute inset-0 bg-white/5 transition-transform duration-700 group-hover:scale-105" />
-         <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground font-mono text-xs z-10 opacity-30 gap-2">
-            [PREVIEW ASSET: {project.slug}]
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity">Click to view case study</span>
-         </div>
-         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
-      </div>
+        {/* Background Spotlight effect */}
+        <motion.div
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{ background, opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+        />
 
-      {/* Content Section */}
-      <div className={`flex flex-col flex-1 p-8 relative z-20 bg-gradient-to-t from-black/80 to-transparent ${featured ? "md:w-1/2 justify-center bg-none" : "justify-between"}`}>
-        <div style={{ transform: isHovered ? "translateZ(30px)" : "none", transition: "transform 0.3s ease" }}>
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-mono text-accent-blue px-2.5 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20">
-              {project.status}
+        {/* Image Section */}
+        <div
+          className={`relative w-full overflow-hidden ${featured ? "min-h-[250px] md:w-1/2" : "h-1/2 min-h-[200px]"}`}
+        >
+          <div className="absolute inset-0 bg-white/5 transition-transform duration-700 group-hover:scale-105" />
+          <div className="text-muted-foreground absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 font-mono text-xs opacity-30">
+            [PREVIEW ASSET: {project.slug}]
+            <span className="opacity-0 transition-opacity group-hover:opacity-100">
+              Click to view case study
             </span>
           </div>
-          
-          <h3 className="text-2xl font-bold tracking-tight mb-3 group-hover:text-accent-blue transition-colors text-foreground">
-            {project.title}
-          </h3>
-          
-          <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-            {project.description}
-          </p>
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+        </div>
 
-          <div className="flex flex-wrap gap-2 mb-8">
-            {project.techStack.map((tech: string) => (
-              <span key={tech} className="text-xs text-muted-foreground bg-white/5 px-2.5 py-1 rounded-md border border-white/5">
-                {tech}
+        {/* Content Section */}
+        <div
+          className={`relative z-20 flex flex-1 flex-col bg-gradient-to-t from-black/80 to-transparent p-8 ${featured ? "justify-center bg-none md:w-1/2" : "justify-between"}`}
+        >
+          <div
+            style={{
+              transform: isHovered ? "translateZ(30px)" : "none",
+              transition: "transform 0.3s ease",
+            }}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <span className="text-accent-blue bg-accent-blue/10 border-accent-blue/20 rounded-full border px-2.5 py-1 font-mono text-xs">
+                {project.status}
               </span>
-            ))}
+            </div>
+
+            <h3 className="group-hover:text-accent-blue text-foreground mb-3 text-2xl font-bold tracking-tight transition-colors">
+              {project.title}
+            </h3>
+
+            <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
+              {project.description}
+            </p>
+
+            <div className="mb-8 flex flex-wrap gap-2">
+              {project.techStack.map((tech: string) => (
+                <span
+                  key={tech}
+                  className="text-muted-foreground rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-xs"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className="mt-auto flex items-center justify-between"
+            style={{
+              transform: isHovered ? "translateZ(40px)" : "none",
+              transition: "transform 0.3s ease",
+            }}
+          >
+            <div className="flex items-center gap-6">
+              <object>
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground relative z-30 flex items-center gap-2 text-sm font-medium transition-colors hover:text-white"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ExternalLink className="h-4 w-4" /> Live Demo
+                </a>
+              </object>
+              <object>
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground relative z-30 flex items-center gap-2 text-sm font-medium transition-colors hover:text-white"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <GitBranch className="h-4 w-4" /> Source
+                </a>
+              </object>
+            </div>
+            <div className="text-accent-blue flex translate-x-4 items-center gap-2 font-mono text-sm opacity-0 transition-opacity duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+              Case Study <ArrowRight className="h-4 w-4" />
+            </div>
           </div>
         </div>
-
-        <div className="flex items-center justify-between mt-auto" style={{ transform: isHovered ? "translateZ(40px)" : "none", transition: "transform 0.3s ease" }}>
-           <div className="flex items-center gap-6">
-             <object>
-               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-white transition-colors z-30 relative" onClick={(e) => e.stopPropagation()}>
-                  <ExternalLink className="w-4 h-4" /> Live Demo
-               </a>
-             </object>
-             <object>
-               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-white transition-colors z-30 relative" onClick={(e) => e.stopPropagation()}>
-                  <GitBranch className="w-4 h-4" /> Source
-               </a>
-             </object>
-           </div>
-           <div className="text-sm font-mono text-accent-blue flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0 duration-300">
-             Case Study <ArrowRight className="w-4 h-4" />
-           </div>
-        </div>
-      </div>
       </motion.div>
     </Link>
   );

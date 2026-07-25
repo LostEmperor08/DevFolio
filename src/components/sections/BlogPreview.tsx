@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export function BlogPreview({ posts }: { posts: any[] }) {
+  if (!posts || posts.length === 0) return null;
   const recentBlogs = posts.slice(0, 3);
 
   return (
