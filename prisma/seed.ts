@@ -11,6 +11,18 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Start seeding...");
 
+  // Clean up existing data before re-seeding to prevent unique constraint errors
+  await prisma.projectMetric.deleteMany();
+  await prisma.caseStudy.deleteMany();
+  await prisma.project.deleteMany();
+  await prisma.contentBlock.deleteMany();
+  await prisma.blogPost.deleteMany();
+  await prisma.socialLink.deleteMany();
+  await prisma.supportLink.deleteMany();
+  await prisma.profile.deleteMany();
+  await prisma.siteSettings.deleteMany();
+  await prisma.contactMessage.deleteMany();
+
   // 1. Create Admin User
   const adminPassword = await bcrypt.hash("S@marth$2008", 10);
   const admin = await prisma.user.upsert({
