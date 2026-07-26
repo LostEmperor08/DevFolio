@@ -7,6 +7,7 @@ import { motionPresets } from "@/lib/motion";
 import Link from "next/link";
 import { profile } from "@/config/profile";
 import { ArrowRight, BookOpen, Download, ShieldCheck, Zap, Globe } from "lucide-react";
+import Image from "next/image";
 
 export function Hero() {
   return (
@@ -22,6 +23,23 @@ export function Hero() {
           animate="animate"
           className="z-10 flex flex-col"
         >
+          <motion.div variants={motionPresets.fadeUp} className="mb-6 flex items-center gap-4">
+            <div className="border-accent-blue/40 relative h-16 w-16 overflow-hidden rounded-full border-2 shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+              <Image
+                src={profile.personal.avatar || "/images/avatar.jpg"}
+                alt="Samarth Avatar"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-lg font-bold tracking-tight text-white">Developer OS</span>
+              <span className="text-accent-blue font-mono text-xs tracking-widest uppercase">
+                v2.0 • Active System
+              </span>
+            </div>
+          </motion.div>
+
           <motion.div variants={motionPresets.fadeUp} className="mb-4 flex items-center gap-2">
             <span className="bg-accent-blue h-px w-8" />
             <span className="text-muted-foreground font-mono text-sm tracking-widest uppercase">
