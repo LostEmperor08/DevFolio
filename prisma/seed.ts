@@ -9,6 +9,12 @@ import { profile } from "../src/config/profile";
 const prisma = new PrismaClient();
 
 async function main() {
+  if (!process.env.DATABASE_URL) {
+    console.warn(
+      "⚠️ WARNING: No DATABASE_URL environment variable found. Skipping database seeding."
+    );
+    return;
+  }
   console.log("Start seeding...");
 
   // Clean up existing data before re-seeding to prevent unique constraint errors
