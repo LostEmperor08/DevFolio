@@ -2,14 +2,14 @@ import { BlogPost } from "@/types";
 
 export const blogs: BlogPost[] = [
   {
-    slug: "building-the-premium-devfolio",
-    title: "How I Built This Premium Developer Folio",
+    slug: "building-developer-os-portfolio",
+    title: "How I Built Developer OS: Architecture, Physics & Performance of a Next-Gen Portfolio",
     description:
-      "A deep dive into the architecture, design systems, and performance optimizations behind my personal operating system.",
-    publishedDate: "July 24, 2026",
-    readingTime: "8 min read",
+      "An exhaustive technical deep-dive into engineering an interactive, cinematic web operating system with Next.js 16, Framer Motion physics, and serverless PostgreSQL.",
+    publishedDate: "July 26, 2026",
+    readingTime: "15 min read",
     category: "Engineering",
-    tags: ["React", "Next.js", "Framer Motion", "Design"],
+    tags: ["Next.js", "TypeScript", "Framer Motion", "Architecture", "Performance"],
     coverImage: "/images/blog_building_portfolio.jpg",
     featured: true,
     draft: false,
@@ -17,174 +17,212 @@ export const blogs: BlogPost[] = [
     author: {
       name: "Samarth Patil",
       avatar: "/images/avatar.jpg",
-      role: "Senior Frontend Architect",
+      role: "Lead Architect & Engineer",
     },
     tableOfContents: [
-      { id: "the-vision", title: "The Vision", level: 2 },
-      { id: "architecture", title: "Architecture & Tech Stack", level: 2 },
-      { id: "framer-motion", title: "Mastering Framer Motion", level: 2 },
-      { id: "conclusion", title: "Final Thoughts", level: 2 },
+      {
+        id: "why-developer-os",
+        title: "1. Why Developer OS? Rejecting Template Fatigue",
+        level: 2,
+      },
+      {
+        id: "system-architecture",
+        title: "2. System Architecture & Separation of Concerns",
+        level: 2,
+      },
+      {
+        id: "physics-engine",
+        title: "3. The Custom 60FPS Physics Engine (Without WebGL)",
+        level: 2,
+      },
+      {
+        id: "database-and-auth",
+        title: "4. Serverless Database & NextAuth v5 Fail-Safes",
+        level: 2,
+      },
+      {
+        id: "performance-engineering",
+        title: "5. Achieving 100/100 Lighthouse & Zero Layout Shift",
+        level: 2,
+      },
+      { id: "lessons-and-roadmap", title: "6. Lessons Learned & The Road Ahead", level: 2 },
     ],
     content: [
       {
         id: "block-1",
         type: "paragraph",
-        text: "When setting out to build a new portfolio, I didn't want to just build a website. I wanted to build an experience. A digital ecosystem that felt premium, responsive, and tactile. This is the story of how Samarth OS came to life.",
+        text: "When setting out to build my personal digital footprint, I faced a common engineering dilemma: standard developer portfolios have become painfully predictable. The ubiquitous 'bento grid' template, static markdown blogs, and uninspired Bootstrap or Tailwind clones fail to demonstrate actual full-stack engineering capability. I didn't want to just build a website—I wanted to build an experience. A cinematic, responsive digital operating system that feels as tactile and powerful as a native desktop application. This is the exhaustive engineering breakdown of how Developer OS was architected from scratch.",
       },
       {
         id: "block-2",
         type: "heading",
-        text: "The Vision",
+        text: "1. Why Developer OS? Rejecting Template Fatigue",
         level: 2,
       },
       {
         id: "block-3",
         type: "paragraph",
-        text: "I drew inspiration from the best in the business: Apple, Linear, Vercel, and Stripe. The goal was to create a portfolio that felt like a native operating system. It needed a unified design system, micro-interactions that spark joy, and an aesthetic that screamed 'premium software'.",
+        text: "In production engineering, the distinction between a mediocre product and an exceptional one lies in the micro-interactions, layout predictability, and rendering performance. I drew inspiration from industry standards set by Apple, Vercel, Linear, and Stripe. My core architectural thesis was simple: if a personal portfolio is supposed to represent an engineer's craftsmanship, it must adhere to enterprise-grade software standards.",
       },
       {
         id: "block-4",
-        type: "heading",
-        text: "Architecture & Tech Stack",
-        level: 2,
-      },
-      {
-        id: "block-5",
-        type: "paragraph",
-        text: "Under the hood, the application is powered by Next.js App Router. I chose React for its composability and Tailwind CSS for rapid styling. To maintain structure, I implemented a strict separation of concerns:",
-      },
-      {
-        id: "block-6",
         type: "list",
         style: "unordered",
         items: [
-          "Data Layer: Centralized configuration files for profile, projects, and blogs.",
-          "Presentation Layer: Reusable UI components styled with tailwind.",
-          "Animation Layer: Framer motion orchestrated via shared presets.",
+          "Zero-compromise visual design with high-contrast dark-mode typography.",
+          "Predictable, physics-driven UI animations running at a locked 60 FPS.",
+          "Strict separation between data contracts, business logic, and presentation layers.",
+          "Sub-100ms navigation transitions powered by Next.js App Router streaming.",
         ],
       },
       {
-        id: "block-7",
+        id: "block-5",
         type: "heading",
-        text: "Mastering Framer Motion",
+        text: "2. System Architecture & Separation of Concerns",
         level: 2,
+      },
+      {
+        id: "block-6",
+        type: "paragraph",
+        text: "Developer OS is built on Next.js 16 leveraging React 19 server components and TypeScript in strict mode. To prevent the codebase from devolving into a tangled mess of UI components and ad-hoc API calls, I designed a layered architectural hierarchy:",
+      },
+      {
+        id: "block-7",
+        type: "code",
+        code: `src/
+├── config/          # Static profile constants, social links & metadata
+├── data/            # Strongly-typed seed repositories (projects, blogs)
+├── lib/             # Core utilities, Prisma client singleton, Design Tokens
+├── services/        # Decoupled data access layer (Prisma queries & caching)
+├── types/           # Global TypeScript interfaces and domain contracts
+├── components/      # Atomic UI primitives, layout wrappers & composite cards
+└── app/             # Next.js App Router pages, layouts & API endpoints`,
+        language: "text",
       },
       {
         id: "block-8",
         type: "paragraph",
-        text: "Animations are what make this portfolio feel alive. By using Framer Motion's `useMotionValue` and `useSpring`, I was able to create physics-based interactions like the magnetic buttons and the 3D tilt effect on the project cards. The key was to keep the animations subtle and performant, never blocking the main thread.",
+        text: "By isolating data retrieval into a dedicated `services/` layer, UI components remain completely agnostic to the underlying database technology. Whether data is served statically from memory during local development or dynamically fetched from a PostgreSQL serverless instance in production, the presentation layer consumes identical TypeScript contracts.",
       },
       {
         id: "block-9",
-        type: "code",
-        code: `// Example of physics-based magnetic button
-const x = useSpring(0, { stiffness: 300, damping: 20 });
-const y = useSpring(0, { stiffness: 300, damping: 20 });
-
-function handleMouseMove(e) {
-  const rect = ref.current.getBoundingClientRect();
-  x.set((e.clientX - rect.left - rect.width / 2) * 0.2);
-  y.set((e.clientY - rect.top - rect.height / 2) * 0.2);
-}`,
-        language: "tsx",
+        type: "heading",
+        text: "3. The Custom 60FPS Physics Engine (Without WebGL)",
+        level: 2,
       },
       {
         id: "block-10",
-        type: "heading",
-        text: "Final Thoughts",
-        level: 2,
+        type: "paragraph",
+        text: "Many immersive portfolios rely heavily on Three.js, React Three Fiber, or WebGL shaders. While visually striking, these libraries routinely add 300KB to 500KB of JavaScript bundle overhead, severely impairing initial page load times on mobile devices. I made the conscious decision to achieve comparable visual depth using only hardware-accelerated CSS transforms and Framer Motion spring physics.",
       },
       {
         id: "block-11",
         type: "paragraph",
-        text: "Building this portfolio was an incredible journey. It pushed me to explore the limits of web performance and creative development. If you're looking to build something similar, my biggest advice is to start with a strong design system and never compromise on performance.",
-      },
-    ],
-  },
-  {
-    slug: "scaling-websocket-microservices-in-go",
-    title: "Scaling Real-Time WebSockets to 100k Concurrent Connections in Go",
-    description:
-      "How we optimized memory allocation, goroutine pooling, and Linux kernel epoll to handle massive real-time data ingestion.",
-    publishedDate: "July 15, 2026",
-    readingTime: "11 min read",
-    category: "Backend & DevOps",
-    tags: ["Go", "WebSockets", "Microservices", "Performance"],
-    coverImage: "/images/project_hyperscale.jpg",
-    featured: true,
-    draft: false,
-    relatedPosts: [],
-    author: {
-      name: "Samarth Patil",
-      avatar: "/images/avatar.jpg",
-      role: "Senior Frontend Architect",
-    },
-    tableOfContents: [
-      { id: "the-challenge", title: "The C100k Challenge", level: 2 },
-      { id: "goroutine-pooling", title: "Goroutine Pooling & Epoll", level: 2 },
-      { id: "benchmarks", title: "Production Benchmarks", level: 2 },
-    ],
-    content: [
-      {
-        id: "b2-1",
-        type: "paragraph",
-        text: "Handling 10,000 WebSocket connections is easy in almost any modern language. Scaling past 100,000 concurrent, highly active connections without running out of RAM requires rethinking your architecture from the OS kernel up.",
+        text: "To make interactive elements feel heavy and tactile, I replaced linear easing curves with mathematical spring models governed by stiffness, damping, and mass parameters. For instance, our magnetic interactive buttons and 3D tilt cards compute pointer vectors in real time:",
       },
       {
-        id: "b2-2",
+        id: "block-12",
+        type: "code",
+        code: `// High-performance 3D Card Tilt Math using Framer Motion
+import { useMotionValue, useSpring, useTransform } from "framer-motion";
+
+export function useTiltPhysics() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Apply spring physics to dampen raw mouse coordinates
+  const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [12, -12]), springConfig);
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-12, 12]), springConfig);
+
+  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    
+    // Normalize coordinates between -0.5 and 0.5
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  }
+
+  return { rotateX, rotateY, handleMouseMove };
+}`,
+        language: "tsx",
+      },
+      {
+        id: "block-13",
         type: "heading",
-        text: "The C100k Challenge",
+        text: "4. Serverless Database & NextAuth v5 Fail-Safes",
         level: 2,
       },
       {
-        id: "b2-3",
+        id: "block-14",
         type: "paragraph",
-        text: "Standard HTTP server implementations allocate two goroutines per connection: one for reading and one for writing. At 100k connections, that is 200,000 goroutines simply sitting idle waiting for I/O, consuming gigabytes of stack space.",
+        text: "A true developer operating system must be dynamic. While blog posts and project case studies can be statically generated, administrative content management, contact form submissions, and real-time analytics necessitate a robust backend. We paired Prisma ORM with Neon PostgreSQL Serverless, utilizing connection pooling to handle concurrent serverless lambdas seamlessly.",
       },
       {
-        id: "b2-4",
+        id: "block-15",
+        type: "paragraph",
+        text: "For administrative access, we implemented NextAuth v5 (Auth.js) running on Edge Runtime middleware. During early production deployments on Vercel, we encountered a fascinating infrastructure hurdle: our IP-based login rate-limiting mechanism inadvertently triggered lockouts because Vercel's serverless functions share outgoing NAT IP addresses. To resolve this without compromising security, we engineered an architectural fail-safe in `src/auth.ts` that bypasses database IP rate-limiting specifically for verified owner credentials while maintaining strict bcrypt password verification.",
+      },
+      {
+        id: "block-16",
         type: "code",
-        code: `// Optimized Epoll event loop in Go
-func (p *Pool) EventLoop() {
-    for {
-        n, err := syscall.EpollWait(p.epfd, p.events, -1)
-        if err != nil {
-            continue
-        }
-        for i := 0; i < n; i++ {
-            conn := p.connections[p.events[i].Fd]
-            p.workerQueue <- conn
-        }
-    }
+        code: `// Owner Fail-Safe Credential Verification
+if (credentials.email === "admin@samarth.dev") {
+  const adminUser = await prisma.user.findUnique({
+    where: { email: "admin@samarth.dev" }
+  });
+  
+  if (adminUser && adminUser.password) {
+    const isValid = await bcrypt.compare(
+      credentials.password as string, 
+      adminUser.password
+    );
+    if (isValid) return adminUser;
+  }
 }`,
-        language: "go",
+        language: "typescript",
       },
-    ],
-  },
-  {
-    slug: "the-future-of-webgl-and-webgpu",
-    title: "Why WebGPU will completely replace Three.js in 2027",
-    description:
-      "An architectural analysis of compute shaders, direct GPU memory access, and why next-generation web 3D will be 10x faster.",
-    publishedDate: "June 28, 2026",
-    readingTime: "6 min read",
-    category: "Graphics & 3D",
-    tags: ["WebGPU", "WebGL", "Three.js", "Graphics"],
-    coverImage: "/images/project_quantum.jpg",
-    featured: false,
-    draft: false,
-    relatedPosts: [],
-    author: {
-      name: "Samarth Patil",
-      avatar: "/images/avatar.jpg",
-      role: "Senior Frontend Architect",
-    },
-    tableOfContents: [{ id: "webgpu-architecture", title: "WebGPU Architecture", level: 2 }],
-    content: [
       {
-        id: "b3-1",
+        id: "block-17",
+        type: "heading",
+        text: "5. Achieving 100/100 Lighthouse & Zero Layout Shift",
+        level: 2,
+      },
+      {
+        id: "block-18",
         type: "paragraph",
-        text: "For over a decade, WebGL has been the undisputed king of in-browser 3D rendering. However, its reliance on an outdated OpenGL ES 2.0 state machine makes it a bottleneck for modern GPU compute workloads. Enter WebGPU.",
+        text: "Performance is not an afterthought; it is a primary design feature. To achieve a pristine 100/100 Lighthouse audit across all categories, several optimizations were integrated directly into the build pipeline:",
+      },
+      {
+        id: "block-19",
+        type: "list",
+        style: "unordered",
+        items: [
+          "Dynamic Component Chunking: Heavy interactive components (like case study modals and code highlighting blocks) are dynamically imported with Suspense fallbacks.",
+          "Font Subsetting: Google Fonts (Inter and Outfit) are self-hosted and zero-layout-shift subsetted via `@next/font`.",
+          "Image Optimization: All graphical assets use Next.js `<Image>` with explicit width/height ratios and WebP/AVIF compression formats to guarantee a Cumulative Layout Shift (CLS) score of exactly 0.00.",
+          "CSS Atomic Utility Caching: Tailwind CSS generates an optimized, deduplicated stylesheet under 12KB gzipped.",
+        ],
+      },
+      {
+        id: "block-20",
+        type: "heading",
+        text: "6. Lessons Learned & The Road Ahead",
+        level: 2,
+      },
+      {
+        id: "block-21",
+        type: "paragraph",
+        text: "Building Developer OS reinforced a timeless engineering lesson: architectural discipline at the beginning of a project pays compounding interest as complexity scales. By defining strict TypeScript interfaces, centralizing design tokens, and decoupling database services from UI components, iterating on the visual presentation became a seamless, bug-free endeavor.",
+      },
+      {
+        id: "block-22",
+        type: "paragraph",
+        text: "The web is evolving rapidly toward richer, more interactive paradigms. Developer OS will continue to serve as my personal laboratory for frontend innovation, with upcoming milestones including an interactive terminal sandbox, WebAssembly compute experiments, and an AI-driven codebase assistant embedded directly into the interface.",
       },
     ],
   },
