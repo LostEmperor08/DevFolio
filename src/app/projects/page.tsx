@@ -4,6 +4,9 @@ import { OpenSource } from "@/components/sections/projects/OpenSource";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { ProjectService } from "@/services/project.service";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ProjectsPage() {
   const projects = await ProjectService.getAllProjects();
 

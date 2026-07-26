@@ -9,18 +9,8 @@ import { prisma } from "@/lib/prisma";
 
 import type { Metadata } from "next";
 
-// Generate static params for all blog slugs
-export async function generateStaticParams() {
-  try {
-    const blogs = await BlogService.getAllBlogs();
-    return blogs.map((blog) => ({
-      slug: blog.slug,
-    }));
-  } catch (error) {
-    console.warn("Could not generate static params for blogs. DB might not be ready.");
-    return [];
-  }
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,

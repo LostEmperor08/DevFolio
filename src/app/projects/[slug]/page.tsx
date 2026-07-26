@@ -5,18 +5,8 @@ import { CaseStudyContent } from "@/components/sections/casestudy/CaseStudyConte
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import type { Metadata } from "next";
 
-// Generate static params for all project slugs
-export async function generateStaticParams() {
-  try {
-    const projects = await prisma.project.findMany({ select: { slug: true } });
-    return projects.map((project) => ({
-      slug: project.slug,
-    }));
-  } catch (error) {
-    console.warn("Could not generate static params for projects. DB might not be ready.");
-    return [];
-  }
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,

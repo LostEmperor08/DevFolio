@@ -5,6 +5,9 @@ import { Newsletter } from "@/components/sections/blog/Newsletter";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { BlogService } from "@/services/blog.service";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function BlogPage() {
   const blogs = await BlogService.getPublishedBlogs();
 

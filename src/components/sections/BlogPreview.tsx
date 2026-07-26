@@ -31,11 +31,19 @@ export function BlogPreview({ posts }: { posts: any[] }) {
               className="group glass-panel flex h-full cursor-pointer flex-col rounded-3xl border border-transparent p-4 transition-colors duration-500 hover:border-white/10"
             >
               <div className="relative mb-6 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/5 bg-white/5">
-                <div className="from-accent-blue/10 absolute inset-0 bg-gradient-to-tr to-transparent transition-transform duration-700 group-hover:scale-105" />
-                {/* Fallback image style since images don't exist yet */}
-                <div className="text-muted-foreground absolute inset-0 flex items-center justify-center font-mono text-xs opacity-30">
-                  [COVER: {blog.slug}]
-                </div>
+                <div className="from-accent-blue/10 absolute inset-0 z-10 bg-gradient-to-tr to-transparent transition-transform duration-700 group-hover:scale-105" />
+                {blog.coverImage ? (
+                  <Image
+                    src={blog.coverImage}
+                    alt={blog.title || "Blog cover"}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="text-muted-foreground absolute inset-0 flex items-center justify-center font-mono text-xs opacity-30">
+                    [COVER: {blog.slug}]
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-1 flex-col px-2">
