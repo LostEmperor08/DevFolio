@@ -21,7 +21,7 @@ export function ContentRenderer({ blocks }: { blocks: Block[] }) {
   if (!blocks || blocks.length === 0) return null;
 
   return (
-    <div className="max-w-[800px] space-y-12">
+    <div className="max-w-[850px] space-y-10 font-sans">
       {blocks.map((block, index) => {
         // Handle the new Markdown blocks from the CMS
         if (block.type === "markdown" && block.text) {
@@ -32,7 +32,7 @@ export function ContentRenderer({ blocks }: { blocks: Block[] }) {
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: "-100px" }}
-              className="prose prose-invert prose-lg prose-headings:font-bold prose-a:text-accent-blue hover:prose-a:text-white prose-a:transition-colors prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10 prose-img:rounded-3xl prose-img:border prose-img:border-white/10 max-w-none"
+              className="prose prose-invert prose-lg md:prose-xl prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-white prose-a:text-cyan-400 hover:prose-a:text-white prose-a:transition-colors prose-pre:bg-slate-950 prose-pre:border prose-pre:border-white/15 prose-pre:rounded-2xl prose-pre:shadow-2xl prose-img:rounded-3xl prose-img:border prose-img:border-white/15 prose-img:shadow-2xl prose-blockquote:border-l-4 prose-blockquote:border-cyan-500 prose-blockquote:bg-white/5 prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:text-white/90 prose-strong:text-white prose-li:text-muted-foreground prose-p:text-muted-foreground prose-p:leading-relaxed max-w-none"
             >
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{block.text}</ReactMarkdown>
             </motion.div>
@@ -49,7 +49,7 @@ export function ContentRenderer({ blocks }: { blocks: Block[] }) {
                 initial="initial"
                 whileInView="animate"
                 viewport={{ once: true, margin: "-100px" }}
-                className="text-muted-foreground text-lg leading-relaxed"
+                className="text-muted-foreground text-lg leading-relaxed font-light md:text-xl"
               >
                 {block.text}
               </motion.p>
@@ -68,7 +68,7 @@ export function ContentRenderer({ blocks }: { blocks: Block[] }) {
               >
                 <Tag
                   id={id}
-                  className="mt-16 mb-8 scroll-mt-32 text-3xl font-bold tracking-tight text-white md:text-4xl"
+                  className="mt-16 mb-6 scroll-mt-32 border-b border-white/10 pb-4 text-3xl font-bold tracking-tight text-white md:text-4xl"
                 >
                   {block.text}
                 </Tag>
@@ -83,20 +83,23 @@ export function ContentRenderer({ blocks }: { blocks: Block[] }) {
                 initial="initial"
                 whileInView="animate"
                 viewport={{ once: true, margin: "-100px" }}
-                className="glass-panel relative my-8 overflow-hidden rounded-2xl border border-white/10"
+                className="glass-panel relative my-10 overflow-hidden rounded-2xl border border-white/15 bg-slate-950/90 shadow-2xl"
               >
-                <div className="flex items-center border-b border-white/5 bg-white/5 px-4 py-2">
-                  <span className="text-muted-foreground font-mono text-xs uppercase">
-                    {block.language}
+                <div className="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full bg-red-500/80" />
+                    <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
+                    <span className="h-3 w-3 rounded-full bg-green-500/80" />
+                  </div>
+                  <span className="font-mono text-xs font-semibold tracking-wider text-cyan-400 uppercase">
+                    {block.language || "terminal"}
                   </span>
                 </div>
-                <pre className="overflow-x-auto p-6 font-mono text-sm text-white/90">
+                <pre className="overflow-x-auto p-6 font-mono text-sm leading-relaxed text-white/90">
                   <code>{block.code}</code>
                 </pre>
               </motion.div>
             );
-
-          // Additional legacy block types could be handled here...
 
           default:
             return null;

@@ -1,22 +1,26 @@
-import { MetadataRoute } from 'next';
-import { profile } from '@/config/profile';
+import { MetadataRoute } from "next";
+import { profile } from "@/config/profile";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: profile.personal.name,
-    short_name: 'Portfolio',
+    short_name: "Portfolio",
     description: profile.personal.tagline,
-    start_url: '/',
-    display: 'standalone',
-    background_color: '#000000',
-    theme_color: '#000000',
+    start_url: "/",
+    display: "standalone",
+    background_color: "#000000",
+    theme_color: "#000000",
     icons: [
       {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
+        src: "/icon?size=192",
+        sizes: "192x192",
+        type: "image/png",
       },
-      // In production, we would add icon-192x192.png and icon-512x512.png
+      {
+        src: "/icon?size=512",
+        sizes: "512x512",
+        type: "image/png",
+      },
     ],
   };
 }

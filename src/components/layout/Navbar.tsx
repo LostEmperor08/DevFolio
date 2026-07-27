@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { Search, Moon, FileText, Heart, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
 import { designTokens } from "@/lib/design";
@@ -21,10 +22,20 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const { scrollY } = useScroll();
+  const pathname = usePathname() || "/";
   const [hidden, setHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { setCommandPaletteOpen } = useAppStore();
+
+  let brandTitle = "Samarth's DevFolio";
+  if (pathname.startsWith("/blog")) {
+    brandTitle = "Samarth's Blog";
+  } else if (pathname.startsWith("/projects")) {
+    brandTitle = "Samarth's Projects";
+  } else if (pathname.startsWith("/contact")) {
+    brandTitle = "Contact Samarth";
+  }
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -72,16 +83,16 @@ export function Navbar() {
       >
         <nav
           className={cn(
-            "pointer-events-auto flex w-full max-w-[1200px] items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500",
+            "pointer-events-auto flex w-full max-w-[1250px] items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500",
             isScrolled
-              ? "glass-panel scale-[0.98] border border-white/10 shadow-2xl backdrop-blur-xl"
-              : "scale-100 border border-transparent bg-transparent"
+              ? "glass-panel scale-[0.98] border border-white/20 bg-black/80 shadow-2xl backdrop-blur-2xl"
+              : "scale-100 border border-white/10 bg-black/60 shadow-lg backdrop-blur-xl"
           )}
         >
-          {/* Logo */}
-          <div className="flex items-center gap-3">
+          {/* Logo & Brand */}
+          <div className="flex shrink-0 items-center gap-3">
             <Link href="/" className="group flex items-center gap-3">
-              <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-white/20 shadow-md transition-transform duration-300 group-hover:scale-105">
+              <div className="border-accent-blue/40 relative h-10 w-10 overflow-hidden rounded-full border-2 shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src={profile.personal.avatar || "/images/avatar.jpg"}
                   alt="Avatar Logo"
@@ -89,28 +100,47 @@ export function Navbar() {
                   className="object-cover"
                 />
               </div>
-              <span className="group-hover:text-accent-blue text-base font-bold tracking-tight text-white transition-colors">
-                Developer OS
+              <span className="group-hover:text-accent-blue text-base font-bold tracking-tight text-white transition-colors sm:text-lg">
+                {brandTitle}
               </span>
             </Link>
           </div>
 
-          {/* Desktop Links */}
-          <ul className="hidden items-center gap-1 rounded-full border border-white/5 bg-white/5 p-1 md:flex">
-            {NAV_LINKS.map((link) => (
-              <li key={link.name}>
-                <Link
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground inline-block rounded-full px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
+          {/* Desktop Nav Menus (Always Visible on sm and above) */}
+          <ul className="hidden items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2 py-1 shadow-inner backdrop-blur-md sm:flex">
+            {NAV_LINKS.map((link) => {
+              const isActive =
+                link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+              return (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      "inline-block rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300",
+                      isActive
+                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-[0_0_15px_rgba(59,130,246,0.4)]"
+                        : "text-muted-foreground hover:bg-white/10 hover:text-white"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              );
+            })}
+            <li>
+              <a
+                href={profile.personal.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground inline-block rounded-full px-4 py-1.5 text-sm font-medium transition-colors hover:bg-white/10 hover:text-white"
+              >
+                Resume
+              </a>
+            </li>
             <li>
               <Link
                 href="/contact"
-                className="text-accent-purple inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10 hover:text-white"
+                className="text-accent-purple inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors hover:bg-white/10 hover:text-white"
               >
                 <Heart className="h-3.5 w-3.5" /> Support
               </Link>
@@ -118,36 +148,30 @@ export function Navbar() {
           </ul>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               onClick={() => setCommandPaletteOpen(true)}
-              className="text-muted-foreground hover:text-foreground hidden h-10 w-10 items-center justify-center rounded-full bg-white/5 transition-colors hover:bg-white/10 sm:flex"
+              className="text-muted-foreground hover:text-foreground hidden h-10 w-10 items-center justify-center rounded-full border border-white/5 bg-white/5 transition-colors hover:bg-white/10 md:flex"
               title="Search (⌘K)"
             >
               <Search className="h-4 w-4" />
-            </button>
-            <button
-              className="text-muted-foreground hover:text-foreground hidden h-10 w-10 items-center justify-center rounded-full bg-white/5 transition-colors hover:bg-white/10 sm:flex"
-              title="Toggle Theme"
-            >
-              <Moon className="h-4 w-4" />
             </button>
             <a
               href={profile.personal.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:block"
+              className="hidden lg:block"
             >
-              <MagneticButton className="bg-foreground text-background flex items-center gap-2 rounded-full px-5 py-2 text-sm hover:bg-zinc-200">
+              <MagneticButton className="flex items-center gap-2 rounded-full bg-gradient-to-r from-white to-zinc-200 px-5 py-2 text-sm font-semibold text-black shadow-md hover:from-zinc-100 hover:to-zinc-300">
                 <FileText className="h-4 w-4" />
-                <span>Resume</span>
+                <span>Resume PDF</span>
               </MagneticButton>
             </a>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle (Visible on screens smaller than sm) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-muted-foreground hover:text-foreground flex h-10 w-10 items-center justify-center rounded-full bg-white/5 transition-colors hover:bg-white/10 md:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 sm:hidden"
               aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

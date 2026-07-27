@@ -13,13 +13,17 @@ export function FeaturedProjects({ projects }: { projects: any[] }) {
 
   return (
     <section
-      className="relative z-10 mx-auto w-full max-w-[1200px] px-6 py-32 md:py-48"
+      className="relative z-10 mx-auto w-full max-w-[1250px] overflow-hidden px-6 py-32 md:py-48"
       id="projects"
     >
+      {/* Ambient Cyber Background Glows */}
+      <div className="pointer-events-none absolute top-1/3 left-1/4 -z-10 h-[450px] w-[450px] rounded-full bg-blue-600/10 blur-[120px]" />
+      <div className="pointer-events-none absolute right-1/4 bottom-1/4 -z-10 h-[450px] w-[450px] rounded-full bg-purple-600/10 blur-[120px]" />
+
       <SectionHeading
         title="Selected Works"
         subtitle="A curated collection of my most recent engineering and design endeavors."
-        kicker="02 // PORTFOLIO"
+        kicker="02 // PORTFOLIO ARCHITECTURE"
       />
 
       <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2" style={{ perspective: 1200 }}>

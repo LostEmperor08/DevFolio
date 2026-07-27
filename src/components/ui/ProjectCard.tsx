@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } fr
 import { ExternalLink, GitBranch, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Project } from "@/types";
 
 export function ProjectCard({
@@ -25,7 +26,7 @@ export function ProjectCard({
   const mouseXPct = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
   const mouseYPct = useTransform(mouseY, [-0.5, 0.5], ["0%", "100%"]);
 
-  const background = useMotionTemplate`radial-gradient(circle at ${mouseXPct} ${mouseYPct}, rgba(255,255,255,0.08) 0%, transparent 60%)`;
+  const background = useMotionTemplate`radial-gradient(circle at ${mouseXPct} ${mouseYPct}, rgba(59,130,246,0.15) 0%, transparent 60%)`;
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -63,7 +64,7 @@ export function ProjectCard({
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
-        className={`group glass-panel relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/5 shadow-2xl transition-colors duration-500 hover:border-white/20 ${featured ? "min-h-[450px] md:flex-row" : "min-h-[450px]"}`}
+        className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/95 via-indigo-950/40 to-slate-950 shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-500 hover:border-blue-500/50 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] ${featured ? "min-h-[450px] md:flex-row" : "min-h-[450px]"}`}
       >
         {/* Background Spotlight effect */}
         <motion.div
@@ -74,21 +75,26 @@ export function ProjectCard({
 
         {/* Image Section */}
         <div
-          className={`relative w-full overflow-hidden ${featured ? "min-h-[250px] md:w-1/2" : "h-1/2 min-h-[200px]"}`}
+          className={`relative w-full overflow-hidden ${featured ? "min-h-[280px] md:w-1/2" : "h-1/2 min-h-[240px]"}`}
         >
-          <div className="absolute inset-0 bg-white/5 transition-transform duration-700 group-hover:scale-105" />
-          <div className="text-muted-foreground absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 font-mono text-xs opacity-30">
-            [PREVIEW ASSET: {project.slug}]
-            <span className="opacity-0 transition-opacity group-hover:opacity-100">
-              Click to view case study
+          <Image
+            src={project.previewImage || "/images/samarth_os_preview.jpg"}
+            alt={project.title}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-slate-950/95 via-slate-950/20 to-transparent" />
+          <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+            <span className="rounded-full border border-white/20 bg-black/70 px-3 py-1 font-mono text-[10px] font-bold tracking-widest text-cyan-400 uppercase shadow-lg backdrop-blur-md">
+              {project.category || "ARCHITECTURE"}
             </span>
           </div>
-          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
         </div>
 
         {/* Content Section */}
         <div
-          className={`relative z-20 flex flex-1 flex-col bg-gradient-to-t from-black/80 to-transparent p-8 ${featured ? "justify-center bg-none md:w-1/2" : "justify-between"}`}
+          className={`relative z-20 flex flex-1 flex-col p-8 ${featured ? "justify-center bg-none md:w-1/2" : "justify-between"}`}
         >
           <div
             style={{
@@ -97,12 +103,12 @@ export function ProjectCard({
             }}
           >
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-accent-blue bg-accent-blue/10 border-accent-blue/20 rounded-full border px-2.5 py-1 font-mono text-xs">
-                {project.status}
+              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-xs font-semibold text-emerald-400">
+                {project.status || "Completed"}
               </span>
             </div>
 
-            <h3 className="group-hover:text-accent-blue text-foreground mb-3 text-2xl font-bold tracking-tight transition-colors">
+            <h3 className="mb-3 text-2xl font-bold tracking-tight text-white transition-colors group-hover:text-cyan-400">
               {project.title}
             </h3>
 
