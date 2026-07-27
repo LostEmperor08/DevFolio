@@ -5,8 +5,6 @@ import { ContentRenderer } from "@/components/sections/article/ContentRenderer";
 import { TableOfContents } from "@/components/sections/article/TableOfContents";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { Newsletter } from "@/components/sections/blog/Newsletter";
-import { prisma } from "@/lib/prisma";
-
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -19,8 +17,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const resolvedParams = await params;
   const post = await BlogService.getBlogBySlug(resolvedParams.slug);
-  const settings = await prisma.siteSettings.findFirst();
-  const baseUrl = settings?.url || "https://samarth.dev";
+  const baseUrl = "https://samarthpatil.com";
 
   if (!post) return {};
 

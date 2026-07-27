@@ -54,20 +54,12 @@ export const metadata: Metadata = {
 
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 import { VisitorTracker } from "@/components/analytics/VisitorTracker";
-import { prisma } from "@/lib/prisma";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let settings = null;
-  try {
-    settings = await prisma.siteSettings.findFirst();
-  } catch (error) {
-    console.warn("Could not fetch site settings in layout. DB might not be ready.");
-  }
-
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body
@@ -108,7 +100,7 @@ export default async function RootLayout({
             {children}
             <Footer />
             <AnalyticsProvider />
-            <VisitorTracker enabled={settings?.enableAnalytics || false} />
+            <VisitorTracker enabled={true} />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { ProjectService } from "@/services/project.service";
 import { CaseStudyHero } from "@/components/sections/casestudy/CaseStudyHero";
 import { CaseStudyContent } from "@/components/sections/casestudy/CaseStudyContent";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -14,9 +14,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  const project = await prisma.project.findUnique({ where: { slug: resolvedParams.slug } });
-  const settings = await prisma.siteSettings.findFirst();
-  const baseUrl = settings?.url || "https://samarth.dev";
+  const project = await ProjectService.getProjectBySlug(resolvedParams.slug);
+  const baseUrl = "https://samarthpatil.com";
 
   if (!project) return {};
 
@@ -28,7 +27,7 @@ export async function generateMetadata({
       description: project.description,
       type: "article",
       url: `${baseUrl}/projects/${project.slug}`,
-      images: [{ url: project.previewImage, width: 1200, height: 630, alt: project.title }],
+      images: [{ url: project.previewImage || "", width: 1200, height: 630, alt: project.title }],
       authors: ["Samarth Patil"],
       publishedTime: new Date(project.createdAt).toISOString(),
     },
@@ -36,7 +35,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: project.title,
       description: project.description,
-      images: [project.previewImage],
+      images: [project.previewImage || ""],
     },
   };
 }
@@ -44,19 +43,13 @@ export async function generateMetadata({
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
 
-  const project = await prisma.project.findUnique({
-    where: { slug: resolvedParams.slug },
-    include: {
-      metrics: true,
-      caseStudy: true,
-    },
-  });
+  const project = await ProjectService.getProjectBySlug(resolvedParams.slug);
 
   if (!project) {
     notFound();
   }
 
-  const baseUrl = "https://samarth.dev"; // env config
+  const baseUrl = "https://samarthpatil.com";
 
   return (
     <main className="relative flex min-h-screen flex-col items-center overflow-x-hidden pt-20 pb-0">

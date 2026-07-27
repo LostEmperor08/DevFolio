@@ -2,8 +2,8 @@
  * Global Type Definitions
  */
 
-import { ForwardRefExoticComponent, RefAttributes } from 'react';
-import { LucideProps } from 'lucide-react';
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { LucideProps } from "lucide-react";
 
 export interface ProjectMetric {
   label: string;
@@ -60,18 +60,19 @@ export interface Experience {
   technologies: string[];
 }
 
-export type ContentBlockType = 
-  | "paragraph" 
-  | "heading" 
-  | "image" 
-  | "quote" 
-  | "callout" 
-  | "table" 
-  | "list" 
-  | "divider" 
-  | "timeline" 
-  | "embed" 
-  | "code";
+export type ContentBlockType =
+  | "paragraph"
+  | "heading"
+  | "image"
+  | "quote"
+  | "callout"
+  | "table"
+  | "list"
+  | "divider"
+  | "timeline"
+  | "embed"
+  | "code"
+  | "markdown";
 
 export interface ContentBlock {
   id: string;
@@ -115,11 +116,11 @@ export interface BlogPost {
   difficulty?: "Beginner" | "Intermediate" | "Advanced";
   lastReviewed?: string;
   estimatedPrerequisites?: string[];
-  
+
   // SEO & Navigation
   tableOfContents: { id: string; title: string; level: number }[];
   relatedPosts: string[]; // slugs
-  
+
   // Headless CMS Engine
   content: ContentBlock[];
 }

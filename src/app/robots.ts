@@ -1,9 +1,7 @@
 import { MetadataRoute } from "next";
-import { prisma } from "@/lib/prisma";
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  const settings = await prisma.siteSettings.findFirst();
-  const baseUrl = settings?.url || "https://samarth.dev";
+  const baseUrl = "https://samarthpatil.com";
 
   return {
     rules: {

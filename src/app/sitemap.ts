@@ -1,31 +1,24 @@
 import { MetadataRoute } from "next";
-import { prisma } from "@/lib/prisma";
+import { ProjectService } from "@/services/project.service";
+import { BlogService } from "@/services/blog.service";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const settings = await prisma.siteSettings.findFirst();
-  const baseUrl = settings?.url || "https://samarth.dev";
+  const baseUrl = "https://samarthpatil.com";
 
   // Get all dynamic routes
-  const projects = await prisma.project.findMany({
-    where: { status: "published" },
-    select: { slug: true, updatedAt: true },
-  });
-
-  const blogs = await prisma.blogPost.findMany({
-    where: { draft: false },
-    select: { slug: true, updatedAt: true },
-  });
+  const projects = await ProjectService.getAllProjects();
+  const blogs = await BlogService.getPublishedBlogs();
 
   const projectUrls = projects.map((project) => ({
-    url: `${baseUrl}/work/${project.slug}`,
-    lastModified: project.updatedAt,
+    url: `${baseUrl}/projects/${project.slug}`,
+    lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
   const blogUrls = blogs.map((blog) => ({
     url: `${baseUrl}/blog/${blog.slug}`,
-    lastModified: blog.updatedAt,
+    lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));

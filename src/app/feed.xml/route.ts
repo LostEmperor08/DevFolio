@@ -1,22 +1,17 @@
-import { prisma } from "@/lib/prisma";
+import { BlogService } from "@/services/blog.service";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const settings = await prisma.siteSettings.findFirst();
-  const baseUrl = settings?.url || "https://samarth.dev";
+  const baseUrl = "https://samarthpatil.com";
 
-  const blogs = await prisma.blogPost.findMany({
-    where: { draft: false },
-    orderBy: { createdAt: "desc" },
-    take: 20,
-  });
+  const blogs = await BlogService.getPublishedBlogs();
 
   const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-      <title>${settings?.title || "Samarth OS"}</title>
+      <title>Samarth Patil | Portfolio</title>
       <link>${baseUrl}</link>
-      <description>${settings?.description || "Developer Portfolio"}</description>
+      <description>Developer Portfolio and OS</description>
       <language>en</language>
       <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
       <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml"/>

@@ -1,49 +1,34 @@
-import { prisma } from "@/lib/prisma";
+import { projects } from "@/data/projects";
 
 export class ProjectService {
   /**
-   * Retrieves all projects including metrics and case studies.
+   * Retrieves all projects from static data including metrics and case studies.
    */
   static async getAllProjects() {
-    return prisma.project.findMany({
-      include: {
-        metrics: true,
-        caseStudy: true,
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    return projects.map((p) => ({
+      ...p,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
   }
 
   /**
-   * Example of a robust transaction to safely create a project and its nested relations.
+   * Retrieves a single project by slug from static data.
+   */
+  static async getProjectBySlug(slug: string) {
+    const project = projects.find((p) => p.slug === slug);
+    if (!project) return null;
+    return {
+      ...project,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+  }
+
+  /**
+   * Placeholder for admin compatibility.
    */
   static async createProjectWithCaseStudy(projectData: any, metrics: any[], caseStudyData: any) {
-    return prisma.$transaction(async (tx) => {
-      // 1. Create the base project
-      const project = await tx.project.create({
-        data: {
-          ...projectData,
-        },
-      });
-
-      // 2. Create metrics if provided
-      if (metrics && metrics.length > 0) {
-        await tx.projectMetric.createMany({
-          data: metrics.map((m) => ({ ...m, projectId: project.id })),
-        });
-      }
-
-      // 3. Create case study if provided
-      if (caseStudyData) {
-        await tx.caseStudy.create({
-          data: {
-            ...caseStudyData,
-            projectId: project.id,
-          },
-        });
-      }
-
-      return project;
-    });
+    return { ...projectData, id: "static-id", metrics, caseStudy: caseStudyData };
   }
 }
