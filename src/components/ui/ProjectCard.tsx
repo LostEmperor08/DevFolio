@@ -31,6 +31,7 @@ export function ProjectCard({
   const [isHovered, setIsHovered] = useState(false);
 
   function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -40,6 +41,11 @@ export function ProjectCard({
     const yPct = mouseYPos / height - 0.5;
     x.set(xPct);
     y.set(yPct);
+  }
+
+  function handleMouseEnter() {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
+    setIsHovered(true);
   }
 
   function handleMouseLeave() {
@@ -62,7 +68,7 @@ export function ProjectCard({
           transformStyle: "preserve-3d",
         }}
         onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsHovered(true)}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/95 via-indigo-950/40 to-slate-950 shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-500 hover:border-blue-500/50 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] ${featured ? "min-h-[450px] md:flex-row" : "min-h-[450px]"}`}
       >

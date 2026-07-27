@@ -85,8 +85,8 @@ export function Navbar() {
           className={cn(
             "pointer-events-auto flex w-full max-w-[1250px] items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500",
             isScrolled
-              ? "glass-panel scale-[0.98] border border-white/20 bg-black/80 shadow-2xl backdrop-blur-2xl"
-              : "scale-100 border border-white/10 bg-black/60 shadow-lg backdrop-blur-xl"
+              ? "glass-panel scale-[0.98] border border-white/20 bg-black/90 shadow-2xl backdrop-blur-md md:bg-black/80 md:backdrop-blur-2xl"
+              : "scale-100 border border-white/10 bg-black/80 shadow-lg backdrop-blur-md md:bg-black/60 md:backdrop-blur-xl"
           )}
         >
           {/* Logo & Brand */}

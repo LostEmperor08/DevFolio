@@ -19,6 +19,7 @@ export function MagneticButton({
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMouse = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
     const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current!.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);
@@ -30,7 +31,8 @@ export function MagneticButton({
     setPosition({ x: 0, y: 0 });
   };
 
-  const baseStyles = "relative rounded-lg px-6 py-3 font-medium transition-colors text-sm shadow-sm";
+  const baseStyles =
+    "relative rounded-lg px-6 py-3 font-medium transition-colors text-sm shadow-sm";
   const variants = {
     primary: "bg-foreground text-background hover:bg-zinc-200",
     ghost: "bg-transparent text-foreground border border-border-default hover:bg-white/5",

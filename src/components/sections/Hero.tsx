@@ -119,29 +119,28 @@ export function Hero() {
           className="relative z-0 flex h-[480px] w-full items-center justify-center lg:h-[620px]"
           style={{ perspective: 1400 }}
         >
-          {/* Deep Quantum Ambient Glow */}
-          <div className="absolute h-[420px] w-[420px] animate-pulse rounded-full bg-gradient-to-tr from-cyan-500/25 via-blue-600/25 to-purple-600/20 blur-[120px]" />
+          {/* Deep Quantum Ambient Glow - Optimized for mobile GPU */}
+          <div className="absolute h-[280px] w-[280px] animate-pulse rounded-full bg-gradient-to-tr from-cyan-500/25 via-blue-600/25 to-purple-600/20 blur-[60px] lg:h-[420px] lg:w-[420px] lg:blur-[120px]" />
 
           {/* Main Floating & Tilting Atom Container */}
           <motion.div
             animate={{ y: [-15, 15, -15] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            whileHover={{ scale: 1.05, rotateX: 12, rotateY: -12 }}
-            className="relative flex h-[380px] w-[380px] items-center justify-center lg:h-[440px] lg:w-[440px]"
+            className="relative flex h-[340px] w-[340px] transform-gpu items-center justify-center will-change-transform lg:h-[440px] lg:w-[440px]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {/* Outer Energy Field Halo */}
             <motion.div
               animate={{ rotate: 360, scale: [1, 1.05, 1] }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 rounded-full border border-dashed border-cyan-500/20 shadow-[0_0_60px_rgba(6,182,212,0.15)]"
+              className="absolute inset-0 transform-gpu rounded-full border border-dashed border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.15)]"
             />
 
             {/* Orbital Ring 1 (Alpha Valence) */}
             <motion.div
               animate={{ rotateZ: 360 }}
               transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-              className="absolute h-[340px] w-[340px] rounded-full border-2 border-dashed border-cyan-400/40 shadow-[0_0_35px_rgba(6,182,212,0.25)] lg:h-[400px] lg:w-[400px]"
+              className="absolute h-[300px] w-[300px] transform-gpu rounded-full border-2 border-dashed border-cyan-400/40 shadow-[0_0_25px_rgba(6,182,212,0.2)] will-change-transform lg:h-[400px] lg:w-[400px]"
               style={{ transform: "rotateX(65deg) rotateY(25deg)", transformStyle: "preserve-3d" }}
             >
               {/* Orbiting Electron Node 1 */}
@@ -155,7 +154,7 @@ export function Hero() {
             <motion.div
               animate={{ rotateZ: -360 }}
               transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-              className="absolute h-[340px] w-[340px] rounded-full border border-purple-500/50 shadow-[0_0_35px_rgba(168,85,247,0.25)] lg:h-[400px] lg:w-[400px]"
+              className="absolute h-[300px] w-[300px] transform-gpu rounded-full border border-purple-500/50 shadow-[0_0_25px_rgba(168,85,247,0.2)] will-change-transform lg:h-[400px] lg:w-[400px]"
               style={{ transform: "rotateX(65deg) rotateY(-40deg)", transformStyle: "preserve-3d" }}
             >
               {/* Orbiting Electron Node 2 */}
@@ -169,7 +168,7 @@ export function Hero() {
             <motion.div
               animate={{ rotateZ: 360 }}
               transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
-              className="absolute h-[340px] w-[340px] rounded-full border-2 border-dotted border-blue-400/40 shadow-[0_0_35px_rgba(59,130,246,0.25)] lg:h-[400px] lg:w-[400px]"
+              className="absolute h-[300px] w-[300px] transform-gpu rounded-full border-2 border-dotted border-blue-400/40 shadow-[0_0_25px_rgba(59,130,246,0.2)] will-change-transform lg:h-[400px] lg:w-[400px]"
               style={{ transform: "rotateX(75deg) rotateY(80deg)", transformStyle: "preserve-3d" }}
             >
               {/* Orbiting Electron Node 3 */}
@@ -183,7 +182,7 @@ export function Hero() {
             <motion.div
               animate={{ rotateZ: -360 }}
               transition={{ duration: 36, repeat: Infinity, ease: "linear" }}
-              className="absolute h-[320px] w-[320px] rounded-full border border-emerald-400/30 shadow-[0_0_30px_rgba(52,211,153,0.2)] lg:h-[380px] lg:w-[380px]"
+              className="absolute h-[280px] w-[280px] transform-gpu rounded-full border border-emerald-400/30 shadow-[0_0_20px_rgba(52,211,153,0.15)] will-change-transform lg:h-[380px] lg:w-[380px]"
               style={{ transform: "rotateX(20deg) rotateY(0deg)", transformStyle: "preserve-3d" }}
             >
               {/* Orbiting Electron Node 4 */}
