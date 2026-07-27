@@ -111,153 +111,152 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Right Side Centerpiece: Interactive 3D Cyber Terminal & Radar Scanner */}
+        {/* Right Side Centerpiece: Interactive 3D Quantum Atom & Energy Matrix */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
           className="relative z-0 flex h-[480px] w-full items-center justify-center lg:h-[620px]"
-          style={{ perspective: 1200 }}
+          style={{ perspective: 1400 }}
         >
-          {/* Deep Cyberpunk Ambient Glow */}
-          <div className="absolute h-[400px] w-[400px] animate-pulse rounded-full bg-gradient-to-tr from-cyan-600/20 via-blue-600/20 to-purple-600/15 blur-[110px]" />
+          {/* Deep Quantum Ambient Glow */}
+          <div className="absolute h-[420px] w-[420px] animate-pulse rounded-full bg-gradient-to-tr from-cyan-500/25 via-blue-600/25 to-purple-600/20 blur-[120px]" />
 
-          {/* Sweeping Cyber Security Radar Scanner */}
+          {/* Main Floating & Tilting Atom Container */}
           <motion.div
-            animate={{ y: [-10, 10, -10] }}
+            animate={{ y: [-15, 15, -15] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="glass-panel absolute top-2 right-2 z-10 flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border border-cyan-500/30 bg-slate-950/90 p-2 shadow-[0_0_35px_rgba(6,182,212,0.2)] backdrop-blur-xl lg:-top-6 lg:right-4 lg:h-44 lg:w-44"
+            whileHover={{ scale: 1.05, rotateX: 12, rotateY: -12 }}
+            className="relative flex h-[380px] w-[380px] items-center justify-center lg:h-[440px] lg:w-[440px]"
+            style={{ transformStyle: "preserve-3d" }}
           >
-            {/* Concentric Radar Rings & Crosshairs */}
-            <div className="absolute inset-2 rounded-full border border-dashed border-cyan-500/20" />
-            <div className="absolute inset-8 rounded-full border border-cyan-500/30" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="h-full w-[1px] bg-cyan-500/20" />
-              <div className="absolute h-[1px] w-full bg-cyan-500/20" />
-            </div>
-
-            {/* Sweeping Radar Beam */}
+            {/* Outer Energy Field Halo */}
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              className="pointer-events-none absolute inset-2 overflow-hidden rounded-full"
+              animate={{ rotate: 360, scale: [1, 1.05, 1] }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 rounded-full border border-dashed border-cyan-500/20 shadow-[0_0_60px_rgba(6,182,212,0.15)]"
+            />
+
+            {/* Orbital Ring 1 (Alpha Valence) */}
+            <motion.div
+              animate={{ rotateZ: 360 }}
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+              className="absolute h-[340px] w-[340px] rounded-full border-2 border-dashed border-cyan-400/40 shadow-[0_0_35px_rgba(6,182,212,0.25)] lg:h-[400px] lg:w-[400px]"
+              style={{ transform: "rotateX(65deg) rotateY(25deg)", transformStyle: "preserve-3d" }}
             >
-              <div className="h-1/2 w-1/2 origin-bottom-right bg-gradient-to-br from-cyan-400/40 to-transparent" />
+              {/* Orbiting Electron Node 1 */}
+              <div className="absolute -top-3 left-1/2 flex -translate-x-1/2 items-center justify-center">
+                <span className="absolute h-6 w-6 animate-ping rounded-full bg-cyan-400 opacity-75 blur-sm" />
+                <span className="relative h-4 w-4 rounded-full bg-cyan-300 shadow-[0_0_20px_#22d3ee]" />
+              </div>
             </motion.div>
 
-            {/* Detected Target Nodes on Radar */}
-            <span className="absolute top-8 left-10 h-2 w-2 animate-ping rounded-full bg-cyan-400" />
-            <span className="absolute right-10 bottom-10 h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-            <span className="absolute top-12 right-8 h-1.5 w-1.5 rounded-full bg-purple-400" />
-
-            {/* Radar Label */}
-            <div className="absolute bottom-2 rounded border border-cyan-500/30 bg-black/80 px-2 py-0.5 font-mono text-[9px] font-bold tracking-widest text-cyan-400">
-              RADAR // 360°
-            </div>
-          </motion.div>
-
-          {/* Main Interactive Command Terminal */}
-          <motion.div
-            whileHover={{ scale: 1.02, rotateX: 3, rotateY: -3 }}
-            transition={{ duration: 0.3 }}
-            className="relative z-20 w-full max-w-[460px] overflow-hidden rounded-3xl border border-white/15 bg-slate-950/95 shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-2xl"
-          >
-            {/* Terminal Window Header */}
-            <div className="flex items-center justify-between border-b border-white/10 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 px-5 py-3.5">
-              <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
-                <span className="h-3 w-3 rounded-full bg-yellow-500/80 shadow-[0_0_8px_rgba(234,179,8,0.5)]" />
-                <span className="h-3 w-3 rounded-full bg-green-500/80 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+            {/* Orbital Ring 2 (Beta Valence) */}
+            <motion.div
+              animate={{ rotateZ: -360 }}
+              transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+              className="absolute h-[340px] w-[340px] rounded-full border border-purple-500/50 shadow-[0_0_35px_rgba(168,85,247,0.25)] lg:h-[400px] lg:w-[400px]"
+              style={{ transform: "rotateX(65deg) rotateY(-40deg)", transformStyle: "preserve-3d" }}
+            >
+              {/* Orbiting Electron Node 2 */}
+              <div className="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center justify-center">
+                <span className="absolute h-6 w-6 animate-ping rounded-full bg-purple-400 opacity-75 blur-sm" />
+                <span className="relative h-4 w-4 rounded-full bg-purple-400 shadow-[0_0_20px_#c084fc]" />
               </div>
-              <div className="flex items-center gap-2 font-mono text-xs text-white/80">
-                <span className="font-bold text-cyan-400">samarth</span>@dev-os:~
-              </div>
-              <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.2)]">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> KERNEL
-                OPTIMAL
-              </div>
-            </div>
+            </motion.div>
 
-            {/* Terminal Body: Live Simulated Decryption & Telemetry */}
-            <div className="space-y-3.5 p-6 font-mono text-xs leading-relaxed text-white/90 md:text-sm">
-              <div className="flex items-start gap-2">
-                <span className="font-bold text-cyan-400 select-none">&gt;</span>
-                <div>
-                  <span className="font-semibold text-white">system_init</span>{" "}
-                  --mode=high-performance
-                  <span className="ml-2 font-bold text-emerald-400">[OK]</span>
-                </div>
+            {/* Orbital Ring 3 (Gamma Valence) */}
+            <motion.div
+              animate={{ rotateZ: 360 }}
+              transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
+              className="absolute h-[340px] w-[340px] rounded-full border-2 border-dotted border-blue-400/40 shadow-[0_0_35px_rgba(59,130,246,0.25)] lg:h-[400px] lg:w-[400px]"
+              style={{ transform: "rotateX(75deg) rotateY(80deg)", transformStyle: "preserve-3d" }}
+            >
+              {/* Orbiting Electron Node 3 */}
+              <div className="absolute top-1/2 -right-3 flex -translate-y-1/2 items-center justify-center">
+                <span className="absolute h-6 w-6 animate-ping rounded-full bg-blue-400 opacity-75 blur-sm" />
+                <span className="relative h-4 w-4 rounded-full bg-blue-400 shadow-[0_0_20px_#60a5fa]" />
               </div>
+            </motion.div>
 
-              <div className="flex items-start gap-2">
-                <span className="font-bold text-cyan-400 select-none">&gt;</span>
-                <div>
-                  <span className="text-white">crypto_shield_v2</span> --tunnel=quantum-resistant
-                  <span className="ml-2 font-bold text-purple-400">[ENCRYPTED]</span>
-                </div>
+            {/* Orbital Ring 4 (Equatorial Ring) */}
+            <motion.div
+              animate={{ rotateZ: -360 }}
+              transition={{ duration: 36, repeat: Infinity, ease: "linear" }}
+              className="absolute h-[320px] w-[320px] rounded-full border border-emerald-400/30 shadow-[0_0_30px_rgba(52,211,153,0.2)] lg:h-[380px] lg:w-[380px]"
+              style={{ transform: "rotateX(20deg) rotateY(0deg)", transformStyle: "preserve-3d" }}
+            >
+              {/* Orbiting Electron Node 4 */}
+              <div className="absolute top-1/2 -left-3 flex -translate-y-1/2 items-center justify-center">
+                <span className="absolute h-5 w-5 animate-ping rounded-full bg-emerald-400 opacity-75 blur-sm" />
+                <span className="relative h-3.5 w-3.5 rounded-full bg-emerald-300 shadow-[0_0_15px_#34d399]" />
               </div>
+            </motion.div>
 
-              <div className="flex items-start gap-2">
-                <span className="font-bold text-cyan-400 select-none">&gt;</span>
-                <div>
-                  <span className="text-white">edge_runtime</span> --nodes=global-mesh --latency=0ms
-                  <span className="ml-2 font-bold text-cyan-400">[ONLINE]</span>
-                </div>
-              </div>
+            {/* Central Quantum Nucleus Orb */}
+            <div className="relative flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 p-1 shadow-[0_0_100px_rgba(6,182,212,0.8)]">
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-slate-950 backdrop-blur-2xl">
+                {/* Nucleus Energy Core Pulsing Glow */}
+                <div className="absolute h-24 w-24 animate-pulse rounded-full bg-gradient-to-br from-cyan-400 via-indigo-500 to-purple-600 opacity-80 blur-md" />
 
-              {/* Simulated Live Packet Decryption Box */}
-              <div className="my-3 space-y-1.5 rounded-xl border border-l-4 border-cyan-500/20 border-l-cyan-400 bg-cyan-950/20 p-3.5 font-mono text-xs">
-                <div className="flex justify-between text-[11px] font-bold tracking-wider text-cyan-300 uppercase">
-                  <span>LIVE SECURITY TELEMETRY</span>
-                  <span className="animate-pulse text-emerald-400">● 60 FPS ACTIVE</span>
-                </div>
-                <div className="font-mono text-[11px] leading-tight break-all text-white/70">
-                  0x7F9B... [PACKET VERIFIED] -&gt; AUTH_HASH:{" "}
-                  <span className="text-purple-300">9E4C8A...</span>
-                </div>
-                <div className="flex items-center justify-between border-t border-white/5 pt-1 text-[11px] text-white/80">
-                  <span>
-                    STACK: <strong className="text-white">Next.js 16 + TS</strong>
+                {/* Inner Rotating Energy Ring */}
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-2 rounded-full border border-dashed border-cyan-300/40"
+                />
+
+                {/* Nucleus Center Emblem */}
+                <div className="relative flex flex-col items-center justify-center text-center font-mono">
+                  <span className="text-3xl drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] filter">
+                    ⚛️
                   </span>
-                  <span>
-                    LIGHTHOUSE: <strong className="text-emerald-400">100/100</strong>
+                  <span className="mt-1 text-xs font-bold tracking-tight text-white shadow-sm">
+                    QUANTUM
+                  </span>
+                  <span className="text-[9px] font-semibold tracking-widest text-cyan-400">
+                    OS v2.0
                   </span>
                 </div>
               </div>
-
-              <div className="flex items-center gap-2 pt-1">
-                <span className="font-bold text-cyan-400 select-none">&gt;</span>
-                <span className="text-white/90">ready for incoming opportunities</span>
-                <span className="ml-0.5 inline-block h-4 w-2 animate-pulse bg-cyan-400" />
-              </div>
-            </div>
-
-            {/* Terminal Status Footer */}
-            <div className="text-muted-foreground flex items-center justify-between border-t border-white/10 bg-slate-950 px-5 py-2.5 font-mono text-[11px]">
-              <span className="flex items-center gap-1.5">
-                <span className="h-2 w-2 animate-ping rounded-full bg-blue-500" />
-                PORTFOLIO ARCHITECTURE v2.0
-              </span>
-              <span className="cursor-pointer text-cyan-400 hover:underline">[MANUAL / SPECS]</span>
             </div>
           </motion.div>
 
-          {/* Floating Orbiting Tech Pills */}
+          {/* Floating Orbiting Clean Minimal Badges */}
           <motion.div
-            animate={{ y: [8, -8, 8] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -bottom-2 left-4 z-30 flex items-center gap-2 rounded-full border border-purple-500/40 bg-slate-950/90 px-4 py-2 font-mono text-xs font-bold text-purple-400 shadow-[0_0_20px_rgba(139,92,246,0.3)] backdrop-blur-md lg:bottom-6 lg:left-6"
+            animate={{ y: [-6, 6, -6] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-4 left-2 z-30 flex items-center gap-2.5 rounded-full border border-cyan-500/40 bg-slate-950/90 px-4 py-2 font-mono text-xs font-bold text-cyan-300 shadow-[0_0_25px_rgba(6,182,212,0.3)] backdrop-blur-md lg:top-8 lg:left-6"
           >
-            <span className="h-2 w-2 animate-pulse rounded-full bg-purple-400" /> Zero-Trust
-            Security
+            <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
+            <span>Quantum Architecture</span>
+          </motion.div>
+
+          <motion.div
+            animate={{ y: [6, -6, 6] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute right-2 bottom-4 z-30 flex items-center gap-2.5 rounded-full border border-purple-500/40 bg-slate-950/90 px-4 py-2 font-mono text-xs font-bold text-purple-300 shadow-[0_0_25px_rgba(168,85,247,0.3)] backdrop-blur-md lg:right-6 lg:bottom-8"
+          >
+            <span className="h-2 w-2 animate-pulse rounded-full bg-purple-400 shadow-[0_0_8px_#c084fc]" />
+            <span>0ms Edge Latency</span>
           </motion.div>
 
           <motion.div
             animate={{ y: [-8, 8, -8] }}
             transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-10 left-2 z-30 flex items-center gap-2 rounded-full border border-blue-500/40 bg-slate-950/90 px-4 py-2 font-mono text-xs font-bold text-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.3)] backdrop-blur-md lg:top-12 lg:left-10"
+            className="absolute top-1/2 right-0 z-30 flex -translate-y-1/2 items-center gap-2.5 rounded-full border border-emerald-500/40 bg-slate-950/90 px-4 py-2 font-mono text-xs font-bold text-emerald-300 shadow-[0_0_25px_rgba(52,211,153,0.3)] backdrop-blur-md lg:-right-4"
           >
-            <span className="h-2 w-2 animate-pulse rounded-full bg-blue-400" /> Next.js 16 Edge
+            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+            <span>Next.js 16 Active</span>
+          </motion.div>
+
+          <motion.div
+            animate={{ y: [8, -8, 8] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-10 left-4 z-30 flex items-center gap-2.5 rounded-full border border-blue-500/40 bg-slate-950/90 px-4 py-2 font-mono text-xs font-bold text-blue-300 shadow-[0_0_25px_rgba(59,130,246,0.3)] backdrop-blur-md lg:bottom-12 lg:left-8"
+          >
+            <span className="h-2 w-2 animate-pulse rounded-full bg-blue-400 shadow-[0_0_8px_#60a5fa]" />
+            <span>Zero-Trust Security</span>
           </motion.div>
         </motion.div>
       </div>
