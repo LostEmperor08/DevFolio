@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     slug: "developer-os",
     title: "Developer OS (Developer Folio)",
-    category: "Full Stack",
+    category: "Web App",
     description:
       "An interactive, cinematic developer portfolio engineered as a responsive web operating system with custom physics and zero-layout-shift UI.",
     techStack: [
@@ -12,49 +12,80 @@ export const projects: Project[] = [
       "TypeScript",
       "Tailwind CSS",
       "Framer Motion",
-      "Prisma",
       "PostgreSQL",
+      "Vercel",
     ],
-    status: "Active",
+    status: "In Progress",
     role: "Lead Architect & Engineer",
     timeline: "July 2026 - Present",
     githubUrl: "https://github.com/LostEmperor08/DevFolio",
     liveUrl: "https://samarthpatil.com",
     previewImage: "/images/samarth_os_preview.jpg",
     featured: true,
+    overview:
+      "Developer OS is an ambitious reimagining of the personal developer portfolio. Instead of presenting static pages or generic grid templates, it operates as a tactile, cinematic web operating system. The application bridges the gap between high-level engineering presentation and immersive user interaction with 60 FPS performance.",
+    features: [
+      "100/100 Lighthouse performance metrics across all Core Web Vitals",
+      "Physics-based micro-interactions and tactile desktop OS aesthetic",
+      "Serverless Neon PostgreSQL database with decoupled architecture",
+      "Instantaneous Next.js 16 App Router streaming and layout transitions",
+    ],
+    challenges:
+      "Orchestrating complex layout transitions and spring animations across Next.js server and client boundaries without causing hydration mismatches or layout reflows.",
     metrics: [
       { label: "Lighthouse Score", value: "100/100" },
       { label: "Frame Rate", value: "60 FPS" },
       { label: "Core Web Vitals", value: "Passed" },
     ],
-    relatedProjects: [],
-    caseStudy: {
-      overview:
-        "Developer OS is an ambitious reimagining of the personal developer portfolio. Instead of presenting static pages or generic grid templates, it operates as a tactile, cinematic web operating system. The application bridges the gap between high-level engineering presentation and immersive user interaction.",
-      problem:
-        "Traditional portfolios often suffer from template fatigue, slow loading times, janky scroll animations, and disconnected content structures. Most personal websites fail to reflect the actual architectural standards required for enterprise production engineering.",
-      goals: [
-        "Achieve a perfect 100/100 Lighthouse score across performance, accessibility, best practices, and SEO.",
-        "Implement 60 FPS physics-based micro-interactions without relying on heavy WebGL or 3D canvas libraries.",
-        "Design a strictly decoupled, modular architecture with robust serverless database backend and authentication.",
-        "Ensure zero layout shift and instantaneous page transitions using modern Next.js App Router streaming.",
-      ],
-      research:
-        "I conducted a comprehensive UI/UX analysis of industry-leading SaaS platforms (Vercel, Linear, Stripe) alongside desktop OS interface paradigms. The research highlighted that true digital craftsmanship stems from predictable physics (mass, stiffness, and damping), high-contrast typography, and uncompromising rendering speed.",
-      architecture:
-        "Built on Next.js 16 App Router using TypeScript in strict mode. The frontend architecture strictly separates data access, business logic, animation presets, and atomic UI components. Data persistence is managed via Prisma ORM connected to a serverless Neon PostgreSQL database, while administrative authentication utilizes NextAuth v5.",
-      developmentProcess:
-        "Development began by establishing an atomic Design Token system (`lib/design.ts`). Once foundational UI primitives (MagneticButton, ProjectCard, Glassmorphic containers) were perfected, the higher-level layout grid was assembled using dynamic component imports and suspense boundaries to optimize JavaScript chunking.",
-      technicalChallenges:
-        "The most significant challenge was orchestrating layout transitions and spring animations across Next.js server and client boundaries without causing hydration mismatches or layout reflows. Additionally, implementing secure serverless authentication without IP rate-limit lockouts required designing custom fail-safe credential resolution.",
-      keyDecisions:
-        "I made the conscious architectural decision to avoid Three.js and heavy WebGL libraries for interactive elements, opting instead for hardware-accelerated CSS transforms and Framer Motion spring physics. This reduced bundle size by over 350KB while maintaining premium visual fluidity.",
-      results:
-        "The resulting portfolio delivers a seamless 60 FPS user experience with sub-100ms navigation response times and 100/100 Lighthouse metrics. It serves as a living, interactive proof of full-stack engineering proficiency.",
-      lessonsLearned:
-        "Front-loading architectural decisions—such as strict TypeScript interface definitions and centralized animation configuration—dramatically accelerates feature development and eliminates technical debt during UI integration.",
-      futureImprovements:
-        "Future milestones include an interactive terminal sandbox with custom bash commands, real-time GitHub telemetry widgets, and an AI-powered documentation assistant embedded directly into the OS interface.",
-    },
+  },
+  {
+    slug: "cyber-cloud-sentinel",
+    title: "Cloud Sentinel & Security Monitor",
+    category: "Cybersecurity",
+    description:
+      "An automated cloud infrastructure monitor and security auditing platform engineered to detect vulnerabilities and anomalous network traffic in real time.",
+    techStack: ["Python", "Linux", "PostgreSQL", "Docker", "Tailwind CSS", "Next.js"],
+    status: "Completed",
+    role: "Security Engineer & Creator",
+    timeline: "Early 2026",
+    githubUrl: "https://github.com/LostEmperor08/DevFolio",
+    liveUrl: "https://samarthpatil.com",
+    previewImage: "/images/project_quantum.jpg",
+    featured: false,
+    overview:
+      "Cloud Sentinel is an automated cloud security auditing and monitoring engine designed to inspect serverless environments and Linux servers for vulnerabilities. It continuously analyzes system logs, port configurations, and network endpoints to provide real-time threat intelligence and actionable alerts.",
+    features: [
+      "Automated vulnerability scanning and security posture auditing",
+      "Real-time network anomaly detection and alert notifications",
+      "Custom dashboard with visual traffic inspection and log analytics",
+      "Secure Linux daemon architecture with zero-overhead telemetry",
+    ],
+    challenges:
+      "Implementing low-overhead packet inspection and real-time log ingestion without degrading host server CPU performance or causing memory spikes.",
+  },
+  {
+    slug: "telegram-bot-suite",
+    title: "Automated Ops Telegram Bot Suite",
+    category: "Telegram Bot",
+    description:
+      "A high-performance Python Telegram bot ecosystem built for server monitoring, automated task execution, and remote server management.",
+    techStack: ["Python", "AsyncIO", "Telegram API", "Linux", "PostgreSQL", "Docker"],
+    status: "Completed",
+    role: "Backend & Automation Lead",
+    timeline: "Late 2025",
+    githubUrl: "https://github.com/LostEmperor08/DevFolio",
+    liveUrl: "https://samarthpatil.com",
+    previewImage: "/images/project_nexus.jpg",
+    featured: false,
+    overview:
+      "The Automated Ops Suite is a robust Python Telegram bot framework developed to streamline Linux server administration and workflow automation. It allows developers to securely trigger deployment scripts, query database health, and receive instant diagnostic alerts from anywhere.",
+    features: [
+      "Remote Linux server command execution via encrypted chats",
+      "Automated cron-job monitoring and instant failure alerts",
+      "Multi-user role-based access control and command auditing",
+      "Asynchronous Python architecture using standard Telegram APIs",
+    ],
+    challenges:
+      "Designing a bulletproof authentication and webhook verification system to prevent unauthorized command execution over chat interfaces.",
   },
 ];

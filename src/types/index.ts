@@ -27,19 +27,22 @@ export interface CaseStudy {
 export interface Project {
   slug: string;
   title: string;
-  category: "Frontend" | "Backend" | "Full Stack" | "Cybersecurity" | "AI" | "Experiments";
+  category: string;
   description: string;
   techStack: string[];
-  status: "Completed" | "Active" | "In Development";
+  status: string;
   role: string;
   timeline: string;
   githubUrl?: string;
   liveUrl?: string;
   previewImage: string;
   featured: boolean;
-  metrics: ProjectMetric[];
-  caseStudy: CaseStudy;
-  relatedProjects: string[]; // slugs
+  metrics?: ProjectMetric[];
+  caseStudy?: CaseStudy;
+  relatedProjects?: string[]; // slugs
+  overview?: string;
+  features?: string[];
+  challenges?: string;
 }
 
 export interface Skill {

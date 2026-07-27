@@ -2,14 +2,13 @@
 
 import { motion } from "framer-motion";
 import { motionPresets } from "@/lib/motion";
-import { SectionHeading } from "../ui/SectionHeading";
-import { ProjectCard } from "../ui/ProjectCard";
+import { ProjectsGrid } from "./projects/ProjectsGrid";
 import { MagneticButton } from "../ui/MagneticButton";
+import Link from "next/link";
+import { Project } from "@/types";
 
-export function FeaturedProjects({ projects }: { projects: any[] }) {
+export function FeaturedProjects({ projects }: { projects: Project[] }) {
   if (!projects || projects.length === 0) return null;
-  const featured = projects[0];
-  const supporting = projects.slice(1, 3);
 
   return (
     <section
@@ -20,21 +19,13 @@ export function FeaturedProjects({ projects }: { projects: any[] }) {
       <div className="pointer-events-none absolute top-1/3 left-1/4 -z-10 h-[450px] w-[450px] rounded-full bg-blue-600/10 blur-[120px]" />
       <div className="pointer-events-none absolute right-1/4 bottom-1/4 -z-10 h-[450px] w-[450px] rounded-full bg-purple-600/10 blur-[120px]" />
 
-      <SectionHeading
+      <ProjectsGrid
+        projects={projects.slice(0, 3)}
         title="Selected Works"
         subtitle="A curated collection of my most recent engineering and design endeavors."
         kicker="02 // PORTFOLIO ARCHITECTURE"
+        className="px-0 py-0"
       />
-
-      <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2" style={{ perspective: 1200 }}>
-        {/* Large Featured Project */}
-        <ProjectCard project={featured} featured={true} />
-
-        {/* Supporting Projects */}
-        {supporting.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
-      </div>
 
       <motion.div
         variants={motionPresets.fadeUp}
@@ -43,12 +34,14 @@ export function FeaturedProjects({ projects }: { projects: any[] }) {
         viewport={{ once: true }}
         className="mt-20 flex justify-center"
       >
-        <MagneticButton
-          variant="ghost"
-          className="rounded-full border-white/20 px-8 py-4 hover:bg-white/5"
-        >
-          View All Projects
-        </MagneticButton>
+        <Link href="/projects">
+          <MagneticButton
+            variant="ghost"
+            className="rounded-full border-white/20 px-8 py-4 text-white hover:bg-white/5"
+          >
+            View All Projects
+          </MagneticButton>
+        </Link>
       </motion.div>
     </section>
   );

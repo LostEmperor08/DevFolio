@@ -1,176 +1,91 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
-import { ExternalLink, GitBranch, ArrowRight } from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Project } from "@/types";
 
-export function ProjectCard({
-  project,
-  featured = false,
-}: {
+interface ProjectCardProps {
   project: Project;
-  featured?: boolean;
-}) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  onClick?: () => void;
+  featured?: boolean; // Kept for backwards compatibility if needed
+}
 
-  const mouseX = useSpring(x, { stiffness: 300, damping: 30 });
-  const mouseY = useSpring(y, { stiffness: 300, damping: 30 });
-
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7deg", "-7deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7deg", "7deg"]);
-
-  const mouseXPct = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
-  const mouseYPct = useTransform(mouseY, [-0.5, 0.5], ["0%", "100%"]);
-
-  const background = useMotionTemplate`radial-gradient(circle at ${mouseXPct} ${mouseYPct}, rgba(59,130,246,0.15) 0%, transparent 60%)`;
-
-  const [isHovered, setIsHovered] = useState(false);
-
-  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
-    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseXPos = event.clientX - rect.left;
-    const mouseYPos = event.clientY - rect.top;
-    const xPct = mouseXPos / width - 0.5;
-    const yPct = mouseYPos / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  }
-
-  function handleMouseEnter() {
-    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
-    setIsHovered(true);
-  }
-
-  function handleMouseLeave() {
-    setIsHovered(false);
-    x.set(0);
-    y.set(0);
-  }
-
+export function ProjectCard({ project, onClick }: ProjectCardProps) {
   if (!project) return null;
 
   return (
-    <Link
-      href={`/projects/${project.slug}`}
-      className={`col-span-1 block ${featured ? "md:col-span-2" : ""}`}
+    <motion.div
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
+      className="group relative flex h-full w-full transform-gpu cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/90 via-indigo-950/30 to-slate-950/90 p-0 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/40 hover:shadow-[0_8px_32px_rgba(6,182,212,0.15)] focus:ring-2 focus:ring-cyan-400 focus:outline-none"
     >
-      <motion.div
-        style={{
-          rotateX: isHovered ? rotateX : 0,
-          rotateY: isHovered ? rotateY : 0,
-          transformStyle: "preserve-3d",
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/95 via-indigo-950/40 to-slate-950 shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-500 hover:border-blue-500/50 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] ${featured ? "min-h-[450px] md:flex-row" : "min-h-[450px]"}`}
-      >
-        {/* Background Spotlight effect */}
-        <motion.div
-          className="pointer-events-none absolute inset-0 z-0"
-          style={{ background, opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
+      {/* Thumbnail Cover Image (16:9 Aspect Ratio) */}
+      <div className="relative aspect-video w-full overflow-hidden bg-slate-950">
+        <Image
+          src={project.previewImage || "/images/samarth_os_preview.jpg"}
+          alt={project.title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
-        {/* Image Section */}
-        <div
-          className={`relative w-full overflow-hidden ${featured ? "min-h-[280px] md:w-1/2" : "h-1/2 min-h-[240px]"}`}
-        >
-          <Image
-            src={project.previewImage || "/images/samarth_os_preview.jpg"}
-            alt={project.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-          <div className="absolute inset-0 z-10 bg-gradient-to-t from-slate-950/95 via-slate-950/20 to-transparent" />
-          <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-            <span className="rounded-full border border-white/20 bg-black/70 px-3 py-1 font-mono text-[10px] font-bold tracking-widest text-cyan-400 uppercase shadow-lg backdrop-blur-md">
-              {project.category || "ARCHITECTURE"}
-            </span>
-          </div>
+        {/* Category Badge */}
+        <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
+          <span className="rounded-full border border-white/20 bg-black/70 px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-wider text-cyan-400 uppercase shadow-md backdrop-blur-md">
+            {project.category || "Web App"}
+          </span>
         </div>
 
-        {/* Content Section */}
-        <div
-          className={`relative z-20 flex flex-1 flex-col p-8 ${featured ? "justify-center bg-none md:w-1/2" : "justify-between"}`}
-        >
-          <div
-            style={{
-              transform: isHovered ? "translateZ(30px)" : "none",
-              transition: "transform 0.3s ease",
-            }}
-          >
-            <div className="mb-4 flex items-center justify-between">
-              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-xs font-semibold text-emerald-400">
-                {project.status || "Completed"}
+        {/* Status Badge */}
+        <div className="absolute top-3 right-3 z-10">
+          <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-emerald-400 backdrop-blur-md">
+            {project.status || "Completed"}
+          </span>
+        </div>
+      </div>
+
+      {/* Body Content Section */}
+      <div className="flex flex-1 flex-col justify-between p-6">
+        <div>
+          <h3 className="text-lg font-bold tracking-tight text-white transition-colors group-hover:text-cyan-300 md:text-xl">
+            {project.title}
+          </h3>
+          <p className="text-muted-foreground mt-2 line-clamp-2 text-xs leading-relaxed font-light md:text-sm">
+            {project.description}
+          </p>
+        </div>
+
+        {/* Technology Badges & Expand Indicator */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-1.5 border-t border-white/5 pt-4">
+          <div className="flex flex-wrap gap-1.5">
+            {project.techStack.slice(0, 4).map((tech) => (
+              <span
+                key={tech}
+                className="rounded border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] font-medium text-zinc-300 transition-colors group-hover:border-white/20"
+              >
+                {tech}
               </span>
-            </div>
-
-            <h3 className="mb-3 text-2xl font-bold tracking-tight text-white transition-colors group-hover:text-cyan-400">
-              {project.title}
-            </h3>
-
-            <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
-              {project.description}
-            </p>
-
-            <div className="mb-8 flex flex-wrap gap-2">
-              {project.techStack.map((tech: string) => (
-                <span
-                  key={tech}
-                  className="text-muted-foreground rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-xs"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
+            ))}
+            {project.techStack.length > 4 && (
+              <span className="rounded border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] font-medium text-zinc-400">
+                +{project.techStack.length - 4}
+              </span>
+            )}
           </div>
-
-          <div
-            className="mt-auto flex items-center justify-between"
-            style={{
-              transform: isHovered ? "translateZ(40px)" : "none",
-              transition: "transform 0.3s ease",
-            }}
-          >
-            <div className="flex items-center gap-6">
-              <object>
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground relative z-30 flex items-center gap-2 text-sm font-medium transition-colors hover:text-white"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <ExternalLink className="h-4 w-4" /> Live Demo
-                </a>
-              </object>
-              <object>
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground relative z-30 flex items-center gap-2 text-sm font-medium transition-colors hover:text-white"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <GitBranch className="h-4 w-4" /> Source
-                </a>
-              </object>
-            </div>
-            <div className="text-accent-blue flex translate-x-4 items-center gap-2 font-mono text-sm opacity-0 transition-opacity duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-              Case Study <ArrowRight className="h-4 w-4" />
-            </div>
-          </div>
+          <span className="flex shrink-0 items-center gap-1 font-mono text-[11px] font-semibold text-cyan-400 opacity-0 transition-opacity group-hover:opacity-100">
+            Expand <ArrowRight className="h-3 w-3" />
+          </span>
         </div>
-      </motion.div>
-    </Link>
+      </div>
+    </motion.div>
   );
 }
