@@ -28,7 +28,7 @@ export const BentoItem = memo(function BentoItem({
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover/bento:opacity-100" />
 
       {/* Visual Component Visualization Section */}
-      <div className="relative z-10 flex w-full flex-1 flex-col justify-center">{header}</div>
+      <div className="relative z-10 flex w-full flex-1 flex-col justify-start">{header}</div>
 
       {/* Bottom Typography & Metadata Section */}
       <div className="relative z-10 border-t border-white/10 pt-4 transition-transform duration-300 group-hover/bento:translate-x-1">
