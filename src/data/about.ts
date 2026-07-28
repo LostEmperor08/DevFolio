@@ -10,28 +10,28 @@ export const aboutContent = {
       title: "Who I Am",
       description:
         "An aspiring software engineer and computer science student from India. Driven by a passion for cybersecurity, cloud infrastructure, and building secure backend systems that power modern applications.",
-      colSpan: "md:col-span-2",
+      colSpan: "col-span-1 md:col-span-2 lg:col-span-2",
     },
     {
       id: "current-stack",
       title: "Current Stack",
       description:
         "Modern web frameworks, robust relational databases, and cloud development tools. Focused on clean architecture and type-safe systems.",
-      colSpan: "md:col-span-1",
+      colSpan: "col-span-1 md:col-span-2 lg:col-span-2",
     },
     {
       id: "favorite-tools",
       title: "Favorite Tools",
       description:
         "My essential daily engineering workspace for writing code, testing APIs, designing interfaces, and managing cloud databases.",
-      colSpan: "md:col-span-1",
+      colSpan: "col-span-1 md:col-span-2 lg:col-span-2",
     },
     {
       id: "what-drives-me",
       title: "What Drives Me",
       description:
         "A continuous progression from scripting simple automation tools to engineering resilient backend architectures and cloud security systems.",
-      colSpan: "md:col-span-2",
+      colSpan: "col-span-1 md:col-span-2 lg:col-span-2",
     },
   ],
 };

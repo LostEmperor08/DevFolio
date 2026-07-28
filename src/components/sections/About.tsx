@@ -298,55 +298,51 @@ const renderCardHeader = (id: string) => {
 
 export function About() {
   return (
-    <section className="relative z-10 mx-auto w-full max-w-[1250px] px-6 py-32 md:py-48" id="about">
-      <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
-        {/* Left Side: Editorial Story */}
-        <motion.div
-          variants={motionPresets.slideReveal}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true, margin: "-100px" }}
-          className="sticky top-32 space-y-8 lg:col-span-5"
-        >
-          <SectionHeading
-            title="Building My Future"
-            subtitle={aboutContent.heading}
-            kicker="01 // ORIGIN"
-          />
+    <section className="relative z-10 mx-auto w-full max-w-[1400px] px-6 py-32 md:py-48" id="about">
+      {/* Top Header Section */}
+      <motion.div
+        variants={motionPresets.slideReveal}
+        initial="initial"
+        whileInView="whileInView"
+        viewport={{ once: true, margin: "-100px" }}
+        className="mx-auto mb-24 max-w-4xl space-y-8 text-center"
+      >
+        <SectionHeading
+          title="Building My Future"
+          subtitle={aboutContent.heading}
+          kicker="01 // ORIGIN"
+          centered
+        />
+        <p className="text-muted-foreground mx-auto max-w-3xl text-base leading-relaxed font-light md:text-lg">
+          {aboutContent.story}
+        </p>
+        <div className="mx-auto my-12 h-px w-24 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
+        <p className="text-foreground/90 border-accent-blue/50 mx-auto max-w-2xl border-l-2 pl-6 text-left font-serif text-lg leading-relaxed italic md:text-xl">
+          "{aboutContent.mission}"
+        </p>
+      </motion.div>
 
-          <div className="space-y-8">
-            <p className="text-muted-foreground/90 max-w-lg text-base leading-relaxed font-light lg:text-lg">
-              {aboutContent.story}
-            </p>
-            <div className="h-px w-12 bg-white/20" />
-            <p className="text-foreground/90 border-accent-blue max-w-md border-l-2 py-3 pl-6 font-serif text-lg leading-relaxed italic lg:text-xl">
-              "{aboutContent.mission}"
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Right Side: Interactive Bento Grid */}
-        <motion.div
-          variants={motionPresets.staggerChildren(0.1)}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, margin: "-50px" }}
-          className="w-full lg:col-span-7"
-        >
-          <BentoGrid className="md:grid-cols-3">
-            {aboutContent.bento.map((item) => (
-              <BentoItem
-                key={item.id}
-                title={item.title}
-                description={item.description}
-                icon={iconMap[item.id]}
-                className={item.colSpan}
-                header={renderCardHeader(item.id)}
-              />
-            ))}
-          </BentoGrid>
-        </motion.div>
-      </div>
+      {/* Interactive Bento Grid: 2x2 on Desktop, Stacked on Mobile */}
+      <motion.div
+        variants={motionPresets.staggerChildren(0.1)}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-50px" }}
+        className="w-full"
+      >
+        <BentoGrid className="md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          {aboutContent.bento.map((item) => (
+            <BentoItem
+              key={item.id}
+              title={item.title}
+              description={item.description}
+              icon={iconMap[item.id]}
+              className={item.colSpan}
+              header={renderCardHeader(item.id)}
+            />
+          ))}
+        </BentoGrid>
+      </motion.div>
     </section>
   );
 }

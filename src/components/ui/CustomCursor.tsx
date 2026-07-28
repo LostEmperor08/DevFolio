@@ -88,27 +88,31 @@ export function CustomCursor() {
       style={{
         x: smoothX,
         y: smoothY,
-        translateX: "-50%",
-        translateY: "-50%",
       }}
-      className="pointer-events-none fixed top-0 left-0 z-[9999] hidden transform-gpu items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-[2px] will-change-transform md:flex"
-      animate={{
-        width: isHovering ? 36 : 20,
-        height: isHovering ? 36 : 20,
-        borderColor: isHovering ? "rgba(6, 182, 212, 0.8)" : "rgba(255, 255, 255, 0.3)",
-        backgroundColor: isHovering ? "rgba(6, 182, 212, 0.15)" : "rgba(255, 255, 255, 0.05)",
-      }}
-      transition={{ duration: 0.15, ease: "easeOut" }}
+      className="pointer-events-none fixed top-0 left-0 z-[9999] hidden transform-gpu will-change-transform md:block"
     >
       <motion.div
-        className="rounded-full bg-white"
+        className="flex items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-[2px]"
         animate={{
-          width: isHovering ? 4 : 5,
-          height: isHovering ? 4 : 5,
-          opacity: isHovering ? 0.6 : 1,
+          x: isHovering ? -18 : -10,
+          y: isHovering ? -18 : -10,
+          width: isHovering ? 36 : 20,
+          height: isHovering ? 36 : 20,
+          borderColor: isHovering ? "rgba(6, 182, 212, 0.8)" : "rgba(255, 255, 255, 0.3)",
+          backgroundColor: isHovering ? "rgba(6, 182, 212, 0.15)" : "rgba(255, 255, 255, 0.05)",
         }}
-        transition={{ duration: 0.15 }}
-      />
+        transition={{ duration: 0.15, ease: "easeOut" }}
+      >
+        <motion.div
+          className="rounded-full bg-white"
+          animate={{
+            width: isHovering ? 4 : 5,
+            height: isHovering ? 4 : 5,
+            opacity: isHovering ? 0.6 : 1,
+          }}
+          transition={{ duration: 0.15 }}
+        />
+      </motion.div>
     </motion.div>
   );
 }
