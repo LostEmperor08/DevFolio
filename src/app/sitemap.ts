@@ -1,11 +1,11 @@
-﻿import { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
 import { profile } from "@/config/profile";
-import { posts } from "@/data/posts";
+import siteContent from "@/data/site-content.json";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = profile.site.url;
 
-  const postUrls = posts.map((post) => ({
+  const postUrls = (siteContent.posts || []).map((post) => ({
     url: `${baseUrl}/posts/${post.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
