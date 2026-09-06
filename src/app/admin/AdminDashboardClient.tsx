@@ -212,7 +212,7 @@ export function AdminDashboardClient({ initialData }: Props) {
               </h2>
               <div className="flex items-center gap-3">
                 <span className="text-[11px] font-mono text-zinc-500">Profile Logo</span>
-                <div className="relative h-9 w-9 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 shadow-[0_0_10px_rgba(239,68,68,0.2)]">
+                <div className="relative h-9 w-9 rounded-full overflow-hidden border border-zinc-800 bg-zinc-900 shadow-[0_0_10px_rgba(239,68,68,0.2)]">
                   <Image
                     src="/images/profile-logo.jpg"
                     alt="Logo"

@@ -12,13 +12,13 @@ export default async function Home() {
       <section className="pb-14 border-b border-zinc-800 mb-14">
         <div className="mb-8 flex items-center">
           <div className="relative group">
-            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-600 to-red-950 opacity-40 blur-md group-hover:opacity-75 transition duration-500" />
+            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-red-600 to-red-950 opacity-40 blur-md group-hover:opacity-75 transition duration-500" />
             <Image
               src="/images/profile-logo.jpg"
-              alt="Samarth Patil Logo"
-              width={72}
-              height={72}
-              className="relative rounded-2xl border border-zinc-800 bg-zinc-950 object-cover shadow-2xl transition-transform duration-300 group-hover:scale-105"
+              alt="Samarth Patil"
+              width={76}
+              height={76}
+              className="relative rounded-full border border-zinc-800 bg-zinc-950 object-cover shadow-2xl transition-transform duration-300 group-hover:scale-105"
               priority
             />
           </div>

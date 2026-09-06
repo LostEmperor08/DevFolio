@@ -12,17 +12,17 @@ export function Navbar() {
     return (
       <header className="pt-8 md:pt-12 pb-10 px-4 md:px-0 flex justify-between items-center border-b border-zinc-900 mb-8">
         <Link href="/" aria-label="Home" className="group flex items-center gap-2.5">
-          <div className="relative h-7 w-7 rounded-lg overflow-hidden border border-zinc-800 group-hover:border-red-500/70 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.15)] bg-zinc-950">
+          <div className="relative h-7 w-7 rounded-full overflow-hidden border border-zinc-800 group-hover:border-red-500/70 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.15)] bg-zinc-950 flex-shrink-0">
             <Image
               src="/images/profile-logo.jpg"
-              alt="SP"
+              alt="Samarth Patil"
               width={28}
               height={28}
               className="h-full w-full object-cover group-hover:scale-105 transition-transform"
             />
           </div>
-          <span className="text-base font-mono font-semibold text-white group-hover:text-red-400 transition-colors">
-            sp
+          <span className="text-sm sm:text-base font-semibold tracking-tight text-white group-hover:text-red-400 transition-colors">
+            Samarth Patil
           </span>
         </Link>
         <div className="flex gap-4 items-center">
@@ -41,17 +41,17 @@ export function Navbar() {
   return (
     <header className="pt-8 md:pt-16 pb-16 px-4 md:px-0 flex justify-between items-center">
       <Link href="/" aria-label="Home" className="group flex items-center gap-2.5">
-        <div className="relative h-7 w-7 rounded-lg overflow-hidden border border-zinc-800 group-hover:border-red-500/70 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.15)] bg-zinc-950">
+        <div className="relative h-8 w-8 rounded-full overflow-hidden border border-zinc-800 group-hover:border-red-500/70 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.15)] bg-zinc-950 flex-shrink-0">
           <Image
             src="/images/profile-logo.jpg"
-            alt="SP"
-            width={28}
-            height={28}
+            alt="Samarth Patil"
+            width={32}
+            height={32}
             className="h-full w-full object-cover group-hover:scale-105 transition-transform"
           />
         </div>
-        <span className="text-base font-mono font-semibold text-white group-hover:text-red-400 transition-colors">
-          sp
+        <span className="text-sm sm:text-base font-semibold tracking-tight text-white group-hover:text-red-400 transition-colors">
+          Samarth Patil
         </span>
       </Link>
       <nav className="flex gap-4 sm:gap-6">

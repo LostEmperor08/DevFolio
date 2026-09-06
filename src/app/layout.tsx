@@ -22,8 +22,11 @@ export const metadata: Metadata = {
   description:
     "Personal portfolio of Samarth Patil — ISE student building scalable software systems.",
   icons: {
-    icon: "/images/profile-logo.jpg",
-    apple: "/images/profile-logo.jpg",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
   },
 };
 
