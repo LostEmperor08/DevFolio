@@ -18,7 +18,7 @@ export default async function Home() {
               alt="Samarth Patil"
               width={76}
               height={76}
-              className="relative rounded-full border border-zinc-800 bg-zinc-950 object-cover shadow-2xl transition-transform duration-300 group-hover:scale-105"
+              className="relative rounded-full border border-zinc-800 bg-black object-cover shadow-2xl transition-transform duration-300 group-hover:scale-105"
               priority
             />
           </div>

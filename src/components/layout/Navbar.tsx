@@ -41,7 +41,7 @@ export function Navbar() {
   return (
     <header className="pt-8 md:pt-16 pb-16 px-4 md:px-0 flex justify-between items-center">
       <Link href="/" aria-label="Home" className="group flex items-center gap-2.5">
-        <div className="relative h-8 w-8 rounded-full overflow-hidden border border-zinc-800 group-hover:border-red-500/70 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.15)] bg-zinc-950 flex-shrink-0">
+        <div className="relative h-8 w-8 rounded-full overflow-hidden border border-zinc-800 group-hover:border-red-500/70 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.15)] bg-black flex-shrink-0">
           <Image
             src="/images/profile-logo.jpg"
             alt="Samarth Patil"
