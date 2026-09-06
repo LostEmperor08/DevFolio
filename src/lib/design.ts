@@ -1,31 +1,21 @@
-/**
- * Design Tokens
- * 
- * Purpose: Centralizes all visual properties (spacing, colors, easing, blurs).
- * Usage: Import designTokens anywhere instead of hardcoding Tailwind arbitrary values.
- * Dependencies: None.
- * Expected inputs: None (static object).
- * Expected outputs: Constant design values.
- */
-
-export const designTokens = {
+﻿export const designTokens = {
   colors: {
-    background: "#050505",
-    surface: "#0A0A0A",
-    surfaceHover: "#141414",
-    textPrimary: "#FAFAFA",
+    background: "#080809",
+    surface: "#0e0e11",
+    surfaceHover: "#16151a",
+    textPrimary: "#F4F4F5",
     textSecondary: "#A1A1AA",
     textMuted: "#71717A",
-    accentPrimary: "#F8F8F8",
-    accentBlue: "#3B82F6",
-    accentPurple: "#8B5CF6",
-    success: "#10B981",
-    warning: "#F59E0B",
-    danger: "#EF4444",
+    accentPrimary: "#FAFAFA",
+    accentRed: "#E11D48",
+    accentCrimson: "#991B1B",
+    accentRuby: "#EF4444",
+    accentBlue: "#EF4444",
+    accentPurple: "#991B1B",
     borderDefault: "rgba(255, 255, 255, 0.08)",
-    borderHover: "rgba(255, 255, 255, 0.15)",
-    borderActive: "rgba(255, 255, 255, 0.25)",
-    glassBase: "rgba(10, 10, 10, 0.4)",
+    borderHover: "rgba(225, 29, 72, 0.3)",
+    borderRed: "rgba(225, 29, 72, 0.2)",
+    glassBase: "rgba(10, 10, 12, 0.6)",
   },
   spacing: {
     xs: "4px",
@@ -46,10 +36,10 @@ export const designTokens = {
     full: "9999px",
   },
   shadows: {
-    sm: "0 1px 2px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05)",
-    md: "0 4px 12px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05)",
-    lg: "0 24px 48px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1)",
-    glowHover: "0 0 20px rgba(59, 130, 246, 0.15)",
+    sm: "0 1px 2px rgba(0,0,0,0.5)",
+    md: "0 4px 12px rgba(0,0,0,0.5)",
+    glowRed: "0 0 25px rgba(225, 29, 72, 0.2)",
+    glowHover: "0 0 20px rgba(225, 29, 72, 0.2)",
   },
   animation: {
     duration: {

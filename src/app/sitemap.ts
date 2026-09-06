@@ -1,25 +1,14 @@
-import { MetadataRoute } from "next";
-import { ProjectService } from "@/services/project.service";
-import { BlogService } from "@/services/blog.service";
+﻿import { MetadataRoute } from "next";
+import { profile } from "@/config/profile";
+import { posts } from "@/data/posts";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://samarthpatil.com";
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = profile.site.url;
 
-  // Get all dynamic routes
-  const projects = await ProjectService.getAllProjects();
-  const blogs = await BlogService.getPublishedBlogs();
-
-  const projectUrls = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug}`,
+  const postUrls = posts.map((post) => ({
+    url: `${baseUrl}/posts/${post.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
-
-  const blogUrls = blogs.map((blog) => ({
-    url: `${baseUrl}/blog/${blog.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
 
@@ -31,18 +20,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/work`,
+      url: `${baseUrl}/contact`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    ...projectUrls,
-    ...blogUrls,
+    ...postUrls,
   ];
 }

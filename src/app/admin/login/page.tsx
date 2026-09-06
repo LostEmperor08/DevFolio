@@ -1,107 +1,101 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Lock } from "lucide-react";
+import Link from "next/link";
+import { loginAdmin } from "@/app/actions/admin.actions";
+import { Loader2 } from "lucide-react";
 
-export default function AdminLogin() {
+export default function AdminLoginPage() {
   const router = useRouter();
+  const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!passcode.trim()) return;
+
     setLoading(true);
     setError("");
 
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
     try {
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (res?.error) {
-        setError("Invalid email or password");
-      } else {
+      const res = await loginAdmin(passcode);
+      if (res.success) {
         router.push("/admin");
         router.refresh();
+      } else {
+        setError(res.error || "Invalid passcode");
       }
-    } catch (err) {
-      setError("An unexpected error occurred");
+    } catch {
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black p-4">
-      {/* Background aesthetics */}
-      <div className="bg-accent-blue/10 pointer-events-none absolute top-1/2 left-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]" />
+    <main className="px-4 md:px-0 py-12 max-w-sm mx-auto">
+      <div className="mb-8">
+        <Link
+          href="/"
+          className="text-xs font-mono text-zinc-500 hover:text-red-400 transition-colors"
+        >
+          ← Back to site
+        </Link>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass-panel relative z-10 w-full max-w-md rounded-3xl border border-white/10 p-8"
-      >
-        <div className="mb-8 flex flex-col items-center">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-            <Lock className="text-accent-blue h-5 w-5" />
+      <header className="pb-6 border-b border-zinc-800 mb-8">
+        <h1 className="font-semibold tracking-tight text-3xl text-white">
+          Admin
+        </h1>
+        <p className="text-zinc-500 text-sm font-mono mt-1">
+          Enter passcode to edit content and manage writings.
+        </p>
+      </header>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="text-xs font-mono text-red-400 border border-red-900/50 bg-red-950/20 p-3 rounded">
+            {error}
           </div>
-          <h1 className="mb-2 text-2xl font-bold tracking-tight text-white">Samarth OS</h1>
-          <p className="text-muted-foreground text-center text-sm">
-            Enter your credentials to access the secure administrative dashboard.
-          </p>
+        )}
+
+        <div>
+          <label className="block font-mono text-xs text-zinc-400 mb-2">
+            Passcode
+          </label>
+          <input
+            type="password"
+            value={passcode}
+            onChange={(e) => setPasscode(e.target.value)}
+            placeholder="Default: admin123"
+            required
+            autoFocus
+            className="w-full rounded border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-red-500 focus:outline-none transition-colors"
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-center text-sm text-red-400">
-              {error}
-            </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="group bg-zinc-900 hover:bg-zinc-800 border border-red-500/40 hover:border-red-500 transition-colors inline-flex items-center gap-2 font-mono text-xs font-semibold rounded-full px-6 py-2.5 text-white disabled:opacity-50"
+        >
+          {loading ? (
+            <>
+              <Loader2 className="h-3 w-3 animate-spin text-red-400" />
+              <span>Verifying...</span>
+            </>
+          ) : (
+            <>
+              <span>Authenticate</span>
+              <span className="text-red-400 group-hover:translate-x-1 transition-transform">
+                →
+              </span>
+            </>
           )}
-
-          <div className="space-y-2">
-            <label className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              Email
-            </label>
-            <input
-              name="email"
-              type="email"
-              required
-              className="focus:ring-accent-blue/50 placeholder:text-muted-foreground/50 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white transition-all focus:ring-2 focus:outline-none"
-              placeholder="admin@samarth.dev"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              Password
-            </label>
-            <input
-              name="password"
-              type="password"
-              required
-              className="focus:ring-accent-blue/50 placeholder:text-muted-foreground/50 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white transition-all focus:ring-2 focus:outline-none"
-              placeholder="••••••••"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 font-medium text-black transition-colors hover:bg-zinc-200 disabled:opacity-50"
-          >
-            {loading ? "Authenticating..." : "Access Dashboard"}
-          </button>
-        </form>
-      </motion.div>
-    </div>
+        </button>
+      </form>
+    </main>
   );
 }

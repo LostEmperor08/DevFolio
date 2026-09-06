@@ -1,45 +1,63 @@
-"use client";
+﻿"use client";
 
-import { SectionHeading } from "../ui/SectionHeading";
+import { motion } from "framer-motion";
 import { skillCategories } from "@/data/skills";
-import { BentoGrid } from "../ui/BentoGrid";
-import { BentoItem } from "../ui/BentoItem";
 
 export function Skills() {
   return (
-    <section className="w-full max-w-[1200px] px-6 py-32 md:py-48 relative z-10 mx-auto" id="skills">
-      <SectionHeading 
-        title="Technical Arsenal" 
-        subtitle="A comprehensive overview of my capabilities and the technologies I use to build."
-        kicker="03 // CAPABILITIES"
-      />
+    <section className="relative z-10 mx-auto w-full max-w-4xl px-6 py-20 sm:py-28" id="skills">
+      {/* Section Header */}
+      <div className="mb-12">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+          <span className="font-mono text-xs uppercase tracking-widest text-zinc-400">
+            03 / Tech Arsenal
+          </span>
+        </div>
+        <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          Tools, languages & concepts.
+        </h2>
+        <p className="mt-2 text-sm text-zinc-400 max-w-xl">
+          The core stack and tools I use for building software, solving problems, and coursework.
+        </p>
+      </div>
 
-      <BentoGrid className="mt-16">
-        {skillCategories.map((category) => {
+      {/* Categorized Skills Grid */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {skillCategories.map((category, i) => {
           const Icon = category.icon;
           return (
-            <BentoItem
+            <motion.div
               key={category.id}
-              title={category.title}
-              description={category.description}
-              className={category.colSpan}
-              icon={<Icon className="w-6 h-6" />}
-              header={
-                <div className="flex flex-wrap gap-2 mt-4 mb-4">
-                  {category.skills.map((skill) => (
-                    <span 
-                      key={skill} 
-                      className="text-xs font-medium text-muted-foreground px-3 py-1.5 rounded-full bg-white/5 border border-white/5 hover:border-white/20 hover:text-white transition-colors cursor-default"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.35, delay: i * 0.08 }}
+              className="rounded-2xl border border-white/[0.07] bg-white/[0.02] p-5 transition-all hover:border-white/15"
+            >
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-zinc-300">
+                  <Icon className="h-3.5 w-3.5" />
                 </div>
-              }
-            />
+                <h3 className="text-sm font-medium text-white">{category.title}</h3>
+              </div>
+              <p className="text-xs text-zinc-400 mb-4 font-normal">
+                {category.description}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-lg border border-white/[0.06] bg-white/[0.03] px-2.5 py-1 font-mono text-xs text-zinc-300 transition-colors hover:border-white/20 hover:text-white"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           );
         })}
-      </BentoGrid>
+      </div>
     </section>
   );
 }

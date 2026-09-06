@@ -8,22 +8,23 @@ export default function Icon() {
   return new ImageResponse(
     <div
       style={{
-        fontSize: 22,
-        background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
+        fontSize: 14,
+        background: "#09090b",
         width: "100%",
         height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "white",
-        fontWeight: 900,
-        borderRadius: "50%",
-        fontFamily: "sans-serif",
-        boxShadow: "0 4px 10px rgba(59, 130, 246, 0.5)",
-        border: "2px solid rgba(255, 255, 255, 0.3)",
+        color: "#ef4444",
+        fontWeight: 800,
+        borderRadius: "8px",
+        fontFamily: "monospace",
+        boxShadow: "0 2px 8px rgba(239, 68, 68, 0.4)",
+        border: "1.5px solid #ef4444",
+        letterSpacing: "-0.05em",
       }}
     >
-      S
+      SP
     </div>,
     { ...size }
   );

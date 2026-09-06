@@ -9,7 +9,7 @@ export const aboutContent = {
       id: "who-i-am",
       title: "Who I Am",
       description:
-        "An aspiring software engineer and computer science student from India. Driven by a passion for cybersecurity, cloud infrastructure, and building secure backend systems that power modern applications.",
+        "An aspiring software engineer building scalable systems, cloud infrastructure, and robust backend architectures that power modern applications.",
       colSpan: "col-span-1 md:col-span-2 lg:col-span-2",
     },
     {

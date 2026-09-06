@@ -1,24 +1,35 @@
-import { edgeAuth as auth } from "@/auth.config";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth;
-  const isAuthPage = req.nextUrl.pathname.startsWith("/admin/login");
-  const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
+export function middleware(req: NextRequest) {
+  const pathname = req.nextUrl.pathname;
 
-  if (isAuthPage) {
-    if (isLoggedIn) {
-      return NextResponse.redirect(new URL("/admin", req.nextUrl));
-    }
-    return null;
+  // Retired legacy public routes
+  if (pathname.startsWith("/blog")) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (isAdminRoute && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/admin/login", req.nextUrl));
+  if (pathname.startsWith("/projects")) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
-  return null;
-});
+  // Redirect legacy admin sub-routes to single unified admin
+  if (
+    pathname.startsWith("/admin/projects") ||
+    pathname.startsWith("/admin/blog") ||
+    pathname.startsWith("/admin/profile") ||
+    pathname.startsWith("/admin/skills") ||
+    pathname.startsWith("/admin/settings") ||
+    pathname.startsWith("/admin/inbox") ||
+    pathname.startsWith("/admin/health") ||
+    pathname.startsWith("/admin/media") ||
+    pathname.startsWith("/admin/operations")
+  ) {
+    return NextResponse.redirect(new URL("/admin", req.url));
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],

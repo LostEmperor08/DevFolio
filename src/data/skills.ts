@@ -1,37 +1,37 @@
-import { Monitor, Server, Database, Cloud, Shield, Wrench } from "lucide-react";
+import { Code2, Globe, Cpu, Wrench } from "lucide-react";
 import { Skill } from "@/types";
 
 export const skillCategories: Skill[] = [
   {
-    id: "frontend",
-    title: "Frontend Engineering",
-    icon: Monitor,
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js"],
-    description: "Building fluid, accessible, and high-performance user interfaces.",
+    id: "languages",
+    title: "Programming Languages",
+    icon: Code2,
+    skills: ["C++", "Python", "TypeScript", "JavaScript", "SQL", "C"],
+    description: "Core languages used for problem solving, coursework, and application development.",
     colSpan: "md:col-span-2",
   },
   {
-    id: "backend",
-    title: "Backend Architecture",
-    icon: Server,
-    skills: ["Node.js", "Python", "Rust", "gRPC", "GraphQL"],
-    description: "Designing scalable, concurrent, and secure microservices.",
+    id: "web",
+    title: "Web & Frontend",
+    icon: Globe,
+    skills: ["Next.js", "React", "Tailwind CSS", "HTML5", "CSS3", "Framer Motion"],
+    description: "Building responsive, modern, and minimal web interfaces with high performance.",
     colSpan: "md:col-span-1",
   },
   {
-    id: "cloud",
-    title: "Cloud & DevOps",
-    icon: Cloud,
-    skills: ["AWS", "Vercel", "Docker", "Kubernetes", "CI/CD"],
-    description: "Automating deployments and managing distributed infrastructure.",
+    id: "cs-fundamentals",
+    title: "ISE & CS Fundamentals",
+    icon: Cpu,
+    skills: ["Data Structures", "Algorithms", "Object-Oriented Programming", "Computer Systems", "Database Design"],
+    description: "Foundational academic coursework in Information Science & Engineering.",
     colSpan: "md:col-span-1",
   },
   {
-    id: "security",
-    title: "Cybersecurity",
-    icon: Shield,
-    skills: ["Network Security", "Penetration Testing", "Cryptography", "OWASP"],
-    description: "Ensuring data integrity and protecting against modern vulnerabilities.",
+    id: "tools",
+    title: "Dev Tools & Environment",
+    icon: Wrench,
+    skills: ["Git & GitHub", "Linux / CLI", "VS Code", "Postman", "Vercel", "Prisma"],
+    description: "Modern developer workflow tools and version control systems.",
     colSpan: "md:col-span-2",
-  }
+  },
 ];

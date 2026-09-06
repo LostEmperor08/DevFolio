@@ -1,56 +1,86 @@
-import nextDynamic from "next/dynamic";
-import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
-import { ProjectService } from "@/services/project.service";
-import { BlogService } from "@/services/blog.service";
+import Link from "next/link";
+import Image from "next/image";
+import { getSiteData } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-// Dynamically import below-the-fold sections for optimal performance (Phase 17)
-const FeaturedProjects = nextDynamic(
-  () => import("@/components/sections/FeaturedProjects").then((mod) => mod.FeaturedProjects),
-  { ssr: true }
-);
-const Skills = nextDynamic(() => import("@/components/sections/Skills").then((mod) => mod.Skills), {
-  ssr: true,
-});
-const Experience = nextDynamic(
-  () => import("@/components/sections/Experience").then((mod) => mod.Experience),
-  { ssr: true }
-);
-const GithubDashboard = nextDynamic(
-  () => import("@/components/sections/GithubDashboard").then((mod) => mod.GithubDashboard),
-  { ssr: true }
-);
-const BlogPreview = nextDynamic(
-  () => import("@/components/sections/BlogPreview").then((mod) => mod.BlogPreview),
-  { ssr: true }
-);
-const Testimonials = nextDynamic(
-  () => import("@/components/sections/Testimonials").then((mod) => mod.Testimonials),
-  { ssr: true }
-);
-const FinalCTA = nextDynamic(
-  () => import("@/components/sections/FinalCTA").then((mod) => mod.FinalCTA),
-  { ssr: true }
-);
 
 export default async function Home() {
-  const projects = await ProjectService.getAllProjects();
-  const blogs = await BlogService.getPublishedBlogs();
+  const { profile, posts } = await getSiteData();
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center overflow-x-hidden pb-0">
-      <Hero />
-      <About />
-      <FeaturedProjects projects={projects} />
-      <Skills />
-      <Experience />
-      <GithubDashboard />
-      <BlogPreview posts={blogs} />
-      <Testimonials />
-      <FinalCTA />
+    <main className="px-4 md:px-0 pb-16">
+      <section className="pb-14 border-b border-zinc-800 mb-14">
+        <div className="mb-8 flex items-center">
+          <div className="relative group">
+            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-red-600 to-red-950 opacity-40 blur-md group-hover:opacity-75 transition duration-500" />
+            <Image
+              src="/images/profile-logo.jpg"
+              alt="Samarth Patil Logo"
+              width={72}
+              height={72}
+              className="relative rounded-2xl border border-zinc-800 bg-zinc-950 object-cover shadow-2xl transition-transform duration-300 group-hover:scale-105"
+              priority
+            />
+          </div>
+        </div>
+
+        <h1 className="font-semibold text-4xl mb-4 text-white">
+          {profile.headline}
+          <span className="block text-zinc-500 font-normal text-2xl mt-1">
+            {profile.subheadline}
+          </span>
+        </h1>
+        <p className="text-zinc-400 text-lg md:text-xl leading-normal">
+          {profile.bio}
+        </p>
+        <Link
+          href="/contact"
+          className="group bg-zinc-900 hover:bg-zinc-800 border border-red-500/40 hover:border-red-500 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
+        >
+          Get in Touch{" "}
+          <span className="inline-block group-hover:translate-x-2 transition-transform text-red-400">
+            →
+          </span>
+        </Link>
+      </section>
+
+      {posts.length > 0 && (
+        <section className="pt-4 pb-16">
+          <h2 className="font-semibold text-2xl tracking-tight mb-8 text-white">
+            Recent Writing
+          </h2>
+          <div className="divide-y divide-zinc-800">
+            {posts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/posts/${post.slug}`}
+                className="flex flex-col gap-4 py-8 first:pt-0 group"
+              >
+                <div className="flex flex-col">
+                  <h2 className="font-semibold text-2xl tracking-tight text-white group-hover:text-red-400 transition-colors">
+                    {post.title}
+                  </h2>
+                  <span className="text-zinc-500 text-sm tracking-tight font-mono block mt-2">
+                    Published on <time dateTime={post.date}>{post.date}</time>
+                  </span>
+                  <p className="mt-2 text-zinc-400 text-base">
+                    {post.description}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <Link
+            href="/posts"
+            className="group bg-zinc-900 hover:bg-zinc-800 border border-red-500/40 hover:border-red-500 transition-colors inline-block mt-8 font-mono text-xs font-semibold rounded-full px-8 py-3 text-white"
+          >
+            View More Posts{" "}
+            <span className="inline-block group-hover:translate-x-2 transition-transform text-red-400">
+              →
+            </span>
+          </Link>
+        </section>
+      )}
     </main>
   );
 }

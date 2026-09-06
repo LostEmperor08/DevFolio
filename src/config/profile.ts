@@ -1,42 +1,32 @@
 export const profile = {
   site: {
-    url: "https://samarth.dev",
+    url: "https://xdsamarth.github.io",
   },
   personal: {
     name: "Samarth Patil",
-    tagline: "Building digital ecosystems at the intersection of design and engineering.",
-    email: "hello@samarth.com",
-    resumeUrl: "/samarth-patil-resume.pdf",
-    avatar: "/images/avatar.jpg",
-    location: "San Francisco, CA",
-    timezone: "Pacific Time (PT)",
-    availability: "Available for freelance opportunities",
-    responseTime: "Usually responds within 24 hours"
+    role: "ISE Student",
+    department: "Information Science & Engineering",
+    tagline: "Designing and building scalable software systems and minimalist web applications.",
+    bio: "I engineer scalable, high-performance software and clean system architectures. Focused on algorithmic problem solving, backend scalability, and building robust projects.",
+    email: "namaste@samarthpatil.com",
+    resumeUrl: "#",
+    avatar: "/images/profile-logo.jpg",
+    location: "Global",
+    timezone: "IST (UTC+5:30)",
+    availability: "Open for hackathons, collabs & open-source projects",
+    responseTime: "Usually responds within a few hours",
   },
   social: {
-    github: { label: "GitHub", url: "https://github.com/samarth", icon: "Github" },
-    linkedin: { label: "LinkedIn", url: "https://linkedin.com/in/samarth", icon: "Linkedin" },
-    twitter: { label: "X (Twitter)", url: "https://twitter.com/samarth", icon: "Twitter" },
-    discord: { label: "Discord", url: "https://discord.com/users/samarth", icon: "Discord" },
-    telegram: { label: "Telegram", url: "https://t.me/samarth", icon: "Send" }
+    github: { label: "GitHub", url: "https://github.com/LostEmperor08", icon: "Github", handle: "@LostEmperor08" },
+    twitter: { label: "X (Twitter)", url: "https://x.com/lostemperor_08", icon: "Twitter", handle: "@lostemperor_08" },
+    instagram: { label: "Instagram", url: "https://instagram.com/lostemperor_08", icon: "Instagram", handle: "@lostemperor_08" },
+    telegram: { label: "Telegram", url: "https://t.me/Lostemperor_08", icon: "Send", handle: "@Lostemperor_08" },
+    linkedin: { label: "LinkedIn", url: "https://in.linkedin.com/in/samarth-raghuram-patil-835596361", icon: "Linkedin", handle: "Samarth Raghuram Patil" },
   },
   support: {
-    buyMeACoffee: "https://buymeacoffee.com/samarth",
-    githubSponsors: "https://github.com/sponsors/samarth",
-    patreon: "https://patreon.com/samarth",
-    crypto: [
-      {
-        label: "Ethereum (ERC20)",
-        address: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-        network: "ETH",
-        qrCode: "/images/qr-eth.png"
-      },
-      {
-        label: "Solana",
-        address: "HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH",
-        network: "SOL",
-        qrCode: "/images/qr-sol.png"
-      }
-    ]
-  }
+    buyMeACoffee: "",
+    githubSponsors: "",
+    patreon: "",
+    crypto: [] as Array<{ label: string; address: string; network: string; qrCode: string }>,
+  },
 };
