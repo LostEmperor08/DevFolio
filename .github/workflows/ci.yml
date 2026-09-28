@@ -27,7 +27,7 @@ jobs:
       
     - name: Lint
       run: npm run lint
-      
-    # Note: Full Next.js build requires a database connection for Prisma types.
-    # We are skipping the full build here to avoid needing a live DB in CI,
-    # but type checking and linting ensures code quality.
+
+    - name: Build
+      run: npm run build
+

@@ -1,101 +1,56 @@
-# Samarth OS v1.0 🚀
+# Samarth Patil — Portfolio ⚡
 
-Welcome to the source code for **Samarth OS**, a premium, high-performance portfolio and CMS designed for modern Frontend Architects. It's built with Next.js 15 (App Router), PostgreSQL, and a completely custom-built operational command center.
+A high-performance, minimalist developer portfolio and micro-CMS built with Next.js 16, TypeScript, and Tailwind CSS v4.
 
-## 🌟 Features
+## 🌟 Overview
 
-- **Extreme Aesthetics**: Custom glassmorphism, smooth scroll (`lenis`), custom cursors, magnetic buttons, and micro-animations via Framer Motion.
-- **Full Markdown CMS**: A bespoke `/admin` dashboard that lets you manage projects, write blogs, and update your resume without touching a single line of code.
-- **Operational Command Center**: Built-in system health monitoring, audit logging, JSON backups, and native visitor analytics.
-- **Vercel Blob Media**: Drag-and-drop image uploads directly to Vercel Blob.
-- **Security First**: Middleware protection, Bcrypt password hashing, rate limiting, and strict Content Security Policies (CSP).
-- **SEO Optimized**: Dynamic `sitemap.xml`, `robots.txt`, `feed.xml` (RSS), and automatic JSON-LD structured data.
-
-## 🏗 Architecture
-
-```mermaid
-graph TD
-    Client[Web Browser] --> |HTTPS| Vercel[Vercel Edge Network]
-    Vercel --> NextJS[Next.js 15 App Router]
-
-    subgraph Frontend
-    NextJS --> Pages[Public Portfolio Pages]
-    NextJS --> Admin[Admin Dashboard]
-    end
-
-    subgraph Backend
-    Admin --> ServerActions[Server Actions]
-    Pages --> ServerActions
-    end
-
-    subgraph Data Layer
-    ServerActions --> Prisma[Prisma ORM]
-    ServerActions --> VercelBlob[Vercel Blob Storage]
-    Prisma --> PostgreSQL[(PostgreSQL)]
-    end
-```
+- **Design Philosophy**: Minimalist dark editorial aesthetic with deep black backgrounds (`#050505`), clean typography, crimson accents, and custom monochrome sakura insignia.
+- **Micro-CMS**: Lightweight single-file JSON content layer (`src/data/site-content.json`) with an integrated admin management interface at `/admin`.
+- **Fast & Static**: Zero heavy database or ORM overhead. Ultra-fast page generation and edge deployment on Vercel.
+- **Clean SEO & Standards**: Dynamic metadata, OpenGraph, JSON-LD structured data, RSS feed (`/feed.xml`), `sitemap.xml`, and `robots.txt`.
 
 ## 🛠 Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS + Custom CSS (`index.css`)
-- **Database**: PostgreSQL
-- **ORM**: Prisma
-- **Storage**: Vercel Blob
-- **Animations**: Framer Motion
-- **Form Handling**: React Hook Form + Zod
-- **Authentication**: NextAuth.js (Auth.js v5)
+- **Styling**: Tailwind CSS v4 + `@tailwindcss/postcss`
+- **Icons**: Lucide React
+- **Notifications**: Sonner
 
 ## 💻 Local Development
 
 1. **Clone the repository:**
-
    ```bash
-   git clone https://github.com/samarth/portfolio.git
-   cd portfolio
+   git clone https://github.com/LostEmperor08/DevFolio.git
+   cd DevFolio
    ```
 
 2. **Install dependencies:**
-
    ```bash
    npm install
    ```
 
-3. **Configure Environment Variables:**
-   Copy `.env.example` to `.env` and fill in the details.
-
-   ```bash
-   DATABASE_URL="postgres://user:password@localhost:5432/portfolio"
-   AUTH_SECRET="generate_a_strong_secret"
-   BLOB_READ_WRITE_TOKEN="vercel_blob_token"
-   ```
-
-4. **Initialize Database:**
-
-   ```bash
-   npx prisma db push
-   npx tsx prisma/seed.ts
-   ```
-
-5. **Start the development server:**
+3. **Run the local development server:**
    ```bash
    npm run dev
    ```
 
-The portfolio will be available at `http://localhost:3000`. The admin dashboard is at `http://localhost:3000/admin/login`. Default credentials are created during the seed step.
+Open [http://localhost:3000](http://localhost:3000) to view your portfolio.
 
-## 🚀 Deployment
+## 📂 Project Structure
 
-See the [DEPLOYMENT.md](./DEPLOYMENT.md) guide for comprehensive instructions on deploying to Vercel and connecting a production PostgreSQL instance.
-
-## 🔮 Future Roadmap
-
-- Additional CMS block types (video embeds, code playgrounds).
-- Native dark/light mode toggle.
-- Advanced visitor analytics charts inside the dashboard.
-- Contact form automatic email forwarding (Resend API).
+```text
+├── public/                 # Static assets, sakura insignia, and icons
+├── src/
+│   ├── app/                # Next.js App Router (pages, metadata, feeds)
+│   ├── components/         # Shared minimalist UI & layout components
+│   ├── config/             # Profile configuration & social links
+│   ├── data/               # Unified content store (site-content.json)
+│   └── lib/                # Utility helpers & JSON content management
+└── README.md
+```
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License — see LICENSE for details.
+
