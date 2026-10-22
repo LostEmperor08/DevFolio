@@ -4,14 +4,12 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
-  // Retired legacy public routes
-  if (pathname.startsWith("/blog")) {
-    return NextResponse.redirect(new URL("/", req.url));
+  // Legacy route aliases
+  if (pathname.startsWith("/posts")) {
+    const newPath = pathname.replace(/^\/posts/, "/blog");
+    return NextResponse.redirect(new URL(newPath, req.url));
   }
 
-  if (pathname.startsWith("/projects")) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
 
   // Redirect legacy admin sub-routes to single unified admin
   if (

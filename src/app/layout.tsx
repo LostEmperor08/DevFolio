@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { BackgroundAtmosphere } from "@/components/effects/BackgroundAtmosphere";
+import { PersonaProvider } from "@/context/PersonaContext";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,16 +41,23 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-black text-white antialiased selection:bg-red-950 selection:text-red-200 min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-[#060608] text-white antialiased selection:bg-red-950 selection:text-red-200 min-h-screen flex flex-col relative`}
       >
-        <div className="max-w-2xl lg:max-w-xl mx-auto w-full flex-1 flex flex-col justify-between">
-          <div>
-            <Navbar />
-            {children}
+        <PersonaProvider>
+          <BackgroundAtmosphere />
+          <Toaster richColors position="bottom-right" theme="dark" />
+          <div className="relative z-10 max-w-3xl mx-auto w-full px-4 sm:px-6 flex-1 flex flex-col justify-between">
+            <div>
+              <Navbar />
+              {children}
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
+        </PersonaProvider>
       </body>
     </html>
   );
 }
+
+
+

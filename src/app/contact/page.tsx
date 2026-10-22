@@ -1,85 +1,124 @@
 import type { Metadata } from "next";
 import { getSiteData } from "@/lib/content";
+import { PhysicsLanyard } from "@/components/contact/PhysicsLanyard";
+import { HoldToDispatch } from "@/components/contact/HoldToDispatch";
+import { Mail, ArrowUpRight, Radio } from "lucide-react";
+import { GithubIcon, LinkedinIcon, XIcon, InstagramIcon } from "@/components/icons/SocialIcons";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Contact | Samarth Patil",
-  description: "Get in touch with Samarth Patil.",
+  title: "Contact & Dispatch | Samarth Patil",
+  description: "Interactive physics developer lanyard and instant transmission dispatch.",
 };
 
 export default async function ContactPage() {
   const { profile } = await getSiteData();
 
+  const contacts = [
+    {
+      title: "Direct Email",
+      handle: profile.email,
+      href: `mailto:${profile.email}`,
+      icon: Mail,
+      sub: "Primary inbox for software engineering roles & partnerships",
+    },
+    {
+      title: "LinkedIn",
+      handle: "in/samarth-raghuram-patil",
+      href: profile.linkedin || "https://in.linkedin.com/in/samarth-raghuram-patil-835596361",
+      icon: LinkedinIcon,
+      sub: "Professional network & verified credentials",
+    },
+    {
+      title: "X (Twitter)",
+      handle: "@lostemperor_08",
+      href: profile.x || "https://x.com/lostemperor_08",
+      icon: XIcon,
+      sub: "Tech insights & architectural banter",
+    },
+    {
+      title: "GitHub",
+      handle: "git/LostEmperor08",
+      href: profile.github || "https://github.com/LostEmperor08",
+      icon: GithubIcon,
+      sub: "Source repositories, algorithms & commits",
+    },
+  ];
+
   return (
-    <main className="px-4 md:px-0 pb-16">
-      <header>
-        <h1 className="font-semibold tracking-tight text-4xl mb-6 text-white pb-6 border-b border-zinc-800">
-          Contact
+    <main className="pb-20 space-y-10">
+      <header className="border-b border-zinc-800/80 pb-6 space-y-2">
+        <div className="flex items-center gap-2 text-xs font-mono text-red-400">
+          <Radio className="w-4 h-4 animate-pulse" />
+          <span>Physics Lanyard & Instant Dispatch Stage</span>
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+          Initiate Contact & Transmission
         </h1>
-      </header>
-      <section className="pb-8">
-        <p className="text-lg mb-8 text-zinc-300 leading-normal">
-          If you’d like to get in touch, you can reach me using the following methods.
+        <p className="text-zinc-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+          Grab and flick the physics developer lanyard, or charge the Hold-to-Dispatch console to send your transmission directly.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex flex-col">
-            <h2 className="font-semibold text-xl tracking-tight text-white">Email</h2>
-            <a
-              className="text-zinc-400 hover:text-red-400 transition-colors mt-1 font-mono text-sm"
-              href={`mailto:${profile.email}`}
-            >
-              {profile.email}
-            </a>
-          </div>
+      </header>
 
-          <div className="flex flex-col">
-            <h2 className="font-semibold text-xl tracking-tight text-white">LinkedIn</h2>
-            <a
-              className="text-zinc-400 hover:text-red-400 transition-colors mt-1 font-mono text-sm"
-              href={profile.linkedin || "https://in.linkedin.com/in/samarth-raghuram-patil-835596361"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              in/samarth-raghuram-patil
-            </a>
-          </div>
+      {/* Physics Lanyard & Hold-to-Dispatch Grid */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left: Physics Lanyard Pass */}
+        <div className="lg:col-span-5 w-full">
+          <PhysicsLanyard />
+        </div>
 
-          <div className="flex flex-col">
-            <h2 className="font-semibold text-xl tracking-tight text-white">X (Twitter)</h2>
-            <a
-              className="text-zinc-400 hover:text-red-400 transition-colors mt-1 font-mono text-sm"
-              href={profile.x || "https://x.com/lostemperor_08"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @lostemperor_08
-            </a>
-          </div>
+        {/* Right: Hold to Dispatch Console */}
+        <div className="lg:col-span-7 w-full">
+          <HoldToDispatch
+            email={profile.email}
+            github={profile.github}
+            linkedin={profile.linkedin}
+            x={profile.x}
+            instagram={profile.instagram}
+          />
+        </div>
+      </section>
 
-          <div className="flex flex-col">
-            <h2 className="font-semibold text-xl tracking-tight text-white">Instagram</h2>
-            <a
-              className="text-zinc-400 hover:text-red-400 transition-colors mt-1 font-mono text-sm"
-              href={profile.instagram || "https://instagram.com/lostemperor_08"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @lostemperor_08
-            </a>
-          </div>
+      {/* Direct Verified Connection Channels */}
+      <section className="space-y-4 pt-4">
+        <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400">
+          Verified Direct Channels
+        </h2>
 
-          <div className="flex flex-col">
-            <h2 className="font-semibold text-xl tracking-tight text-white">GitHub</h2>
-            <a
-              className="text-zinc-400 hover:text-red-400 transition-colors mt-1 font-mono text-sm"
-              href={profile.github || "https://github.com/LostEmperor08"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              git/LostEmperor08
-            </a>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {contacts.map((item) => {
+            const Icon = item.icon;
+            return (
+              <a
+                key={item.title}
+                href={item.href}
+                target={item.title === "Direct Email" ? undefined : "_blank"}
+                rel={item.title === "Direct Email" ? undefined : "noopener noreferrer"}
+                className="flex flex-col justify-between p-5 rounded-xl border border-zinc-800/80 bg-zinc-950/50 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:border-red-500/40 hover:bg-zinc-900/40 transition-all duration-300 group"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-red-400 group-hover:scale-110 transition-transform">
+                      <Icon className="w-4 h-4" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold text-white text-base group-hover:text-red-400 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-zinc-400 font-mono text-xs mt-0.5">
+                        {item.handle}
+                      </p>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-red-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                </div>
+                <p className="text-zinc-400 text-xs mt-4 pt-3 border-t border-zinc-800/60">
+                  {item.sub}
+                </p>
+              </a>
+            );
+          })}
         </div>
       </section>
     </main>

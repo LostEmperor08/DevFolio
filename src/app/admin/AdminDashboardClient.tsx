@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { SakuraLogo } from "@/components/icons/SakuraLogo";
+
 import {
   type SiteData,
   type ProfileData,
@@ -212,16 +214,11 @@ export function AdminDashboardClient({ initialData }: Props) {
               </h2>
               <div className="flex items-center gap-3">
                 <span className="text-[11px] font-mono text-zinc-500">Profile Logo</span>
-                <div className="relative h-9 w-9 rounded-full overflow-hidden border border-zinc-800 bg-zinc-900 shadow-[0_0_10px_rgba(239,68,68,0.2)]">
-                  <Image
-                    src="/images/profile-logo.jpg"
-                    alt="Logo"
-                    width={36}
-                    height={36}
-                    className="h-full w-full object-cover"
-                  />
+                <div className="relative h-9 w-9 rounded-full border border-zinc-800 bg-zinc-950 p-1 shadow-[0_0_10px_rgba(239,68,68,0.25)] flex items-center justify-center">
+                  <SakuraLogo className="w-full h-full" glow />
                 </div>
               </div>
+
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -21,10 +21,38 @@ export interface BlogPostData {
   category: string;
   description: string;
   content: string[];
+  codeSnippets?: {
+    step: string;
+    code: string;
+    highlightLines?: number[];
+  }[];
+}
+
+export interface ProjectData {
+  slug: string;
+  title: string;
+  tagline: string;
+  category: string;
+  metrics: string[];
+  stack: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+  frontendPreview: string;
+  architectureNodes: {
+    name: string;
+    type: "client" | "queue" | "engine" | "database" | "network";
+    desc: string;
+  }[];
+  microDemo: {
+    prompt: string;
+    command: string;
+    output: string[];
+  };
 }
 
 export interface SiteData {
   profile: ProfileData;
+  projects?: ProjectData[];
   posts: BlogPostData[];
 }
 
@@ -43,6 +71,7 @@ const fallbackData: SiteData = {
     x: "https://x.com/lostemperor_08",
     instagram: "https://instagram.com/lostemperor_08",
   },
+  projects: [],
   posts: [],
 };
 
