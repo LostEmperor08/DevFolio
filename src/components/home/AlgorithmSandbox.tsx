@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Play, RotateCcw, Cpu, Sparkles } from "lucide-react";
+import { Play, RotateCcw, Cpu } from "lucide-react";
 import { sfx } from "@/lib/audio";
 
 interface Node {
@@ -14,13 +14,14 @@ export function AlgorithmSandbox() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [stats, setStats] = useState({ visited: 0, latency: "0.0ms", status: "Idle" });
+  const [announcement, setAnnouncement] = useState("Algorithm sandbox ready.");
 
   const rows = 9;
   const cols = 15;
   const gridRef = useRef<Node[][]>([]);
 
   // Initialize graph
-  const initGrid = () => {
+  const initGrid = (isUserReset = false) => {
     const grid: Node[][] = [];
     for (let r = 0; r < rows; r++) {
       const row: Node[] = [];
@@ -43,6 +44,9 @@ export function AlgorithmSandbox() {
     }
     gridRef.current = grid;
     setStats({ visited: 0, latency: "0.0ms", status: "Ready" });
+    if (isUserReset) {
+      setAnnouncement("Grid regenerated with fresh random obstacles. Ready to compute.");
+    }
     draw();
   };
 
@@ -132,7 +136,7 @@ export function AlgorithmSandbox() {
   };
 
   useEffect(() => {
-    initGrid();
+    initGrid(false);
   }, []);
 
   const runPathfinding = async () => {
@@ -140,8 +144,9 @@ export function AlgorithmSandbox() {
     setIsRunning(true);
     sfx.playMechanicalSwitch();
     setStats({ visited: 0, latency: "Calculating...", status: "Tracing" });
+    setAnnouncement("Dijkstra pathfinding search initiated. Exploring graph nodes...");
 
-    // Breadth-First / A* simulation
+    // Breadth-First / Dijkstra simulation
     const grid = gridRef.current;
     const start = { r: 4, c: 1 };
     const end = { r: 4, c: 13 };
@@ -213,9 +218,11 @@ export function AlgorithmSandbox() {
     // Reconstruct optimal path
     if (found) {
       let curr = end;
+      let pathLength = 0;
       while (curr && !(curr.r === start.r && curr.c === start.c)) {
         if (!(curr.r === end.r && curr.c === end.c)) {
           grid[curr.r][curr.c].state = "path";
+          pathLength++;
           draw();
           await new Promise((res) => setTimeout(res, 35));
         }
@@ -228,12 +235,18 @@ export function AlgorithmSandbox() {
         latency: `${elapsed}ms`,
         status: "Routed ✓",
       });
+      setAnnouncement(
+        `Optimal path discovered: ${pathLength + 2} nodes in ${elapsed} milliseconds with ${visitCount} nodes visited.`
+      );
     } else {
       setStats({
         visited: visitCount,
         latency: "Blocked",
         status: "No Route",
       });
+      setAnnouncement(
+        `Search completed: No open route between source and target. Visited ${visitCount} nodes.`
+      );
     }
 
     setIsRunning(false);
@@ -241,6 +254,11 @@ export function AlgorithmSandbox() {
 
   return (
     <div className="flex flex-col justify-between h-full rounded-2xl border border-zinc-800/80 bg-zinc-950/60 backdrop-blur-xl p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] hover:border-red-500/40 transition-all duration-300 group">
+      {/* Accessible Live Region for Assistive Technologies */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </div>
+
       <div>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
@@ -260,10 +278,11 @@ export function AlgorithmSandbox() {
           Interactive low-latency Dijkstra pathfinding engine. Watch crimson routing waves discover optimal pathways.
         </p>
 
-        {/* Canvas viewport */}
+        {/* Canvas viewport (Hidden from screen readers since live region announces state) */}
         <div className="relative w-full aspect-[15/9] rounded-xl border border-zinc-800/90 bg-black/80 overflow-hidden shadow-inner">
           <canvas
             ref={canvasRef}
+            aria-hidden="true"
             width={360}
             height={216}
             className="w-full h-full object-contain"
@@ -283,8 +302,10 @@ export function AlgorithmSandbox() {
         <button
           onClick={runPathfinding}
           disabled={isRunning}
+          aria-label={isRunning ? "Calculating optimal path" : "Run Dijkstra pathfinding algorithm"}
+          aria-busy={isRunning}
           onMouseEnter={() => sfx.playSynthHum()}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-mono font-semibold text-white bg-zinc-900 hover:bg-zinc-800 border border-red-500/40 hover:border-red-500 disabled:opacity-50 transition-all shadow-sm"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-mono font-semibold text-white bg-zinc-900 hover:bg-zinc-800 border border-red-500/40 hover:border-red-500 disabled:opacity-50 transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
         >
           <Play className="w-3.5 h-3.5 text-red-400 fill-red-400" />
           <span>{isRunning ? "Computing..." : "Run Algorithm"}</span>
@@ -293,11 +314,12 @@ export function AlgorithmSandbox() {
         <button
           onClick={() => {
             sfx.playMechanicalSwitch();
-            initGrid();
+            initGrid(true);
           }}
           disabled={isRunning}
+          aria-label="Reset grid and regenerate random obstacles"
           title="Reset grid & regenerate random obstacles"
-          className="p-2 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors disabled:opacity-50"
+          className="p-2 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>

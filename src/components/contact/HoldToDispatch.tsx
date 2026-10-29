@@ -25,12 +25,35 @@ export function HoldToDispatch({
   const [chargeProgress, setChargeProgress] = useState(0); // 0 to 100
   const [isHolding, setIsHolding] = useState(false);
   const [isDispatched, setIsDispatched] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Charge loop when button is held
+  // Detect accessibility motion preference
   useEffect(() => {
-    if (isHolding && !isDispatched) {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
+  const triggerDispatchSuccess = () => {
+    if (isDispatched) return;
+    setIsHolding(false);
+    setIsDispatched(true);
+    setChargeProgress(100);
+    sfx.playDispatchSuccess();
+    toast.success("Message Dispatched! 🚀", {
+      description: `Notification routed to ${email}`,
+    });
+  };
+
+  // Charge loop when button is held (bypassed if reduced motion is requested)
+  useEffect(() => {
+    if (isHolding && !isDispatched && !prefersReducedMotion) {
       const interval = 25; // ms
       const step = 100 / (1200 / interval); // 1.2s to 100%
 
@@ -41,12 +64,7 @@ export function HoldToDispatch({
 
           if (next >= 100) {
             clearInterval(timerRef.current!);
-            setIsHolding(false);
-            setIsDispatched(true);
-            sfx.playDispatchSuccess();
-            toast.success("Message Dispatched! 🚀", {
-              description: `Notification routed to ${email}`,
-            });
+            triggerDispatchSuccess();
             return 100;
           }
           return next;
@@ -71,16 +89,49 @@ export function HoldToDispatch({
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isHolding, isDispatched, email]);
+  }, [isHolding, isDispatched, prefersReducedMotion, email]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    e.preventDefault();
     if (isDispatched) return;
+    if (prefersReducedMotion) {
+      e.preventDefault();
+      triggerDispatchSuccess();
+      return;
+    }
+    e.preventDefault();
     setIsHolding(true);
   };
 
   const handlePointerUp = () => {
+    if (prefersReducedMotion) return;
     setIsHolding(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (isDispatched) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (prefersReducedMotion) {
+        triggerDispatchSuccess();
+      } else if (!isHolding) {
+        setIsHolding(true);
+      }
+    }
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (prefersReducedMotion) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsHolding(false);
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (prefersReducedMotion && !isDispatched) {
+      e.preventDefault();
+      triggerDispatchSuccess();
+    }
   };
 
   const resetForm = () => {
@@ -98,7 +149,9 @@ export function HoldToDispatch({
             Instant Dispatch Console
           </h2>
           <p className="text-zinc-400 text-xs font-mono mt-0.5">
-            Hold button to charge & fire your transmission directly
+            {prefersReducedMotion
+              ? "Press button to fire your transmission immediately"
+              : "Hold button or Space/Enter to charge & fire your transmission"}
           </p>
         </div>
 
@@ -111,7 +164,7 @@ export function HoldToDispatch({
               rel="noopener noreferrer"
               aria-label="GitHub"
               onClick={() => sfx.playMechanicalSwitch()}
-              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors"
+              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
             >
               <GithubIcon className="w-3.5 h-3.5" />
             </a>
@@ -123,7 +176,7 @@ export function HoldToDispatch({
               rel="noopener noreferrer"
               aria-label="LinkedIn"
               onClick={() => sfx.playMechanicalSwitch()}
-              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors"
+              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
             >
               <LinkedinIcon className="w-3.5 h-3.5" />
             </a>
@@ -135,7 +188,7 @@ export function HoldToDispatch({
               rel="noopener noreferrer"
               aria-label="X (Twitter)"
               onClick={() => sfx.playMechanicalSwitch()}
-              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors"
+              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
             >
               <XIcon className="w-3.5 h-3.5" />
             </a>
@@ -147,7 +200,7 @@ export function HoldToDispatch({
               rel="noopener noreferrer"
               aria-label="Instagram"
               onClick={() => sfx.playMechanicalSwitch()}
-              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors"
+              className="p-2 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 text-zinc-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
             >
               <InstagramIcon className="w-3.5 h-3.5" />
             </a>
@@ -168,7 +221,7 @@ export function HoldToDispatch({
           </div>
           <button
             onClick={resetForm}
-            className="text-xs font-mono text-red-400 hover:underline pt-2"
+            className="text-xs font-mono text-red-400 hover:underline pt-2 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none rounded"
           >
             Send another dispatch
           </button>
@@ -177,41 +230,44 @@ export function HoldToDispatch({
         <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[11px] font-mono text-zinc-400 mb-1">
+              <label htmlFor="contact-name" className="block text-[11px] font-mono text-zinc-400 mb-1">
                 Your Name
               </label>
               <input
+                id="contact-name"
                 type="text"
                 placeholder="Alex Vance"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:border-red-500/70 focus:outline-none transition-colors"
+                className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:border-red-500/70 focus:outline-none focus-visible:ring-1 focus-visible:ring-red-500 transition-colors"
               />
             </div>
             <div>
-              <label className="block text-[11px] font-mono text-zinc-400 mb-1">
+              <label htmlFor="contact-email" className="block text-[11px] font-mono text-zinc-400 mb-1">
                 Your Email
               </label>
               <input
+                id="contact-email"
                 type="email"
                 placeholder="alex@systems.io"
                 value={formData.senderEmail}
                 onChange={(e) => setFormData({ ...formData, senderEmail: e.target.value })}
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:border-red-500/70 focus:outline-none transition-colors"
+                className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:border-red-500/70 focus:outline-none focus-visible:ring-1 focus-visible:ring-red-500 transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[11px] font-mono text-zinc-400 mb-1">
+            <label htmlFor="contact-message" className="block text-[11px] font-mono text-zinc-400 mb-1">
               Project Specification / Collaboration Idea
             </label>
             <textarea
+              id="contact-message"
               rows={4}
               placeholder="Hey Samarth, let's collaborate on high-concurrency systems or Web3 utility..."
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:border-red-500/70 focus:outline-none transition-colors resize-none"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:border-red-500/70 focus:outline-none focus-visible:ring-1 focus-visible:ring-red-500 transition-colors resize-none"
             />
           </div>
 
@@ -219,16 +275,29 @@ export function HoldToDispatch({
           <div className="pt-2">
             <button
               type="button"
+              role="button"
+              aria-label={
+                prefersReducedMotion
+                  ? "Dispatch message immediately"
+                  : isHolding
+                  ? `Charging transmission at ${Math.round(chargeProgress)} percent`
+                  : "Press and hold to charge and dispatch message"
+              }
+              aria-pressed={isHolding}
+              aria-busy={isHolding || isDispatched}
               onPointerDown={handlePointerDown}
               onPointerUp={handlePointerUp}
               onPointerLeave={handlePointerUp}
-              className="relative w-full overflow-hidden rounded-xl border border-red-500/50 bg-zinc-900/90 py-3.5 px-6 font-mono text-xs font-semibold text-white shadow-xl transition-transform active:scale-[0.98] select-none touch-none cursor-pointer"
+              onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}
+              onClick={handleClick}
+              className="relative w-full overflow-hidden rounded-xl border border-red-500/50 bg-zinc-900/90 py-3.5 px-6 font-mono text-xs font-semibold text-white shadow-xl transition-all active:scale-[0.98] select-none touch-none cursor-pointer focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
             >
               {/* Charge Progress Fill Bar */}
               <div
                 className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-800 opacity-80 transition-all duration-75 pointer-events-none"
                 style={{
-                  width: `${chargeProgress}%`,
+                  width: prefersReducedMotion ? "0%" : `${chargeProgress}%`,
                 }}
               />
 
@@ -239,16 +308,22 @@ export function HoldToDispatch({
                   }`}
                 />
                 <span>
-                  {isHolding
+                  {prefersReducedMotion
+                    ? "Dispatch Transmission (Instant Click)"
+                    : isHolding
                     ? `Charging... ${Math.round(chargeProgress)}%`
-                    : "Hold to Dispatch Message (Press & Hold)"}
+                    : "Hold to Dispatch Message (Press & Hold / Space)"}
                 </span>
               </div>
             </button>
 
             <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 mt-2 px-1">
               <span>Direct routing: {email}</span>
-              <span>1.2s tactile hold required</span>
+              <span>
+                {prefersReducedMotion
+                  ? "Instant dispatch active (reduced motion)"
+                  : "1.2s tactile hold or hold Space/Enter"}
+              </span>
             </div>
           </div>
         </form>

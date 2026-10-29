@@ -43,19 +43,25 @@ export function SakuraCanvas() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
+    const isMobileViewport =
+      window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches;
+
     let animationFrameId: number;
     let isPaused = false;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
+    // Bound devicePixelRatio to 2 to eliminate GPU fill-rate throttling on high-DPI displays
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
     const updateSize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform before scaling
       ctx.scale(dpr, dpr);
     };
 
@@ -71,7 +77,7 @@ export function SakuraCanvas() {
       vx: 0,
       vy: 0,
       active: false,
-      radius: 140,
+      radius: isMobileViewport ? 90 : 140,
     };
 
     // Shockwave ripples on click
@@ -119,8 +125,8 @@ export function SakuraCanvas() {
     window.addEventListener("touchend", handlePointerLeave);
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
 
-    // Petal & Ember particle generation
-    const totalCount = width < 768 ? 36 : 64;
+    // Particle pool size: 25 for mobile/coarse viewports, 60 for desktop
+    const totalCount = isMobileViewport ? 25 : 60;
     const particles: Petal[] = [];
 
     const createParticle = (initialYRandom = true): Petal => {
@@ -290,6 +296,7 @@ export function SakuraCanvas() {
       animationFrameId = requestAnimationFrame(render);
     };
 
+    // Pause animation loop when tab is hidden to preserve battery and GPU
     const handleVisibilityChange = () => {
       if (document.hidden) {
         isPaused = true;

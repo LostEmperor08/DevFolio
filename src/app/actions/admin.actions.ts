@@ -50,10 +50,13 @@ export async function updateProfileContent(profile: ProfileData) {
     data.profile = profile;
     await saveSiteData(data);
     revalidatePath("/");
+    revalidatePath("/projects");
+    revalidatePath("/blog");
     revalidatePath("/contact");
     return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err?.message || "Failed to update profile" };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to update profile";
+    return { success: false, error: message };
   }
 }
 
@@ -84,13 +87,15 @@ export async function savePostContent(post: BlogPostData, originalSlug?: string)
 
     await saveSiteData(data);
     revalidatePath("/");
-    revalidatePath(`/posts/${cleanSlug}`);
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${cleanSlug}`);
     if (originalSlug) {
-      revalidatePath(`/posts/${originalSlug}`);
+      revalidatePath(`/blog/${originalSlug}`);
     }
     return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err?.message || "Failed to save post" };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to save post";
+    return { success: false, error: message };
   }
 }
 
@@ -105,8 +110,10 @@ export async function deletePostContent(slug: string) {
     data.posts = data.posts.filter((p) => p.slug !== slug);
     await saveSiteData(data);
     revalidatePath("/");
+    revalidatePath("/blog");
     return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err?.message || "Failed to delete post" };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to delete post";
+    return { success: false, error: message };
   }
 }

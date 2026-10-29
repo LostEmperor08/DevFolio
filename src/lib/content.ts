@@ -75,6 +75,79 @@ const fallbackData: SiteData = {
   posts: [],
 };
 
+// GitHub Git-as-a-CMS Config
+const GITHUB_REPO_OWNER = process.env.GITHUB_REPO_OWNER || "LostEmperor08";
+const GITHUB_REPO_NAME = process.env.GITHUB_REPO_NAME || "DevFolio";
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || "main";
+const GITHUB_FILE_PATH = "src/data/site-content.json";
+
+/**
+ * Fetches the current git sha of src/data/site-content.json from the GitHub API.
+ */
+async function getGithubFileSha(token: string): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${GITHUB_FILE_PATH}?ref=${GITHUB_BRANCH}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": "DevFolio-CMS",
+        },
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.sha || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Commits updated site-content.json directly to GitHub repository.
+ */
+async function commitContentToGithub(contentStr: string, token: string): Promise<void> {
+  const sha = await getGithubFileSha(token);
+  const body: Record<string, unknown> = {
+    message: "chore(cms): update site-content.json via Monolith Admin [skip ci]",
+    content: Buffer.from(contentStr, "utf-8").toString("base64"),
+    branch: GITHUB_BRANCH,
+    committer: {
+      name: "Samarth Patil",
+      email: "samarthrpatil008@gmail.com",
+    },
+    author: {
+      name: "Samarth Patil",
+      email: "samarthrpatil008@gmail.com",
+    },
+  };
+
+  if (sha) {
+    body.sha = sha;
+  }
+
+  const res = await fetch(
+    `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${GITHUB_FILE_PATH}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json",
+        "Content-Type": "application/json",
+        "User-Agent": "DevFolio-CMS",
+      },
+      body: JSON.stringify(body),
+    }
+  );
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`GitHub CMS commit failed (${res.status}): ${errorText}`);
+  }
+}
+
 export async function getSiteData(): Promise<SiteData> {
   try {
     const raw = await fs.readFile(CONTENT_FILE_PATH, "utf-8");
@@ -84,6 +157,27 @@ export async function getSiteData(): Promise<SiteData> {
   }
 }
 
-export async function saveSiteData(data: SiteData): Promise<void> {
-  await fs.writeFile(CONTENT_FILE_PATH, JSON.stringify(data, null, 2), "utf-8");
+/**
+ * Saves site data.
+ * Detects serverless / production vs local development environment:
+ * - In production with GITHUB_TOKEN: Commits directly to GitHub repository.
+ * - In local dev or fallback: Writes directly to local filesystem via fs/promises.
+ */
+export async function saveSiteData(data: SiteData): Promise<{ method: "github" | "local" }> {
+  const contentStr = JSON.stringify(data, null, 2);
+  const token = process.env.GITHUB_TOKEN;
+  const isServerless = process.env.NODE_ENV === "production" || process.env.VERCEL;
+
+  if (isServerless && token) {
+    try {
+      await commitContentToGithub(contentStr, token);
+      return { method: "github" };
+    } catch (githubErr) {
+      console.warn("GitHub commit failed, attempting filesystem fallback:", githubErr);
+    }
+  }
+
+  // Local filesystem write
+  await fs.writeFile(CONTENT_FILE_PATH, contentStr, "utf-8");
+  return { method: "local" };
 }

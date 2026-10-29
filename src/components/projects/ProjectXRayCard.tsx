@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ProjectData } from "@/lib/content";
 import {
-  ExternalLink,
-  Terminal,
   Layers,
   ArrowRight,
   Play,
   RotateCcw,
-  Check,
+  Smartphone,
+  Sliders,
 } from "lucide-react";
 import { GithubIcon } from "@/components/icons/SocialIcons";
 import { sfx } from "@/lib/audio";
@@ -20,6 +19,7 @@ interface ProjectXRayCardProps {
 
 export function ProjectXRayCard({ project }: ProjectXRayCardProps) {
   const [sliderPos, setSliderPos] = useState(50); // percentage 0 - 100
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
   const isDragging = useRef(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -27,27 +27,61 @@ export function ProjectXRayCard({ project }: ProjectXRayCardProps) {
   const [isDemoRunning, setIsDemoRunning] = useState(false);
   const [terminalLogs, setTerminalLogs] = useState<string[]>([]);
 
-  // Slider Dragging handler (compliant with modern-web-guidance: pointerdown, setPointerCapture, user-select)
+  // Detect coarse pointers (touch/mobile devices)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(pointer: coarse)");
+    setIsCoarsePointer(mql.matches);
+
+    const handler = (e: MediaQueryListEvent) => setIsCoarsePointer(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
+  // Slider Dragging handler (for fine pointers only to prevent mobile scroll interference)
   const handlePointerDown = (e: React.PointerEvent) => {
+    if (isCoarsePointer) return;
     isDragging.current = true;
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     sfx.playMechanicalSwitch();
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDragging.current || !containerRef.current) return;
+    if (isCoarsePointer || !isDragging.current || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const percentage = Math.max(10, Math.min(90, (x / rect.width) * 100));
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
     setSliderPos(percentage);
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
+    if (isCoarsePointer) return;
     isDragging.current = false;
     try {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {
       // ignored
+    }
+  };
+
+  // Keyboard accessibility for fine and keyboard users
+  const handleSliderKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setSliderPos((prev) => Math.max(0, prev - 10));
+      sfx.playMechanicalSwitch();
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setSliderPos((prev) => Math.min(100, prev + 10));
+      sfx.playMechanicalSwitch();
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setSliderPos(0);
+      sfx.playMechanicalSwitch();
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setSliderPos(100);
+      sfx.playMechanicalSwitch();
     }
   };
 
@@ -105,7 +139,7 @@ export function ProjectXRayCard({ project }: ProjectXRayCardProps) {
               aria-label="GitHub Repository"
               onClick={() => sfx.playMechanicalSwitch()}
               onMouseEnter={() => sfx.playSynthHum()}
-              className="p-2.5 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors"
+              className="p-2.5 rounded-full border border-zinc-800 hover:border-red-500/50 bg-zinc-900/60 hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
             >
               <GithubIcon className="w-4 h-4" />
             </a>
@@ -123,23 +157,60 @@ export function ProjectXRayCard({ project }: ProjectXRayCardProps) {
         ))}
       </div>
 
-      {/* 3. The Architecture X-Ray Inspection Stage (Interactive Slider) */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+      {/* 3. The Architecture X-Ray Inspection Stage (Interactive Slider or Mobile Toggle) */}
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-zinc-400">
           <span className="flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5 text-red-400" />
-            <span>Interactive X-Ray: Drag slider to peel UI and reveal internal pipeline</span>
+            <span>Interactive X-Ray: Peel UI to reveal internal pipeline architecture</span>
           </span>
-          <span className="text-zinc-500 text-[11px] hidden sm:inline">
-            Frontend UI ⟵ Split {Math.round(sliderPos)}% ⟶ Architecture Blueprint
-          </span>
+
+          {/* Mobile/Coarse Tactile Toggle Button Switcher */}
+          {isCoarsePointer ? (
+            <div className="flex items-center gap-1 p-1 rounded-lg bg-zinc-900 border border-zinc-800 self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  setSliderPos(100);
+                  sfx.playMechanicalSwitch();
+                }}
+                className={`py-1 px-2.5 rounded text-[11px] font-mono transition-colors ${
+                  sliderPos >= 50
+                    ? "bg-red-950/80 text-white border border-red-500/60 font-semibold"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                [ UI View ]
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSliderPos(0);
+                  sfx.playMechanicalSwitch();
+                }}
+                className={`py-1 px-2.5 rounded text-[11px] font-mono transition-colors ${
+                  sliderPos < 50
+                    ? "bg-red-950/80 text-white border border-red-500/60 font-semibold"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                [ Blueprint View ]
+              </button>
+            </div>
+          ) : (
+            <span className="text-zinc-500 text-[11px] hidden sm:inline">
+              Frontend UI ⟵ Split {Math.round(sliderPos)}% (Use Arrow Keys) ⟶ Blueprint
+            </span>
+          )}
         </div>
 
         <div
           ref={containerRef}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
-          className="relative w-full h-72 sm:h-80 rounded-xl border border-zinc-800 bg-black overflow-hidden select-none touch-none cursor-ew-resize"
+          className={`relative w-full h-72 sm:h-80 rounded-xl border border-zinc-800 bg-black overflow-hidden select-none touch-none ${
+            isCoarsePointer ? "cursor-default" : "cursor-ew-resize"
+          }`}
           style={{ WebkitUserSelect: "none" }}
         >
           {/* UNDERNEATH LAYER: Architecture Blueprint X-Ray */}
@@ -228,23 +299,32 @@ export function ProjectXRayCard({ project }: ProjectXRayCardProps) {
             </div>
 
             <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-800/80">
-              Drag handle right to reveal backend architecture ➔
+              {isCoarsePointer ? "Use toggle buttons to inspect" : "Drag handle right to reveal backend architecture ➔"}
             </div>
           </div>
 
-          {/* Draggable Divider Handle */}
-          <div
-            onPointerDown={handlePointerDown}
-            className="absolute top-0 bottom-0 w-1 bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.8)] cursor-ew-resize flex items-center justify-center group/handle"
-            style={{ left: `${sliderPos}%` }}
-          >
-            <div className="h-8 w-6 rounded-full bg-zinc-900 border-2 border-red-500 shadow-xl flex items-center justify-center group-hover/handle:scale-110 transition-transform">
-              <div className="flex gap-0.5">
-                <span className="h-3 w-0.5 bg-red-400 rounded-full" />
-                <span className="h-3 w-0.5 bg-red-400 rounded-full" />
+          {/* Draggable Divider Handle (rendered and interactive for non-coarse pointers) */}
+          {!isCoarsePointer && (
+            <div
+              role="slider"
+              tabIndex={0}
+              aria-label="X-Ray architecture slider"
+              aria-valuenow={Math.round(sliderPos)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              onPointerDown={handlePointerDown}
+              onKeyDown={handleSliderKeyDown}
+              className="absolute top-0 bottom-0 w-1 bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.8)] cursor-ew-resize flex items-center justify-center group/handle focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
+              style={{ left: `${sliderPos}%` }}
+            >
+              <div className="h-8 w-6 rounded-full bg-zinc-900 border-2 border-red-500 shadow-xl flex items-center justify-center group-hover/handle:scale-110 transition-transform">
+                <div className="flex gap-0.5">
+                  <span className="h-3 w-0.5 bg-red-400 rounded-full" />
+                  <span className="h-3 w-0.5 bg-red-400 rounded-full" />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -252,7 +332,7 @@ export function ProjectXRayCard({ project }: ProjectXRayCardProps) {
       <div className="rounded-xl border border-zinc-800/80 bg-black/80 p-4 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-mono text-zinc-300">
-            <Terminal className="w-3.5 h-3.5 text-red-400" />
+            <Sliders className="w-3.5 h-3.5 text-red-400" />
             <span>Interactive Micro-Demo Terminal</span>
           </div>
 
@@ -260,7 +340,8 @@ export function ProjectXRayCard({ project }: ProjectXRayCardProps) {
             onClick={runMicroDemo}
             disabled={isDemoRunning}
             onMouseEnter={() => sfx.playSynthHum()}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold text-white bg-zinc-900 hover:bg-zinc-800 border border-red-500/40 hover:border-red-500 transition-all disabled:opacity-50"
+            aria-label={isDemoRunning ? "Simulating command execution" : `Run micro-demo: ${project.microDemo.prompt}`}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold text-white bg-zinc-900 hover:bg-zinc-800 border border-red-500/40 hover:border-red-500 transition-all disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none"
           >
             {isDemoRunning ? (
               <>
