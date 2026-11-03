@@ -12,8 +12,8 @@ export function PhysicsLanyard() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 320);
-    let height = (canvas.height = 380);
+    const width = (canvas.width = canvas.parentElement?.clientWidth || 320);
+    const height = (canvas.height = 380);
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = width * dpr;
@@ -35,7 +35,6 @@ export function PhysicsLanyard() {
 
     // Dragging state
     let isDragging = false;
-    let dragOffsetAngle = 0;
     let lastMouseX = 0;
     let mouseVx = 0;
 
